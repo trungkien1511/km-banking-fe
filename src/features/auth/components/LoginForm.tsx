@@ -20,7 +20,7 @@ export const LoginForm = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useForm<LoginFormData>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
@@ -67,7 +67,12 @@ export const LoginForm = () => {
         </div>
 
         <div className="p-6 sm:p-8">
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-5" noValidate>
+          <form 
+            onSubmit={handleSubmit(onSubmit)} 
+            onChange={() => { if (serverError) setServerError(null); }}
+            className="space-y-5" 
+            noValidate
+          >
             <div className="space-y-4">
               {/* Identifier field */}
               <div className="space-y-1.5">
@@ -144,12 +149,13 @@ export const LoginForm = () => {
 
             <Button
               type="submit"
-              className="w-full"
-              isLoading={isPending}
-              disabled={isPending}
-              aria-label={isPending ? 'Signing in...' : 'Sign in'}
+              className="w-full transition-all duration-200"
+              isLoading={isPending || isSubmitting}
+              disabled={isPending || isSubmitting}
+              aria-label={isPending || isSubmitting ? 'Signing in...' : 'Sign in'}
+              aria-live="polite"
             >
-              {isPending ? 'Signing in...' : 'Sign in'}
+              {isPending || isSubmitting ? 'Signing in...' : 'Sign in'}
             </Button>
           </form>
 
