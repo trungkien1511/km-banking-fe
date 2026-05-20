@@ -3,7 +3,8 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Link } from 'react-router-dom';
 import { AlertCircle } from 'lucide-react';
-import { isAxiosError } from 'axios';
+
+import { toast } from 'sonner';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 import { PasswordInput } from '@/components/ui/PasswordInput';
@@ -39,16 +40,12 @@ export const LoginForm = () => {
         rememberMe: data.rememberMe ?? false,
       },
       {
+        onSuccess: () => {
+          toast.success('Signed in successfully.');
+        },
         onError: (error) => {
-          if (isAxiosError(error)) {
-            const message =
-              error.response?.data?.message ||
-              error.response?.data?.error ||
-              'Incorrect username or password.';
-            setServerError(message);
-          } else {
-            setServerError('An unexpected error occurred. Please try again.');
-          }
+          const message = (error as any).formattedMessage || 'An unexpected error occurred. Please try again.';
+          setServerError(message);
         },
       }
     );
