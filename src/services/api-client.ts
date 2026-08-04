@@ -1,16 +1,19 @@
-import axios from 'axios';
-import { useAuthStore } from '@/features/auth/store/auth-store';
+import axios, { type AxiosError } from "axios";
+import { useAuthStore } from "@/features/auth/store/auth-store";
+
+export interface ApiError extends Error {
+  formattedMessage: string;
+}
 
 export const apiClient = axios.create({
-  baseURL: 'http://localhost:8080',
+  baseURL: "http://localhost:8080",
   headers: {
-    'Content-Type': 'application/json',
-    'Accept': 'application/json',
+    "Content-Type": "application/json",
+    Accept: "application/json",
   },
   withCredentials: true,
 });
 
-// Request interceptor — attach access token from Zustand state
 apiClient.interceptors.request.use(
   (config) => {
     const token = useAuthStore.getState().accessToken;
@@ -19,38 +22,92 @@ apiClient.interceptors.request.use(
     }
     return config;
   },
-  (error) => {
-    return Promise.reject(error);
-  }
+  (error) => Promise.reject(error),
 );
 
-// Response interceptor — handle global errors and format messages
+let isRefreshing = false;
+let pendingQueue: Array<{
+  resolve: (token: string) => void;
+  reject: (err: unknown) => void;
+}> = [];
+
+const processPendingQueue = (error: unknown, token: string | null) => {
+  pendingQueue.forEach(({ resolve, reject }) => {
+    if (token) resolve(token);
+    else reject(error);
+  });
+  pendingQueue = [];
+};
+
 apiClient.interceptors.response.use(
   (response) => response,
-  (error) => {
-    let errorMessage = 'An unexpected error occurred. Please try again.';
+  async (error) => {
+    const originalRequest = error.config;
 
-    if (error.response) {
-      const status = error.response.status;
-      const data = error.response.data;
+    if (error.response?.status === 401 && !originalRequest._retry) {
+      const refreshToken = useAuthStore.getState().refreshToken;
 
-      if (status >= 500) {
-        errorMessage = 'System is temporarily unavailable. Please try again later.';
-      } else {
-        errorMessage = data?.message || data?.error || 'Invalid request.';
-      }
-
-      if (status === 401) {
-        // Clear authenticated state on 401 from API
+      if (!refreshToken) {
         useAuthStore.getState().logout();
+        return Promise.reject(error);
       }
-    } else if (error.code === 'ERR_NETWORK') {
-      errorMessage = 'Network error. Please check your internet connection and try again.';
+
+      if (isRefreshing) {
+        return new Promise((resolve, reject) => {
+          pendingQueue.push({
+            resolve: (token) => {
+              originalRequest.headers.Authorization = `Bearer ${token}`;
+              resolve(apiClient(originalRequest));
+            },
+            reject,
+          });
+        });
+      }
+
+      originalRequest._retry = true;
+      isRefreshing = true;
+
+      try {
+        const response = await axios.post(
+          "http://localhost:8080/api/v1/auth/refresh",
+          { refreshToken },
+          { headers: { "Content-Type": "application/json" } },
+        );
+
+        const {
+          accessToken,
+          refreshToken: newRefreshToken,
+          user,
+        } = response.data.data;
+        useAuthStore.getState().setAuth(user, accessToken, newRefreshToken);
+
+        processPendingQueue(null, accessToken);
+        originalRequest.headers.Authorization = `Bearer ${accessToken}`;
+        return apiClient(originalRequest);
+      } catch (refreshError) {
+        processPendingQueue(refreshError, null);
+        useAuthStore.getState().logout();
+        return Promise.reject(refreshError);
+      } finally {
+        isRefreshing = false;
+      }
     }
 
-    // Attach formatted message for UI components to use
-    (error as any).formattedMessage = errorMessage;
-    
+    let errorMessage = "An unexpected error occurred. Please try again.";
+    if (error.response) {
+      const { status, data } = error.response;
+      if (status >= 500) {
+        errorMessage =
+          "System is temporarily unavailable. Please try again later.";
+      } else {
+        errorMessage = data?.message || data?.error || "Invalid request.";
+      }
+    } else if (error.code === "ERR_NETWORK") {
+      errorMessage =
+        "Network error. Please check your internet connection and try again.";
+    }
+
+    (error as AxiosError & ApiError).formattedMessage = errorMessage;
     return Promise.reject(error);
-  }
+  },
 );

@@ -1,186 +1,172 @@
-import { useState } from 'react';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { Link } from 'react-router-dom';
-import { AlertCircle } from 'lucide-react';
-
-import { toast } from 'sonner';
-import { Button } from '@/components/ui/Button';
-import { Input } from '@/components/ui/Input';
-import { PasswordInput } from '@/components/ui/PasswordInput';
-import { Checkbox } from '@/components/ui/Checkbox';
-import { Divider } from '@/components/ui/Divider';
-import { loginSchema } from '@/features/auth/schemas/login-schema';
-import { useLogin } from '@/features/auth/hooks/use-login';
-import type { LoginFormData } from '@/features/auth/types/login.types';
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { ArrowRight, Loader2 } from "lucide-react";
+import { loginSchema } from "@/features/auth/schemas/login-schema";
+import { useLogin } from "@/features/auth/hooks/use-login";
+import type { LoginFormData } from "@/features/auth/types/login.types";
+import { Input } from "@/components/ui/Input";
+import { PasswordInput } from "@/components/ui/PasswordInput";
+import { Checkbox } from "@/components/ui/Checkbox";
+import { FormErrorMessage } from "@/components/ui/FormErrorMessage";
+import { cn } from "@/lib/utils";
+import type { ApiError } from "@/services/api-client";
 
 export const LoginForm = () => {
-  const [serverError, setServerError] = useState<string | null>(null);
-  const { mutate: login, isPending } = useLogin();
+  const { mutate: login, isPending, error } = useLogin();
+
+  // Extract the server-level error message (network / 401 / 500 etc.)
+  const serverError = error
+    ? ((error as unknown as ApiError).formattedMessage ?? error.message)
+    : null;
 
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting },
+    formState: { errors },
   } = useForm<LoginFormData>({
     resolver: zodResolver(loginSchema),
-    defaultValues: {
-      identifier: '',
-      password: '',
-      rememberMe: false,
-    },
+    defaultValues: { identifier: "", password: "", rememberMe: false },
   });
 
   const onSubmit = (data: LoginFormData) => {
-    setServerError(null);
-    login(
-      {
-        identifier: data.identifier,
-        password: data.password,
-        rememberMe: data.rememberMe ?? false,
-      },
-      {
-        onSuccess: () => {
-          toast.success('Signed in successfully.');
-        },
-        onError: (error) => {
-          const message = (error as any).formattedMessage || 'An unexpected error occurred. Please try again.';
-          setServerError(message);
-        },
-      }
-    );
+    login({ identifier: data.identifier, password: data.password });
   };
 
   return (
-    <div className="w-full max-w-[420px] flex flex-col">
-      <div className="rounded-xl border border-border bg-card shadow-sm overflow-hidden">
-        <div className="flex flex-col space-y-1 p-6 sm:p-8 border-b border-border/50 bg-surface/50">
-          <h2 className="text-[18px] font-semibold tracking-tight text-text-primary">
-            Sign in to your account
-          </h2>
-          <p className="text-sm text-text-secondary">
-            Enter your credentials to continue
-          </p>
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      noValidate
+      className="space-y-5"
+      aria-label="Sign in form"
+    >
+      {/* ── Server error banner ───────────────────────────────────────── */}
+      {serverError && (
+        <div
+          role="alert"
+          className="animate-error-in flex items-start gap-2.5 rounded-xl border border-red-100 bg-red-50 px-4 py-3"
+        >
+          <AlertCircle
+            className="mt-0.5 h-4 w-4 flex-shrink-0 text-red-500"
+            strokeWidth={2}
+          />
+          <p className="text-sm text-red-700 leading-snug">{serverError}</p>
         </div>
+      )}
 
-        <div className="p-6 sm:p-8">
-          <form 
-            onSubmit={handleSubmit(onSubmit)} 
-            onChange={() => { if (serverError) setServerError(null); }}
-            className="space-y-5" 
-            noValidate
-          >
-            <div className="space-y-4">
-              {/* Identifier field */}
-              <div className="space-y-1.5">
-                <label className="text-sm font-medium text-text-primary" htmlFor="identifier">
-                  Username or phone number
-                </label>
-                <Input
-                  id="identifier"
-                  type="text"
-                  placeholder="e.g. john_doe or 0901234567"
-                  autoComplete="username"
-                  aria-invalid={!!errors.identifier}
-                  aria-describedby={errors.identifier ? 'identifier-error' : undefined}
-                  {...register('identifier')}
-                  error={!!errors.identifier}
-                />
-                {errors.identifier && (
-                  <p id="identifier-error" className="text-sm text-danger flex items-center gap-1.5" role="alert">
-                    <AlertCircle className="h-3.5 w-3.5 shrink-0" />
-                    {errors.identifier.message}
-                  </p>
-                )}
-              </div>
-
-              {/* Password field */}
-              <div className="space-y-1.5">
-                <div className="flex items-center justify-between">
-                  <label className="text-sm font-medium text-text-primary" htmlFor="password">
-                    Password
-                  </label>
-                  <Link
-                    to="/forgot-password"
-                    className="text-sm text-text-secondary hover:text-text-primary transition-colors focus-visible:outline-none focus-visible:underline"
-                  >
-                    Forgot password?
-                  </Link>
-                </div>
-                <PasswordInput
-                  id="password"
-                  placeholder="Enter your password"
-                  autoComplete="current-password"
-                  aria-invalid={!!errors.password}
-                  aria-describedby={errors.password ? 'password-error' : undefined}
-                  {...register('password')}
-                  error={!!errors.password}
-                />
-                {errors.password && (
-                  <p id="password-error" className="text-sm text-danger flex items-center gap-1.5" role="alert">
-                    <AlertCircle className="h-3.5 w-3.5 shrink-0" />
-                    {errors.password.message}
-                  </p>
-                )}
-              </div>
-            </div>
-
-            {/* Server / API error */}
-            {serverError && (
-              <div
-                className="flex items-start gap-2.5 rounded-md border border-danger/20 bg-danger/10 px-3.5 py-3 text-sm text-danger"
-                role="alert"
-              >
-                <AlertCircle className="h-4 w-4 shrink-0 mt-0.5" />
-                <span>{serverError}</span>
-              </div>
-            )}
-
-            <div className="flex items-center pt-0.5">
-              <Checkbox
-                id="rememberMe"
-                label="Remember me for 30 days"
-                {...register('rememberMe')}
-              />
-            </div>
-
-            <Button
-              type="submit"
-              className="w-full transition-all duration-200"
-              isLoading={isPending || isSubmitting}
-              disabled={isPending || isSubmitting}
-              aria-label={isPending || isSubmitting ? 'Signing in...' : 'Sign in'}
-              aria-live="polite"
-            >
-              {isPending || isSubmitting ? 'Signing in...' : 'Sign in'}
-            </Button>
-          </form>
-
-          <div className="mt-6 flex items-center gap-3">
-            <Divider className="flex-1" />
-            <span className="text-xs text-text-muted uppercase tracking-wider">or</span>
-            <Divider className="flex-1" />
-          </div>
-
-          <Button
-            type="button"
-            variant="outline"
-            className="mt-5 w-full gap-2 font-medium bg-surface hover:bg-elevated"
-          >
-            Continue with Single Sign-On (SSO)
-          </Button>
-        </div>
+      {/* ── Identifier field ──────────────────────────────────────────── */}
+      <div className="space-y-1.5">
+        <label
+          htmlFor="identifier"
+          className="block text-sm font-medium text-slate-700"
+        >
+          Phone number or email
+        </label>
+        <Input
+          id="identifier"
+          type="text"
+          autoComplete="username"
+          autoFocus
+          placeholder="0912 345 678 or name@example.com"
+          error={!!errors.identifier}
+          disabled={isPending}
+          {...register("identifier")}
+        />
+        {errors.identifier && (
+          <FormErrorMessage
+            role="alert"
+            className="animate-error-in"
+            message={errors.identifier.message}
+          />
+        )}
       </div>
 
-      <p className="mt-7 text-center text-sm text-text-muted">
-        Don't have an account?{' '}
-        <Link
-          to="/register"
-          className="font-medium text-text-primary hover:text-primary transition-colors focus-visible:outline-none focus-visible:underline"
+      {/* ── Password field ────────────────────────────────────────────── */}
+      <div className="space-y-1.5">
+        <div className="flex items-center justify-between">
+          <label
+            htmlFor="password"
+            className="block text-sm font-medium text-slate-700"
+          >
+            Password
+          </label>
+          <a
+            href="#"
+            className="text-xs text-blue-600 hover:text-blue-800 transition-colors duration-150 font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/40 rounded"
+            tabIndex={0}
+          >
+            Forgot password?
+          </a>
+        </div>
+        <PasswordInput
+          id="password"
+          autoComplete="current-password"
+          placeholder="Enter your password"
+          error={!!errors.password}
+          disabled={isPending}
+          {...register("password")}
+        />
+        {errors.password && (
+          <FormErrorMessage
+            role="alert"
+            className="animate-error-in"
+            message={errors.password.message}
+          />
+        )}
+      </div>
+
+      {/* ── Remember me ───────────────────────────────────────────────── */}
+      <Checkbox
+        id="rememberMe"
+        label="Keep me signed in"
+        disabled={isPending}
+        {...register("rememberMe")}
+      />
+
+      {/* ── Submit button ─────────────────────────────────────────────── */}
+      <button
+        type="submit"
+        disabled={isPending}
+        className={cn(
+          // Base
+          "relative w-full h-11 rounded-xl font-semibold text-sm text-white",
+          "flex items-center justify-center gap-2",
+          // Color
+          "bg-[#1D4ED8] hover:bg-[#1E3A8A]",
+          // Transitions
+          "transition-all duration-150",
+          // Tactile feedback — physical press simulation
+          "active:scale-[0.98] active:-translate-y-px",
+          // Focus
+          "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1D4ED8] focus-visible:ring-offset-2",
+          // Disabled
+          "disabled:pointer-events-none disabled:opacity-60",
+          // Shadow
+          "shadow-[0_2px_8px_0_rgba(29,78,216,0.25)] hover:shadow-[0_4px_16px_0_rgba(29,78,216,0.35)]"
+        )}
+      >
+        {isPending ? (
+          <>
+            <Loader2 className="h-4 w-4 animate-spin" strokeWidth={2} />
+            <span>Signing in...</span>
+          </>
+        ) : (
+          <>
+            <span>Sign in</span>
+            <ArrowRight className="h-4 w-4 transition-transform duration-150 group-hover:translate-x-0.5" strokeWidth={2} />
+          </>
+        )}
+      </button>
+
+      {/* ── Loading skeleton placeholder (while submitting) ───────────── */}
+      {isPending && (
+        <div
+          aria-live="polite"
+          aria-label="Authenticating, please wait"
+          className="sr-only"
         >
-          Sign up
-        </Link>
-      </p>
-    </div>
+          Signing in, please wait...
+        </div>
+      )}
+    </form>
   );
 };
