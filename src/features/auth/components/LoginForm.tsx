@@ -1,6 +1,6 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ArrowRight, Loader2 } from "lucide-react";
+import { AlertCircle, ArrowRight, Loader2 } from "lucide-react";
 import { loginSchema } from "@/features/auth/schemas/login-schema";
 import { useLogin } from "@/features/auth/hooks/use-login";
 import type { LoginFormData } from "@/features/auth/types/login.types";
@@ -46,7 +46,7 @@ export const LoginForm = () => {
           className="animate-error-in flex items-start gap-2.5 rounded-xl border border-red-100 bg-red-50 px-4 py-3"
         >
           <AlertCircle
-            className="mt-0.5 h-4 w-4 flex-shrink-0 text-red-500"
+            className="mt-0.5 h-4 w-4 shrink-0 text-red-500"
             strokeWidth={2}
           />
           <p className="text-sm text-red-700 leading-snug">{serverError}</p>
@@ -131,17 +131,17 @@ export const LoginForm = () => {
           "relative w-full h-11 rounded-xl font-semibold text-sm text-white",
           "flex items-center justify-center gap-2",
           // Color
-          "bg-[#1D4ED8] hover:bg-[#1E3A8A]",
+          "bg-primary hover:bg-primary-hover",
           // Transitions
           "transition-all duration-150",
           // Tactile feedback — physical press simulation
           "active:scale-[0.98] active:-translate-y-px",
           // Focus
-          "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1D4ED8] focus-visible:ring-offset-2",
+          "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2",
           // Disabled
           "disabled:pointer-events-none disabled:opacity-60",
           // Shadow
-          "shadow-[0_2px_8px_0_rgba(29,78,216,0.25)] hover:shadow-[0_4px_16px_0_rgba(29,78,216,0.35)]"
+          "shadow-[0_2px_8px_0_rgba(29,78,216,0.25)] hover:shadow-[0_4px_16px_0_rgba(29,78,216,0.35)]",
         )}
       >
         {isPending ? (
@@ -152,7 +152,10 @@ export const LoginForm = () => {
         ) : (
           <>
             <span>Sign in</span>
-            <ArrowRight className="h-4 w-4 transition-transform duration-150 group-hover:translate-x-0.5" strokeWidth={2} />
+            <ArrowRight
+              className="h-4 w-4 transition-transform duration-150 group-hover:translate-x-0.5"
+              strokeWidth={2}
+            />
           </>
         )}
       </button>

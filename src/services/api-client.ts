@@ -44,7 +44,31 @@ apiClient.interceptors.response.use(
   async (error) => {
     const originalRequest = error.config;
 
-    if (error.response?.status === 401 && !originalRequest._retry) {
+    // 1. Format user-friendly error message FIRST for all errors
+    let errorMessage = "Đã xảy ra lỗi không xác định. Vui lòng thử lại.";
+
+    if (error.response) {
+      const { status, data } = error.response;
+
+      if (status === 401 && originalRequest?.url?.includes("/api/v1/auth/login")) {
+        errorMessage = data?.message || "Tên đăng nhập hoặc mật khẩu không chính xác.";
+      } else if (status >= 500) {
+        errorMessage = "Hệ thống đang bảo trì hoặc gặp sự cố. Vui lòng thử lại sau.";
+      } else {
+        errorMessage = data?.message || data?.error || "Yêu cầu không hợp lệ.";
+      }
+    } else if (error.code === "ERR_NETWORK") {
+      errorMessage = "Lỗi kết nối mạng. Vui lòng kiểm tra lại kết nối Internet.";
+    }
+
+    (error as AxiosError & ApiError).formattedMessage = errorMessage;
+
+    // 2. Handle 401 Token Refresh (Skip for login and refresh endpoints)
+    const isAuthEndpoint =
+      originalRequest?.url?.includes("/api/v1/auth/login") ||
+      originalRequest?.url?.includes("/api/v1/auth/refresh");
+
+    if (error.response?.status === 401 && !originalRequest._retry && !isAuthEndpoint) {
       const refreshToken = useAuthStore.getState().refreshToken;
 
       if (!refreshToken) {
@@ -69,7 +93,7 @@ apiClient.interceptors.response.use(
 
       try {
         const response = await axios.post(
-          "http://localhost:8080/api/v1/auth/refresh",
+          `${apiClient.defaults.baseURL}/api/v1/auth/refresh`,
           { refreshToken },
           { headers: { "Content-Type": "application/json" } },
         );
@@ -93,21 +117,6 @@ apiClient.interceptors.response.use(
       }
     }
 
-    let errorMessage = "An unexpected error occurred. Please try again.";
-    if (error.response) {
-      const { status, data } = error.response;
-      if (status >= 500) {
-        errorMessage =
-          "System is temporarily unavailable. Please try again later.";
-      } else {
-        errorMessage = data?.message || data?.error || "Invalid request.";
-      }
-    } else if (error.code === "ERR_NETWORK") {
-      errorMessage =
-        "Network error. Please check your internet connection and try again.";
-    }
-
-    (error as AxiosError & ApiError).formattedMessage = errorMessage;
     return Promise.reject(error);
   },
 );
