@@ -10,21 +10,28 @@ export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElemen
 
 export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   ({ className, variant = 'primary', size = 'md', isLoading, children, disabled, ...props }, ref) => {
-    
-    const baseStyles = "inline-flex items-center justify-center whitespace-nowrap rounded-md font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50";
-    
+
+    const baseStyles = [
+      "inline-flex items-center justify-center whitespace-nowrap rounded-xl font-medium",
+      "transition-colors duration-150",
+      "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-(--color-navy-700)/40 focus-visible:ring-offset-2",
+      "disabled:pointer-events-none disabled:opacity-50",
+      "active:scale-[0.98]",
+    ].join(' ');
+
     const variants = {
-      primary: "bg-primary text-white hover:bg-primary-hover shadow-sm",
-      secondary: "bg-elevated text-text-primary hover:bg-border shadow-sm",
-      outline: "border border-border bg-transparent hover:bg-surface text-text-primary",
-      ghost: "hover:bg-surface text-text-primary",
-      danger: "bg-danger text-white hover:bg-danger/90 shadow-sm",
+      // Navy primary - consistent with login submit + dark sidebar
+      primary: "bg-(--color-navy-900) text-white hover:bg-(--color-navy-800) shadow-sm",
+      secondary: "bg-(--color-elevated) text-(--color-text-primary) hover:bg-(--color-border) shadow-sm",
+      outline: "border border-(--color-border) bg-transparent hover:bg-(--color-surface) text-(--color-text-primary)",
+      ghost: "hover:bg-(--color-surface) text-(--color-text-primary)",
+      danger: "bg-(--color-danger) text-white hover:bg-(--color-danger)/90 shadow-sm",
     };
 
     const sizes = {
-      sm: "h-8 px-3 text-xs",
-      md: "h-10 px-4 py-2 text-sm",
-      lg: "h-12 px-8 text-base",
+      sm:   "h-8 px-3 text-xs",
+      md:   "h-10 px-4 py-2 text-sm",
+      lg:   "h-12 px-8 text-base",
       icon: "h-10 w-10",
     };
 

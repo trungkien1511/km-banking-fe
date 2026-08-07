@@ -1,5 +1,5 @@
-import React from 'react';
-import { cn } from '@/lib/utils';
+import React from "react";
+import { cn } from "@/lib/utils";
 
 export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   error?: boolean;
@@ -12,23 +12,33 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
         type={type}
         className={cn(
           // Base layout
-          "flex h-11 w-full rounded-xl border bg-white px-3.5 py-2.5",
-          // Typography
-          "text-[14px] text-slate-900 placeholder:text-slate-400",
-          // Border — default, hover, focus
-          "border-slate-200 hover:border-slate-300 transition-all duration-150",
-          // Focus ring using box-shadow for clean appearance
-          "focus-visible:outline-none focus-visible:border-[#0A0F1E] focus-visible:ring-2 focus-visible:ring-[#0A0F1E]/[0.08] focus-visible:ring-offset-0",
+          "flex h-11 w-full rounded-xl px-3.5 py-2.5",
+          // Colors — semantic tokens, work in both light-context and dark shell
+          "bg-(--color-surface) border border-border",
+          "text-[14px] text-text-primary",
+          "placeholder:text-text-muted",
+          // Hover + focus
+          "hover:border-text-muted/40",
+          "transition-all duration-150",
+          "focus-visible:outline-none",
+          "focus-visible:border-(--color-accent)",
+          "focus-visible:ring-2 focus-visible:ring-(--color-accent)/15",
+          "focus-visible:ring-offset-0",
           // Disabled
-          "disabled:cursor-not-allowed disabled:bg-slate-50 disabled:opacity-55",
+          "disabled:cursor-not-allowed disabled:bg-elevated disabled:opacity-55",
           // Error state
-          error && "border-red-400 hover:border-red-400 focus-visible:border-red-500 focus-visible:ring-red-500/10",
-          className
+          error && [
+            "border-danger/60",
+            "hover:border-danger/60",
+            "focus-visible:border-danger",
+            "focus-visible:ring-danger/15",
+          ],
+          className,
         )}
         ref={ref}
         {...props}
       />
     );
-  }
+  },
 );
 Input.displayName = "Input";

@@ -1,71 +1,59 @@
 import React from 'react';
 import { cn } from '@/lib/utils';
 
-interface CardProps extends React.HTMLAttributes<HTMLDivElement> {}
+// type alias instead of empty interface — @typescript-eslint/no-empty-object-type
+type CardProps        = React.HTMLAttributes<HTMLDivElement>;
+type CardHeaderProps  = React.HTMLAttributes<HTMLDivElement>;
+type CardTitleProps   = React.HTMLAttributes<HTMLHeadingElement>;
+type CardDescProps    = React.HTMLAttributes<HTMLParagraphElement>;
+type CardContentProps = React.HTMLAttributes<HTMLDivElement>;
+type CardFooterProps  = React.HTMLAttributes<HTMLDivElement>;
 
 export function Card({ className, ...props }: CardProps) {
   return (
     <div
       className={cn(
-        "rounded-xl border border-border bg-card text-text-primary shadow-card",
-        className
+        'rounded-xl border border-(--color-border)',
+        'bg-(--color-card) text-(--color-text-primary)',
+        'shadow-(--shadow-card)',
+        className,
       )}
       {...props}
     />
   );
 }
 
-interface CardHeaderProps extends React.HTMLAttributes<HTMLDivElement> {}
-
 export function CardHeader({ className, ...props }: CardHeaderProps) {
   return (
-    <div
-      className={cn("flex flex-col space-y-1.5 p-6", className)}
-      {...props}
-    />
+    <div className={cn('flex flex-col space-y-1.5 p-6', className)} {...props} />
   );
 }
-
-interface CardTitleProps extends React.HTMLAttributes<HTMLHeadingElement> {}
 
 export function CardTitle({ className, ...props }: CardTitleProps) {
   return (
     <h3
       className={cn(
-        "text-card-title font-semibold leading-none tracking-tight",
-        className
+        'text-base font-semibold leading-none tracking-tight',
+        'text-(--color-text-primary)',
+        className,
       )}
       {...props}
     />
   );
 }
 
-interface CardDescriptionProps extends React.HTMLAttributes<HTMLParagraphElement> {}
-
-export function CardDescription({ className, ...props }: CardDescriptionProps) {
+export function CardDescription({ className, ...props }: CardDescProps) {
   return (
-    <p
-      className={cn("text-sm text-text-muted", className)}
-      {...props}
-    />
+    <p className={cn('text-sm text-(--color-text-muted)', className)} {...props} />
   );
 }
-
-interface CardContentProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 export function CardContent({ className, ...props }: CardContentProps) {
-  return (
-    <div className={cn("p-6 pt-0", className)} {...props} />
-  );
+  return <div className={cn('p-6 pt-0', className)} {...props} />;
 }
-
-interface CardFooterProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 export function CardFooter({ className, ...props }: CardFooterProps) {
   return (
-    <div
-      className={cn("flex items-center p-6 pt-0", className)}
-      {...props}
-    />
+    <div className={cn('flex items-center p-6 pt-0', className)} {...props} />
   );
 }

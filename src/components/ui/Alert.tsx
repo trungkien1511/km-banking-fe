@@ -1,24 +1,27 @@
-import React from 'react';
-import { AlertCircle, CheckCircle2, Info, AlertTriangle } from 'lucide-react';
-import { cn } from '@/lib/utils';
+import React from "react";
+import { AlertCircle, CheckCircle2, Info, AlertTriangle } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 interface AlertProps extends React.HTMLAttributes<HTMLDivElement> {
-  variant?: 'default' | 'danger' | 'success' | 'warning' | 'info';
+  variant?: "default" | "danger" | "success" | "warning" | "info";
   title?: string;
   children: React.ReactNode;
 }
 
 export const Alert = React.forwardRef<HTMLDivElement, AlertProps>(
-  ({ className, variant = 'default', title, children, ...props }, ref) => {
-    
+  ({ className, variant = "default", title, children, ...props }, ref) => {
     const variants = {
-      default: "bg-elevated border-border text-text-primary",
-      danger: "bg-danger/10 border-danger/20 text-danger",
-      success: "bg-success/10 border-success/20 text-success",
-      warning: "bg-warning/10 border-warning/20 text-warning",
-      info: "bg-info/10 border-info/20 text-info",
+      default:
+        "bg-(--color-elevated)  border-(--color-border)              text-(--color-text-primary)",
+      danger:
+        "bg-(--color-danger)/10  border-(--color-danger)/25           text-(--color-danger)",
+      success:
+        "bg-(--color-success)/10 border-(--color-success)/25          text-(--color-success)",
+      warning:
+        "bg-(--color-warning)/10 border-(--color-warning)/25          text-(--color-warning)",
+      info: "bg-(--color-info)/10    border-(--color-info)/25             text-(--color-info)",
     };
-    
+
     const icons = {
       default: Info,
       danger: AlertCircle,
@@ -26,7 +29,7 @@ export const Alert = React.forwardRef<HTMLDivElement, AlertProps>(
       warning: AlertTriangle,
       info: Info,
     };
-    
+
     const Icon = icons[variant];
 
     return (
@@ -34,23 +37,24 @@ export const Alert = React.forwardRef<HTMLDivElement, AlertProps>(
         ref={ref}
         role="alert"
         className={cn(
-          "relative w-full rounded-lg border p-4 [&>svg]:absolute [&>svg]:text-inherit [&>svg]:left-4 [&>svg]:top-4 [&>svg+div]:translate-y-[-3px] [&>svg~*]:pl-7",
+          // rounded-xl consistent with the rest of the system
+          "relative w-full rounded-xl border p-4",
+          "[&>svg]:absolute [&>svg]:text-inherit [&>svg]:left-4 [&>svg]:top-4",
+          "[&>svg+div]:-translate-y-0.75 [&>svg~*]:pl-7",
           variants[variant],
-          className
+          className,
         )}
         {...props}
       >
-        <Icon className="h-5 w-5" />
+        <Icon className="h-5 w-5" aria-hidden="true" />
         {title && (
-          <h5 className="mb-1 font-medium leading-none tracking-tight">
+          <h5 className="mb-1 font-semibold leading-none tracking-tight">
             {title}
           </h5>
         )}
-        <div className="text-sm opacity-90">
-          {children}
-        </div>
+        <div className="text-sm opacity-90">{children}</div>
       </div>
     );
-  }
+  },
 );
 Alert.displayName = "Alert";

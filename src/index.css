@@ -49,18 +49,23 @@
 
 @theme {
   /* ── Brand colors ── */
+  /* Blue is used ONLY for login/auth (light context). Never in the dark shell. */
   --color-primary: #1D4ED8;
   --color-primary-hover: #1E3A8A;
   --color-primary-soft: #EFF6FF;
 
-  /* ── KM Banking premium palette ── */
-  /* Deep navy (dark panel base) */
+  /* ── Accent — single source of truth for interactive elements ── */
+  --color-accent:       #E9C46A;
+  --color-accent-hover: #D4A853;
+  --color-accent-fg:    #080D1A;
+
+  /* Light theme variables (defaults — overridden in :root dark block below) */
   --color-navy-950: #080D1A;
   --color-navy-900: #0A0F1E;
   --color-navy-800: #111827;
   --color-navy-700: #1A2540;
 
-  /* Gold accent */
+  /* Gold — the single accent for the dark authenticated shell */
   --color-gold-400: #E9C46A;
   --color-gold-500: #D4A853;
   --color-gold-600: #B8903D;
@@ -102,9 +107,38 @@
 
 @layer base {
   :root {
-    color-scheme: light;
+    color-scheme: dark;
+
+    /* ── Dark app shell overrides ──────────────────────────────────────── */
+    /* The authenticated app runs full dark. Login page keeps its own bg. */
+    --color-background:   #0D1117;
+    --color-surface:      #161B22;
+    --color-card:         #1C2333;
+    --color-elevated:     #21262D;
+    --color-border:       rgba(255, 255, 255, 0.08);
+
+    /* Text on dark */
+    --color-text-primary:    #F0F6FC;
+    --color-text-secondary:  #8B949E;
+    --color-text-muted:      #6E7681;
+
+    /* Status — slightly desaturated for dark bg */
+    --color-success: #3FB950;
+    --color-warning: #D29922;
+    --color-danger:  #F85149;
+    --color-info:    #58A6FF;
+
+    /* Shadows — dark-tinted */
+    --shadow-card:     0 1px 0 0 rgba(255,255,255,0.04), 0 4px 12px -2px rgba(0,0,0,0.4);
+    --shadow-elevated: 0 1px 0 0 rgba(255,255,255,0.06), 0 8px 24px -4px rgba(0,0,0,0.5);
+    --shadow-form:     0 20px 60px -12px rgba(0,0,0,0.6);
+
+    /* Accent — gold in dark shell */
+    --color-accent:       #E9C46A;
+    --color-accent-hover: #D4A853;
+    --color-accent-fg:    #080D1A;
   }
-  
+
   body {
     background-color: var(--color-background);
     color: var(--color-text-primary);
@@ -128,18 +162,44 @@
     background: transparent;
   }
   ::-webkit-scrollbar-thumb {
-    background-color: var(--color-border);
+    background-color: rgba(255, 255, 255, 0.12);
     border-radius: 9999px;
   }
   ::-webkit-scrollbar-thumb:hover {
-    background-color: var(--color-text-muted);
+    background-color: rgba(255, 255, 255, 0.22);
   }
 
-  /* Focus ring global behavior */
+  /* Focus ring — uses semantic accent token. Dark shell = gold ring. */
   *:focus-visible {
     outline: 2px solid transparent;
     outline-offset: 2px;
-    box-shadow: 0 0 0 2px var(--color-background), 0 0 0 4px var(--color-primary);
+    box-shadow: 0 0 0 2px var(--color-background), 0 0 0 4px var(--color-accent);
+  }
+
+  /* ── Light context ─────────────────────────────────────────────────────
+   * Applied to the login form panel (right side of login page).
+   * Restores light-mode tokens locally so Input, Checkbox, labels
+   * render correctly on the white panel while :root stays dark.
+   * ─────────────────────────────────────────────────────────────────── */
+  .light-context {
+    color-scheme: light;
+    --color-background:      #F8FAFC;
+    --color-surface:         #FFFFFF;
+    --color-card:            #FFFFFF;
+    --color-elevated:        #F1F5F9;
+    --color-border:          #E2E8F0;
+    --color-text-primary:    #0F172A;
+    --color-text-secondary:  #475569;
+    --color-text-muted:      #64748B;
+    --color-success:         #15803D;
+    --color-warning:         #B45309;
+    --color-danger:          #B91C1C;
+    --color-info:            #0369A1;
+    --color-accent:          #0A0F1E;
+    --color-accent-hover:    #111827;
+    --color-accent-fg:       #FFFFFF;
+    --shadow-card:           0 4px 6px -1px rgb(0 0 0 / 0.05), 0 2px 4px -2px rgb(0 0 0 / 0.05);
+    --shadow-form:           0 20px 60px -12px rgb(0 0 0 / 0.08);
   }
 }
 

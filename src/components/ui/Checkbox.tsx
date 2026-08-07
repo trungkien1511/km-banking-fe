@@ -1,8 +1,11 @@
-import React from 'react';
-import { cn } from '@/lib/utils';
-import { Check } from 'lucide-react';
+import React from "react";
+import { cn } from "@/lib/utils";
+import { Check } from "lucide-react";
 
-export interface CheckboxProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'type'> {
+export interface CheckboxProps extends Omit<
+  React.InputHTMLAttributes<HTMLInputElement>,
+  "type"
+> {
   label?: string;
 }
 
@@ -19,8 +22,11 @@ export const Checkbox = React.forwardRef<HTMLInputElement, CheckboxProps>(
             id={checkboxId}
             ref={ref}
             className={cn(
-              "peer h-4 w-4 shrink-0 appearance-none rounded-sm border border-border bg-surface ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 checked:bg-primary checked:border-primary",
-              className
+              "peer h-4 w-4 shrink-0 appearance-none rounded-sm border border-slate-300 bg-white",
+              "ring-offset-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-navy-700/30 focus-visible:ring-offset-2",
+              "disabled:cursor-not-allowed disabled:opacity-50",
+              "checked:bg-navy-900 checked:border-navy-900",
+              className,
             )}
             {...props}
           />
@@ -29,13 +35,13 @@ export const Checkbox = React.forwardRef<HTMLInputElement, CheckboxProps>(
         {label && (
           <label
             htmlFor={checkboxId}
-            className="text-sm font-medium leading-none text-text-primary peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-pointer"
+            className="text-sm font-medium leading-none text-slate-700 peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-pointer"
           >
             {label}
           </label>
         )}
       </div>
     );
-  }
+  },
 );
 Checkbox.displayName = "Checkbox";

@@ -7,18 +7,19 @@ export interface BadgeProps extends React.HTMLAttributes<HTMLDivElement> {
 
 export function Badge({ className, variant = 'default', ...props }: BadgeProps) {
   const variants = {
-    default: "bg-elevated text-text-primary hover:bg-elevated/80",
-    success: "bg-success/10 text-success border border-success/20",
-    warning: "bg-warning/10 text-warning border border-warning/20",
-    danger: "bg-danger/10 text-danger border border-danger/20",
-    info: "bg-info/10 text-info border border-info/20",
-    outline: "text-text-primary border border-border",
+    default: "bg-(--color-elevated) text-(--color-text-primary)",
+    success: "bg-(--color-success)/10 text-(--color-success) border border-(--color-success)/20",
+    warning: "bg-(--color-warning)/10 text-(--color-warning) border border-(--color-warning)/20",
+    danger:  "bg-(--color-danger)/10  text-(--color-danger)  border border-(--color-danger)/20",
+    info:    "bg-(--color-info)/10    text-(--color-info)    border border-(--color-info)/20",
+    outline: "text-(--color-text-primary) border border-(--color-border)",
   };
 
   return (
     <div
       className={cn(
-        "inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2",
+        "inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium transition-colors",
+        "focus:outline-none focus:ring-2 focus:ring-(--color-navy-700)/40 focus:ring-offset-2",
         variants[variant],
         className
       )}
