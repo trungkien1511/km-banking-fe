@@ -1,4 +1,4 @@
-import React, { useId, useState } from "react";
+import React, { useCallback, useId, useState } from "react";
 import { useForm, type Resolver } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -49,6 +49,11 @@ export const WithdrawalWizard: React.FC = () => {
     mode: "onChange",
     defaultValues: { amount: undefined, description: "" },
   });
+
+  const handleSelectAccount = useCallback((acc: Account) => {
+    setSelectedAccount(acc);
+    trigger("amount");
+  }, [trigger]);
 
   const handleConfirm = () => {
     if (!selectedAccount || withdrawMut.isPending) return;
@@ -108,7 +113,7 @@ export const WithdrawalWizard: React.FC = () => {
             <AccountSelector
               accounts={accounts}
               selectedAccountId={selectedAccount?.id}
-              onSelect={(acc) => { setSelectedAccount(acc); trigger("amount"); }}
+              onSelect={handleSelectAccount}
             />
           </div>
 

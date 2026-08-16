@@ -1,7 +1,4 @@
 import { createBrowserRouter, Navigate } from "react-router-dom";
-import { LoginPage } from "@/features/auth/pages/LoginPage";
-import { DashboardPage } from "@/features/dashboard/pages/DashboardPage";
-import { TransferPage } from "@/features/transfer/pages/TransferPage";
 import { AppLayout } from "@/app/layouts/AppLayout";
 import { ProtectedRoute } from "./ProtectedRoute";
 import { GuestRoute } from "./GuestRoute";
@@ -10,8 +7,20 @@ export const router = createBrowserRouter([
   {
     element: <GuestRoute />,
     children: [
-      { path: "/", element: <LoginPage /> },
-      { path: "/login", element: <LoginPage /> },
+      {
+        path: "/",
+        lazy: async () => {
+          const { LoginPage } = await import("@/features/auth/pages/LoginPage");
+          return { Component: LoginPage };
+        },
+      },
+      {
+        path: "/login",
+        lazy: async () => {
+          const { LoginPage } = await import("@/features/auth/pages/LoginPage");
+          return { Component: LoginPage };
+        },
+      },
     ],
   },
   {
@@ -20,8 +29,24 @@ export const router = createBrowserRouter([
       {
         element: <AppLayout />,
         children: [
-            { path: "/dashboard", element: <DashboardPage /> },
-            { path: "/transfer", element: <TransferPage /> },
+          {
+            path: "/dashboard",
+            lazy: async () => {
+              const { DashboardPage } = await import(
+                "@/features/dashboard/pages/DashboardPage"
+              );
+              return { Component: DashboardPage };
+            },
+          },
+          {
+            path: "/transfer",
+            lazy: async () => {
+              const { TransferPage } = await import(
+                "@/features/transfer/pages/TransferPage"
+              );
+              return { Component: TransferPage };
+            },
+          },
         ],
       },
     ],

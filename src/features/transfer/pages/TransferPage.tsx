@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { Activity, useState } from "react";
 import { TransferWizard } from "../components/TransferWizard";
 import { DepositWizard } from "../components/DepositWizard";
 import { WithdrawalWizard } from "../components/WithdrawalWizard";
@@ -15,16 +15,26 @@ export const TransferPage: React.FC = () => {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-page-title text-(--color-foreground) mb-2">Move Money</h1>
-        <p className="text-sm text-(--color-muted-foreground)">
-          Transfer funds to another account or run mock deposits & withdrawals for testing.
+        <h1 className="text-page-title text-foreground mb-2">Move Money</h1>
+        <p className="text-sm text-muted-foreground">
+          Transfer funds to another account or run mock deposits & withdrawals
+          for testing.
         </p>
       </div>
 
-      <div className="border-b border-(--color-border)/60 flex gap-6" role="tablist" aria-label="Transaction Operations">
+      <div
+        className="border-b border-(--color-border)/60 flex gap-6"
+        role="tablist"
+        aria-label="Transaction Operations"
+      >
         {(["transfer", "deposit", "withdrawal"] as TabType[]).map((tab) => {
           const isActive = activeTab === tab;
-          const label = tab === "transfer" ? "Internal Transfer" : tab === "deposit" ? "Mock Deposit" : "Mock Withdrawal";
+          const label =
+            tab === "transfer"
+              ? "Internal Transfer"
+              : tab === "deposit"
+                ? "Mock Deposit"
+                : "Mock Withdrawal";
 
           return (
             <button
@@ -38,7 +48,7 @@ export const TransferPage: React.FC = () => {
                 "py-3 text-sm font-semibold border-b-2 transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-(--color-primary)/50",
                 isActive
                   ? "border-(--color-primary) text-(--color-primary)"
-                  : "border-transparent text-(--color-muted-foreground) hover:text-(--color-foreground)"
+                  : "border-transparent text-muted-foreground hover:text-(--color-foreground)",
               )}
             >
               {label}
@@ -49,17 +59,21 @@ export const TransferPage: React.FC = () => {
 
       <div className="mt-4">
         {(["transfer", "deposit", "withdrawal"] as TabType[]).map((tab) => (
-          <div
+          <Activity
             key={tab}
-            id={`panel-${tab}`}
-            role="tabpanel"
-            aria-labelledby={`tab-${tab}`}
-            className={cn(activeTab !== tab && "hidden")}
+            mode={activeTab === tab ? "visible" : "hidden"}
+            name={`wizard-panel-${tab}`}
           >
-            {tab === "transfer" && <TransferWizard />}
-            {tab === "deposit" && <DepositWizard />}
-            {tab === "withdrawal" && <WithdrawalWizard />}
-          </div>
+            <div
+              id={`panel-${tab}`}
+              role="tabpanel"
+              aria-labelledby={`tab-${tab}`}
+            >
+              {tab === "transfer" && <TransferWizard />}
+              {tab === "deposit" && <DepositWizard />}
+              {tab === "withdrawal" && <WithdrawalWizard />}
+            </div>
+          </Activity>
         ))}
       </div>
     </div>

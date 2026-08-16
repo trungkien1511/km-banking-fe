@@ -1,3 +1,4 @@
+import { startTransition } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 import { authApi } from "@/features/auth/api/auth.api";
@@ -17,7 +18,10 @@ export const useLogin = () => {
     onSuccess: (response) => {
       const { user, accessToken, refreshToken } = response.data;
       setAuth(user, accessToken, refreshToken);
-      navigate("/dashboard");
+      // bundle-preload: warm the dashboard chunk while the login spinner shows
+      void import("@/features/dashboard/pages/DashboardPage");
+      // rendering-usetransition-loading: keep submit pending state responsive
+      startTransition(() => navigate("/dashboard"));
     },
   });
 };

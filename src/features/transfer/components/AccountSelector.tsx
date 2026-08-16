@@ -10,11 +10,8 @@ interface AccountSelectorProps {
   onSelect: (account: Account) => void;
 }
 
-export const AccountSelector: React.FC<AccountSelectorProps> = ({
-  accounts,
-  selectedAccountId,
-  onSelect,
-}) => {
+export const AccountSelector: React.FC<AccountSelectorProps> = React.memo(
+  ({ accounts, selectedAccountId, onSelect }) => {
   return (
     <div
       className="space-y-3"
@@ -77,4 +74,5 @@ export const AccountSelector: React.FC<AccountSelectorProps> = ({
       })}
     </div>
   );
-};
+  },
+);

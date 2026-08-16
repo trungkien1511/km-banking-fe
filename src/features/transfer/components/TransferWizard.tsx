@@ -1,4 +1,4 @@
-import React, { useId, useState } from "react";
+import React, { useCallback, useId, useState } from "react";
 import { useForm, type Resolver } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -58,11 +58,11 @@ export const TransferWizard: React.FC = () => {
     },
   });
 
-  const handleSelectAccount = (account: Account) => {
+  const handleSelectAccount = useCallback((account: Account) => {
     setSelectedAccount(account);
     setStep(2);
     trigger("amount");
-  };
+  }, [trigger]);
 
   const handleConfirm = () => {
     if (!selectedAccount || transferMut.isPending) return;

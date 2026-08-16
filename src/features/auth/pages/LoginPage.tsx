@@ -13,6 +13,9 @@ const TRUST_BADGES = [
   { icon: Globe, label: "24/7 availability", sub: "Always-on infrastructure" },
 ] as const;
 
+// js-cache-function-results: hoisted — constant within a session
+const CURRENT_YEAR = new Date().getFullYear();
+
 export const LoginPage = () => {
   return (
     <main className="min-h-dvh w-full grid lg:grid-cols-2">
@@ -114,7 +117,7 @@ export const LoginPage = () => {
             Protected by 256-bit TLS encryption.
             <br />
             <span className="text-muted-foreground">
-              &copy; {new Date().getFullYear()} KM BANK. All rights reserved.
+              &copy; {CURRENT_YEAR} KM BANK. All rights reserved.
             </span>
           </p>
         </div>
