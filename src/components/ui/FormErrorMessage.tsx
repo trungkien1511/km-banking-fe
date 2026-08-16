@@ -1,5 +1,5 @@
 import React from "react";
-import { AlertCircle } from "lucide-react";
+import { WarningCircle } from "@phosphor-icons/react";
 import { cn } from "@/lib/utils";
 
 interface FormErrorMessageProps extends React.HTMLAttributes<HTMLParagraphElement> {
@@ -19,13 +19,13 @@ export const FormErrorMessage = React.forwardRef<
       className={cn(
         "flex items-center gap-1 mt-1",
         "text-sm font-medium",
-        // CSS var: dark shell = #F85149, light-context = #B91C1C
-        "text-danger",
+        // Semantic token: --color-destructive in both dark shell and light-context
+        "text-destructive",
         className,
       )}
       {...props}
     >
-      <AlertCircle className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
+      <WarningCircle size={14} className="shrink-0" aria-hidden="true" />
       {message}
     </p>
   );

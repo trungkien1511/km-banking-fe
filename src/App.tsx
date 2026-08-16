@@ -17,12 +17,12 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <RouterProvider router={router} />
       <Toaster 
-        position="bottom-right" 
+        position="top-right" 
         toastOptions={{
           style: {
             padding: '16px',
             borderRadius: '8px',
-            border: '1px solid var(--color-border, #e2e8f0)',
+            border: '1px solid var(--color-border, #1E3A5F)',
             boxShadow: '0 4px 12px rgba(0, 0, 0, 0.05)',
           }
         }}

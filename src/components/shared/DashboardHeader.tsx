@@ -1,6 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { LogOut, Bell } from "lucide-react";
+import { SignOut, Bell } from "@phosphor-icons/react";
 import { useAuthStore } from "@/features/auth/store/auth-store";
 
 function getGreeting(): string {
@@ -38,8 +38,8 @@ export const DashboardHeader: React.FC = () => {
       className="
         flex items-center justify-between
         px-5 py-3
-        border-b border-white/6
-        bg-(--color-surface)
+        border-b border-(--color-border)
+        bg-(--color-card)
       "
       aria-label="Dashboard header"
     >
@@ -49,8 +49,8 @@ export const DashboardHeader: React.FC = () => {
         <div
           className="
             flex h-8 w-8 items-center justify-center rounded-full
-            bg-(--color-gold-400)/15 border border-(--color-gold-400)/20
-            text-(--color-gold-400) text-xs font-semibold
+            bg-(--color-primary)/15 border border-(--color-primary)/20
+            text-(--color-primary) text-xs font-semibold
             select-none
           "
           aria-hidden="true"
@@ -58,10 +58,10 @@ export const DashboardHeader: React.FC = () => {
           {initials}
         </div>
         <div>
-          <p className="text-[11px] text-text-muted leading-none">
+          <p className="text-[11px] text-muted-foreground leading-none">
             {getGreeting()}
           </p>
-          <p className="text-sm font-semibold text-text-primary leading-tight mt-0.5">
+          <p className="text-sm font-semibold text-foreground leading-tight mt-0.5">
             {firstName || "Welcome"}
           </p>
         </div>
@@ -74,14 +74,14 @@ export const DashboardHeader: React.FC = () => {
           aria-label="Notifications"
           className="
             flex h-8 w-8 items-center justify-center rounded-lg
-            text-text-muted
-            hover:bg-white/6 hover:text-text-secondary
+            text-muted-foreground
+            hover:bg-(--color-muted)/50 hover:text-foreground
             transition-colors duration-150
             focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-(--color-accent)/50
             active:scale-[0.94]
           "
         >
-          <Bell className="h-4 w-4" strokeWidth={2} aria-hidden="true" />
+          <Bell size={16} aria-hidden="true" />
         </button>
 
         {/* Mobile-only sign out (sidebar handles it on desktop) */}
@@ -92,14 +92,14 @@ export const DashboardHeader: React.FC = () => {
           className="
             lg:hidden
             flex h-8 w-8 items-center justify-center rounded-lg
-            text-text-muted
-            hover:bg-red-500/10 hover:text-red-400
+            text-muted-foreground
+            hover:bg-(--color-destructive)/10 hover:text-(--color-destructive)
             transition-colors duration-150
-            focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-400/40
+            focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-(--color-destructive)/40
             active:scale-[0.94]
           "
         >
-          <LogOut className="h-4 w-4" strokeWidth={2} aria-hidden="true" />
+          <SignOut size={16} aria-hidden="true" />
         </button>
       </div>
     </header>

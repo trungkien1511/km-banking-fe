@@ -1,5 +1,5 @@
 import React from "react";
-import { AlertCircle, CheckCircle2, Info, AlertTriangle } from "lucide-react";
+import { WarningCircle, CheckCircle, Info, Warning } from "@phosphor-icons/react";
 import { cn } from "@/lib/utils";
 
 interface AlertProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -12,9 +12,9 @@ export const Alert = React.forwardRef<HTMLDivElement, AlertProps>(
   ({ className, variant = "default", title, children, ...props }, ref) => {
     const variants = {
       default:
-        "bg-(--color-elevated)  border-(--color-border)              text-(--color-text-primary)",
+        "bg-(--color-surface-elevated) border-(--color-border)      text-(--color-foreground)",
       danger:
-        "bg-(--color-danger)/10  border-(--color-danger)/25           text-(--color-danger)",
+        "bg-(--color-destructive)/10  border-(--color-destructive)/25  text-(--color-destructive)",
       success:
         "bg-(--color-success)/10 border-(--color-success)/25          text-(--color-success)",
       warning:
@@ -24,9 +24,9 @@ export const Alert = React.forwardRef<HTMLDivElement, AlertProps>(
 
     const icons = {
       default: Info,
-      danger: AlertCircle,
-      success: CheckCircle2,
-      warning: AlertTriangle,
+      danger: WarningCircle,
+      success: CheckCircle,
+      warning: Warning,
       info: Info,
     };
 

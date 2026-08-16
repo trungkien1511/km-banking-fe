@@ -25,10 +25,10 @@ export const AppLogo: React.FC<AppLogoProps> = ({
         className={cn(
           'relative flex h-9 w-9 items-center justify-center rounded-xl font-bold transition-transform duration-150 hover:scale-[1.03]',
           isLight
-            // Dark panel: glass-frosted background with gold-tinted glow
-            ? 'bg-[#E9C46A]/10 text-[#E9C46A] border border-[#E9C46A]/20 shadow-[inset_0_1px_0_rgba(233,196,106,0.15)]'
-            // Light panel: solid navy with white icon
-            : 'bg-[#0A0F1E] text-white shadow-md shadow-slate-900/10'
+            // Dark panel: amber-gold tinted mark (design primary)
+            ? 'bg-(--color-primary)/10 text-(--color-primary) border border-(--color-primary)/20 shadow-[inset_0_1px_0_color-mix(in_srgb,var(--color-primary)_15%,transparent)]'
+            // Light panel: solid foreground (near-navy) with background icon
+            : 'bg-(--color-foreground) text-(--color-background) shadow-md shadow-(--color-foreground)/10'
         )}
       >
         <svg
@@ -60,7 +60,8 @@ export const AppLogo: React.FC<AppLogoProps> = ({
           <span
             className={cn(
               'text-lg font-bold tracking-tight leading-none',
-              isLight ? 'text-white' : 'text-slate-900'
+              // foreground adapts: light on dark shell, dark on light-context
+              'text-(--color-foreground)'
             )}
           >
             {APP_NAME}
@@ -68,7 +69,7 @@ export const AppLogo: React.FC<AppLogoProps> = ({
           <span
             className={cn(
               'text-[10px] tracking-widest uppercase font-mono mt-0.5',
-              isLight ? 'text-slate-500' : 'text-slate-400'
+              'text-(--color-muted-foreground)'
             )}
           >
             Digital Banking

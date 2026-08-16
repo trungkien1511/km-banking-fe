@@ -1,5 +1,5 @@
 import React from 'react';
-import { Loader2 } from 'lucide-react';
+import { CircleNotch } from '@phosphor-icons/react';
 import { cn } from '@/lib/utils';
 
 interface LoadingSpinnerProps extends React.HTMLAttributes<SVGElement> {
@@ -18,9 +18,9 @@ export const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({
   };
 
   return (
-    <Loader2
+    <CircleNotch
       className={cn(
-        "animate-spin text-(--color-gold-400)",
+        "animate-spin text-(--color-primary)",
         sizeClasses[size],
         className,
       )}

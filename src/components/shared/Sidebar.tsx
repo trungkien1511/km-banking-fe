@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import {
-  LayoutDashboard,
+  SquaresFour,
   CreditCard,
-  ArrowLeftRight,
+  ArrowsLeftRight,
   Clock,
-  Settings,
-  LogOut,
-} from "lucide-react";
+  Gear,
+  SignOut,
+} from "@phosphor-icons/react";
 import { cn } from "@/lib/utils";
 import { useAuthStore } from "@/features/auth/store/auth-store";
 
@@ -18,11 +18,11 @@ interface NavItem {
 }
 
 const NAV_ITEMS: NavItem[] = [
-  { label: "Dashboard", to: "/dashboard", icon: LayoutDashboard },
+  { label: "Dashboard", to: "/dashboard", icon: SquaresFour },
   { label: "Accounts", to: "/accounts", icon: CreditCard },
-  { label: "Transfer", to: "/transfer", icon: ArrowLeftRight },
+  { label: "Transfer", to: "/transfer", icon: ArrowsLeftRight },
   { label: "History", to: "/transactions", icon: Clock },
-  { label: "Settings", to: "/settings", icon: Settings },
+  { label: "Settings", to: "/settings", icon: Gear },
 ];
 
 interface TooltipProps {
@@ -36,9 +36,9 @@ const Tooltip: React.FC<TooltipProps> = ({ label, visible }) => (
     className={cn(
       "pointer-events-none absolute left-[calc(100%+12px)] top-1/2 -translate-y-1/2 z-50",
       "whitespace-nowrap rounded-md px-2.5 py-1.5",
-      "bg-[#21262D] border border-white/8",
-      "text-xs font-medium text-[#F0F6FC]",
-      "shadow-[0_4px_16px_rgba(0,0,0,0.5)]",
+      "bg-(--color-surface-elevated) border border-(--color-border)",
+      "text-xs font-medium text-(--color-foreground)",
+      "shadow-(--shadow-elevated)",
       "transition-all duration-150",
       visible ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-1",
     )}
@@ -66,18 +66,18 @@ const RailItem: React.FC<RailItemProps> = ({ item }) => {
         cn(
           "relative flex h-11 w-11 items-center justify-center rounded-xl",
           "transition-all duration-150",
-          "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-(--color-gold-400)/50",
+          "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-(--color-primary)/50",
           isActive
-            ? "bg-(--color-gold-400)/10 text-(--color-gold-400)"
-            : "text-[#6E7681] hover:bg-white/6 hover:text-[#8B949E]",
+            ? "bg-(--color-primary)/10 text-(--color-primary)"
+            : "text-(--color-muted-foreground) hover:bg-(--color-muted)/50 hover:text-(--color-foreground)",
         )
       }
     >
       {({ isActive }) => (
         <>
           <Icon
-            className="h-5 w-5"
-            strokeWidth={isActive ? 2.5 : 2}
+            size={20}
+            weight={isActive ? "bold" : "regular"}
             aria-hidden="true"
           />
           <Tooltip label={item.label} visible={hovered} />
@@ -103,16 +103,16 @@ export const Sidebar: React.FC = () => {
         hidden lg:flex flex-col items-center
         w-16 shrink-0
         h-screen sticky top-0
-        bg-(--color-surface)
-        border-r border-white/6
+        bg-(--color-card)
+        border-r border-(--color-border)
         py-4
       "
       aria-label="Main navigation"
     >
       {/* Logo mark - hexagon icon only */}
-      <div className="mb-6 flex h-9 w-9 items-center justify-center rounded-xl bg-(--color-gold-400)/10">
+      <div className="mb-6 flex h-9 w-9 items-center justify-center rounded-xl bg-(--color-primary)/10">
         <svg
-          className="h-5 w-5 text-(--color-gold-400)"
+          className="h-5 w-5 text-(--color-primary)"
           viewBox="0 0 24 24"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
@@ -155,14 +155,14 @@ export const Sidebar: React.FC = () => {
           aria-label="Sign out"
           className="
             flex h-11 w-11 items-center justify-center rounded-xl
-            text-[#6E7681]
-            hover:bg-red-500/10 hover:text-red-400
+            text-(--color-muted-foreground)
+            hover:bg-(--color-destructive)/10 hover:text-(--color-destructive)
             transition-all duration-150
-            focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-400/40
+            focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-(--color-destructive)/40
             active:scale-[0.95]
           "
         >
-          <LogOut className="h-5 w-5" strokeWidth={2} aria-hidden="true" />
+          <SignOut size={20} aria-hidden="true" />
           <Tooltip label="Sign out" visible={logoutHovered} />
         </button>
       </div>

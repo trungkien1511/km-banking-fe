@@ -1,342 +1,377 @@
+/* ─── IBM Plex Sans + IBM Plex Mono ───────────────────────────────────────
+   @import rules MUST precede all other statements.
+   Google Fonts CDN — font-display: swap prevents FOIT.
+   Preconnect tags are in index.html for faster DNS resolution.
+   Production: swap for @fontsource/ibm-plex-sans + @fontsource/ibm-plex-mono
+   if self-hosting is required for offline/CSP environments.
+─────────────────────────────────────────────────────────────────────────── */
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600;700&display=swap');
+
 @import "tailwindcss";
 
-/* ─── Geist Sans via Fontsource CDN ────────────────────────────────────────
-   Self-hosted via npm-CDN (unpkg). Production: bundle with @fontsource/geist
-   font-display: swap ensures no FOIT blocking.
-────────────────────────────────────────────────────────────────────────── */
-@font-face {
-  font-family: "Geist";
-  src: url("https://unpkg.com/geist@1.3.0/dist/fonts/geist-sans/Geist-Regular.woff2") format("woff2");
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: "Geist";
-  src: url("https://unpkg.com/geist@1.3.0/dist/fonts/geist-sans/Geist-Medium.woff2") format("woff2");
-  font-weight: 500;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: "Geist";
-  src: url("https://unpkg.com/geist@1.3.0/dist/fonts/geist-sans/Geist-SemiBold.woff2") format("woff2");
-  font-weight: 600;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: "Geist";
-  src: url("https://unpkg.com/geist@1.3.0/dist/fonts/geist-sans/Geist-Bold.woff2") format("woff2");
-  font-weight: 700;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: "Geist Mono";
-  src: url("https://unpkg.com/geist@1.3.0/dist/fonts/geist-mono/GeistMono-Regular.woff2") format("woff2");
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: "Geist Mono";
-  src: url("https://unpkg.com/geist@1.3.0/dist/fonts/geist-mono/GeistMono-Medium.woff2") format("woff2");
-  font-weight: 500;
-  font-style: normal;
-  font-display: swap;
-}
-
+/* ─── Design Tokens ────────────────────────────────────────────────────────
+   @theme exposes all custom tokens as Tailwind v4 utility classes.
+   These are LIGHT-mode (default) primitives. Dark overrides live in :root.
+   Naming convention: --color-<role> (semantic, not --color-<hue>-<shade>).
+─────────────────────────────────────────────────────────────────────────── */
 @theme {
-  /* ── Brand colors ── */
-  /* Blue is used ONLY for login/auth (light context). Never in the dark shell. */
-  --color-primary: #1D4ED8;
-  --color-primary-hover: #1E3A8A;
-  --color-primary-soft: #EFF6FF;
+  /* ── Primary — amber gold ───────────────────────────────────────────── */
+  /* Single primary CTA. Used ONLY on primary buttons, key links, ring.    */
+  --color-primary:          #D4A017;
+  --color-primary-hover:    #B88A12;
+  --color-primary-fg:       #0A0F1E;   /* text on gold surfaces */
+  --color-on-primary:       var(--color-primary-fg);   /* spec alias */
 
-  /* ── Accent — single source of truth for interactive elements ── */
-  --color-accent:       #E9C46A;
-  --color-accent-hover: #D4A853;
-  --color-accent-fg:    #080D1A;
+  /* ── Secondary — trust navy ─────────────────────────────────────────── */
+  --color-secondary:        #1E3A8A;
+  --color-secondary-hover:  #1E40AF;
+  --color-secondary-fg:     #E2E8F0;
+  --color-on-secondary:     var(--color-secondary-fg);   /* spec alias */
 
-  /* Light theme variables (defaults — overridden in :root dark block below) */
-  --color-navy-950: #080D1A;
-  --color-navy-900: #0A0F1E;
-  --color-navy-800: #111827;
-  --color-navy-700: #1A2540;
+  /* ── Accent — sky blue (charts, sparklines, info highlights) ────────── */
+  /* Distinct from primary. Never used for CTA buttons.                    */
+  --color-accent:           #38BDF8;
+  --color-accent-hover:     #0EA5E9;
+  --color-accent-fg:        #0A0F1E;
+  --color-on-accent:        var(--color-accent-fg);   /* spec alias */
 
-  /* Gold — the single accent for the dark authenticated shell */
-  --color-gold-400: #E9C46A;
-  --color-gold-500: #D4A853;
-  --color-gold-600: #B8903D;
+  /* ── Surfaces (light defaults — overridden in :root dark block) ──────── */
+  --color-background:       #F8FAFC;
+  --color-card:             #FFFFFF;
+  --color-surface-elevated: #F1F5F9;   /* modals, drawers */
+  --color-muted:            #F1F5F9;
 
-  /* Light theme variables */
-  --color-background: #F8FAFC;
-  --color-surface: #FFFFFF;
-  --color-card: #FFFFFF;
-  --color-elevated: #F1F5F9;
-  --color-border: #E2E8F0;
+  /* ── Text (light defaults) ───────────────────────────────────────────── */
+  --color-foreground:           #020617;
+  --color-muted-foreground:     #475569;
+  --color-subtle-foreground:    #64748B;   /* placeholders, disabled */
 
-  /* Text */
-  --color-text-primary: #0F172A;
-  --color-text-secondary: #475569;
-  --color-text-muted: #64748B;
+  /* ── Border + Ring ──────────────────────────────────────────────────── */
+  --color-border:           #E2E8F0;
+  --color-border-hover:     #2A4A6F;   /* card hover border (design spec) */
+  --color-ring:             #D4A017;   /* focus ring = amber gold always */
 
-  /* Status */
-  --color-success: #15803D;
-  --color-warning: #B45309;
-  --color-danger: #B91C1C;
-  --color-info: #0369A1;
+  /* ── Status ──────────────────────────────────────────────────────────── */
+  --color-success:          #22C55E;
+  --color-warning:          #F59E0B;
+  --color-destructive:      #EF4444;
+  --color-info:             #38BDF8;
+  --color-on-status:        #0A0F1E;   /* text on status-colored bg */
 
-  /* Typography */
-  --font-sans: "Geist", "Inter", ui-sans-serif, system-ui, sans-serif;
-  --font-mono: "Geist Mono", ui-monospace, "Cascadia Code", monospace;
-  
-  /* Radius — consistent soft system */
-  --radius-sm: 0.375rem;
-  --radius-md: 0.5rem;
-  --radius-lg: 0.75rem;
-  --radius-xl: 1rem;
-  --radius-2xl: 1.25rem;
+  /* ── Typography ──────────────────────────────────────────────────────── */
+  --font-sans: "IBM Plex Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, "Cascadia Code", monospace;
 
-  /* Shadows */
-  --shadow-card: 0 4px 6px -1px rgb(0 0 0 / 0.05), 0 2px 4px -2px rgb(0 0 0 / 0.05);
-  --shadow-elevated: 0 10px 15px -3px rgb(0 0 0 / 0.05), 0 4px 6px -4px rgb(0 0 0 / 0.05);
-  --shadow-form: 0 20px 60px -12px rgb(0 0 0 / 0.08);
+  /* ── Border radius ───────────────────────────────────────────────────── */
+  /* Swiss / Financial Grade: tight geometry, no bubble-UI rounding.       */
+  --radius-sm:  0.375rem;   /* 6px  — badges, chips */
+  --radius-md:  0.5rem;     /* 8px  — buttons, inputs */
+  --radius-lg:  0.75rem;    /* 12px — cards */
+  --radius-xl:  1rem;       /* 16px — modals, drawers */
+  --radius-2xl: 1.25rem;    /* 20px — large panels */
+
+  /* ── Motion tokens ───────────────────────────────────────────────────── */
+  --duration-instant: 80ms;
+  --duration-fast:    150ms;
+  --duration-normal:  250ms;
+  --duration-slow:    400ms;
+  --easing-standard:   cubic-bezier(0.2, 0, 0, 1);     /* arriving */
+  --easing-decelerate: cubic-bezier(0, 0, 0.2, 1);     /* entering screen */
+  --easing-accelerate: cubic-bezier(0.4, 0, 1, 1);     /* leaving screen */
+
+  /* ── Shadows (light defaults) ────────────────────────────────────────── */
+  --shadow-card:     0 1px 3px 0 rgb(0 0 0 / 0.08), 0 1px 2px -1px rgb(0 0 0 / 0.06);
+  --shadow-elevated: 0 4px 6px -1px rgb(0 0 0 / 0.07), 0 2px 4px -2px rgb(0 0 0 / 0.05);
+  --shadow-modal:    0 8px 32px 0 rgb(0 0 0 / 0.14);
+  --shadow-form:     0 20px 60px -12px rgb(0 0 0 / 0.08);
 }
 
+/* ─── Dark Mode (default app shell) ───────────────────────────────────────
+   :root = dark authenticated shell. The login panel overrides locally
+   using .light-context. This keeps the dark shell truly dark without a
+   class toggle — matching the "dark-first" fintech product pattern.
+─────────────────────────────────────────────────────────────────────────── */
 @layer base {
   :root {
     color-scheme: dark;
 
-    /* ── Dark app shell overrides ──────────────────────────────────────── */
-    /* The authenticated app runs full dark. Login page keeps its own bg. */
-    --color-background:   #0D1117;
-    --color-surface:      #161B22;
-    --color-card:         #1C2333;
-    --color-elevated:     #21262D;
-    --color-border:       rgba(255, 255, 255, 0.08);
+    /* Surfaces */
+    --color-background:       #0A0F1E;   /* deep navy — security-first */
+    --color-card:             #0F172A;
+    --color-surface-elevated: #1E293B;   /* modals, drawers, dropdowns */
+    --color-muted:            #1E2D40;
 
-    /* Text on dark */
-    --color-text-primary:    #F0F6FC;
-    --color-text-secondary:  #8B949E;
-    --color-text-muted:      #6E7681;
+    /* Text */
+    --color-foreground:           #F1F5F9;
+    --color-muted-foreground:     #94A3B8;
+    --color-subtle-foreground:    #64748B;
 
-    /* Status — slightly desaturated for dark bg */
-    --color-success: #3FB950;
-    --color-warning: #D29922;
-    --color-danger:  #F85149;
-    --color-info:    #58A6FF;
+    /* Border */
+    --color-border:           #1E3A5F;
 
-    /* Shadows — dark-tinted */
-    --shadow-card:     0 1px 0 0 rgba(255,255,255,0.04), 0 4px 12px -2px rgba(0,0,0,0.4);
-    --shadow-elevated: 0 1px 0 0 rgba(255,255,255,0.06), 0 8px 24px -4px rgba(0,0,0,0.5);
-    --shadow-form:     0 20px 60px -12px rgba(0,0,0,0.6);
+    /* Status — desaturated for dark bg readability */
+    --color-success:     #22C55E;
+    --color-warning:     #F59E0B;
+    --color-destructive: #EF4444;
+    --color-info:        #38BDF8;
 
-    /* Accent — gold in dark shell */
-    --color-accent:       #E9C46A;
-    --color-accent-hover: #D4A853;
-    --color-accent-fg:    #080D1A;
+    /* Shadows — deep dark tints */
+    --shadow-card:     0 1px 0 0 rgba(255,255,255,0.04), 0 4px 12px -2px rgba(0,0,0,0.5);
+    --shadow-elevated: 0 1px 0 0 rgba(255,255,255,0.05), 0 8px 24px -4px rgba(0,0,0,0.6);
+    --shadow-modal:    0 8px 32px 0 rgba(0,0,0,0.7);
+    --shadow-form:     0 20px 60px -12px rgba(0,0,0,0.7);
+
+    /* Primary + Accent stay the same in dark (already defined in @theme) */
   }
 
+  /* ── Light context ──────────────────────────────────────────────────────
+   * Scoped to .light-context — applied on the login form panel.
+   * Restores light tokens without touching :root.
+   * ─────────────────────────────────────────────────────────────────────*/
+  .light-context {
+    color-scheme: light;
+    --color-background:       #F8FAFC;
+    --color-card:             #FFFFFF;
+    --color-surface-elevated: #F1F5F9;
+    --color-muted:            #F1F5F9;
+    --color-foreground:       #020617;
+    --color-muted-foreground: #475569;
+    --color-subtle-foreground:#64748B;
+    --color-border:           #E2E8F0;
+
+    /* In light context, primary CTA = navy (login submit) */
+    --color-primary:          #0A0F1E;
+    --color-primary-hover:    #111827;
+    --color-primary-fg:       #FFFFFF;
+
+    --shadow-card:  0 1px 3px 0 rgb(0 0 0 / 0.08), 0 1px 2px -1px rgb(0 0 0 / 0.06);
+    --shadow-modal: 0 8px 32px 0 rgb(0 0 0 / 0.12);
+    --shadow-form:  0 20px 60px -12px rgb(0 0 0 / 0.08);
+  }
+
+  /* ── Base element styles ─────────────────────────────────────────────── */
   body {
     background-color: var(--color-background);
-    color: var(--color-text-primary);
+    color: var(--color-foreground);
     font-family: var(--font-sans);
+    font-size: 1rem;
+    line-height: 1.6;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
 
-  /* Custom text selection */
-  ::selection {
-    background-color: color-mix(in srgb, var(--color-gold-500) 25%, transparent);
-    color: var(--color-navy-900);
+  /* Global focus ring — 2px amber gold, always visible */
+  *:focus-visible {
+    outline: 2px solid transparent;
+    outline-offset: 2px;
+    box-shadow: 0 0 0 2px var(--color-background), 0 0 0 4px var(--color-ring);
   }
 
-  /* Custom scrollbar */
+  /* Text selection — gold tint */
+  ::selection {
+    background-color: color-mix(in srgb, var(--color-primary) 25%, transparent);
+    color: var(--color-foreground);
+  }
+
+  /* Scrollbar — minimal, non-intrusive */
   ::-webkit-scrollbar {
-    width: 6px;
-    height: 6px;
+    width: 5px;
+    height: 5px;
   }
   ::-webkit-scrollbar-track {
     background: transparent;
   }
   ::-webkit-scrollbar-thumb {
-    background-color: rgba(255, 255, 255, 0.12);
+    background-color: rgba(255, 255, 255, 0.10);
     border-radius: 9999px;
   }
   ::-webkit-scrollbar-thumb:hover {
-    background-color: rgba(255, 255, 255, 0.22);
+    background-color: rgba(255, 255, 255, 0.20);
   }
 
-  /* Focus ring — uses semantic accent token. Dark shell = gold ring. */
-  *:focus-visible {
-    outline: 2px solid transparent;
-    outline-offset: 2px;
-    box-shadow: 0 0 0 2px var(--color-background), 0 0 0 4px var(--color-accent);
-  }
-
-  /* ── Light context ─────────────────────────────────────────────────────
-   * Applied to the login form panel (right side of login page).
-   * Restores light-mode tokens locally so Input, Checkbox, labels
-   * render correctly on the white panel while :root stays dark.
-   * ─────────────────────────────────────────────────────────────────── */
-  .light-context {
-    color-scheme: light;
-    --color-background:      #F8FAFC;
-    --color-surface:         #FFFFFF;
-    --color-card:            #FFFFFF;
-    --color-elevated:        #F1F5F9;
-    --color-border:          #E2E8F0;
-    --color-text-primary:    #0F172A;
-    --color-text-secondary:  #475569;
-    --color-text-muted:      #64748B;
-    --color-success:         #15803D;
-    --color-warning:         #B45309;
-    --color-danger:          #B91C1C;
-    --color-info:            #0369A1;
-    --color-accent:          #0A0F1E;
-    --color-accent-hover:    #111827;
-    --color-accent-fg:       #FFFFFF;
-    --shadow-card:           0 4px 6px -1px rgb(0 0 0 / 0.05), 0 2px 4px -2px rgb(0 0 0 / 0.05);
-    --shadow-form:           0 20px 60px -12px rgb(0 0 0 / 0.08);
+  /* Tabular numerals for all mono-font elements */
+  .font-mono {
+    font-variant-numeric: tabular-nums lining-nums;
   }
 }
 
-/* ── Keyframes ─────────────────────────────────────────────────────────── */
+/* ─── Keyframes ────────────────────────────────────────────────────────── */
+
+/* Page / card entrance */
 @keyframes fade-slide-up {
-  from {
-    opacity: 0;
-    transform: translateY(16px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
+/* Simple fade */
 @keyframes fade-in {
   from { opacity: 0; }
   to   { opacity: 1; }
 }
 
+/* Sidebar / drawer slide */
 @keyframes slide-in-left {
-  from {
-    opacity: 0;
-    transform: translateX(-20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
+  from { opacity: 0; transform: translateX(-16px); }
+  to   { opacity: 1; transform: translateX(0); }
 }
 
+/* Toast slide from top-right */
+@keyframes slide-in-top-right {
+  from { opacity: 0; transform: translate(16px, -8px); }
+  to   { opacity: 1; transform: translate(0, 0); }
+}
+
+/* Inline form error */
 @keyframes error-in {
-  from {
-    opacity: 0;
-    transform: translateY(-4px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; transform: translateY(-4px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
+/* Skeleton shimmer — horizontal sweep */
 @keyframes shimmer {
   from { background-position: -200% center; }
-  to   { background-position: 200% center; }
+  to   { background-position:  200% center; }
 }
 
-/* ── Utilities ─────────────────────────────────────────────────────────── */
+/* Step completion pulse */
+@keyframes step-complete {
+  0%   { transform: scale(1); }
+  40%  { transform: scale(1.1); }
+  100% { transform: scale(1); }
+}
+
+/* ─── Utility classes ──────────────────────────────────────────────────── */
 @layer utilities {
+
+  /* ── Typography scale ── */
+  /* Display (balance hero, key figures) */
   .text-display {
-    font-size: 2.25rem;
-    line-height: 2.5rem;
+    font-size: clamp(2rem, 5vw, 3rem);
+    line-height: 1.1;
     font-weight: 700;
-    letter-spacing: -0.025em;
-    color: var(--color-text-primary);
-  }
-  @media (min-width: 640px) {
-    .text-display {
-      font-size: 3rem;
-      line-height: 1;
-    }
+    letter-spacing: -0.02em;
+    color: var(--color-foreground);
   }
 
+  /* H1 — page title */
   .text-page-title {
     font-size: 1.875rem;
     line-height: 2.25rem;
     font-weight: 600;
-    letter-spacing: -0.025em;
-    color: var(--color-text-primary);
+    letter-spacing: -0.02em;
+    color: var(--color-foreground);
   }
 
+  /* H2 — section header */
   .text-section-title {
     font-size: 1.5rem;
     line-height: 2rem;
     font-weight: 600;
-    letter-spacing: -0.025em;
-    color: var(--color-text-primary);
+    letter-spacing: -0.01em;
+    color: var(--color-foreground);
   }
 
+  /* H3 — card title, step label */
   .text-card-title {
     font-size: 1.125rem;
     line-height: 1.75rem;
     font-weight: 500;
-    letter-spacing: -0.025em;
-    color: var(--color-text-primary);
+    letter-spacing: -0.01em;
+    color: var(--color-foreground);
   }
 
-  .text-body {
-    font-size: 1rem;
-    line-height: 1.625;
-    color: var(--color-text-primary);
-  }
-
-  .text-small {
+  /* H4 / Form label */
+  .text-label {
     font-size: 0.875rem;
     line-height: 1.25rem;
-    color: var(--color-text-secondary);
+    font-weight: 500;
+    letter-spacing: 0.01em;
+    color: var(--color-foreground);
   }
 
+  /* Body */
+  .text-body {
+    font-size: 1rem;
+    line-height: 1.6;
+    color: var(--color-foreground);
+  }
+
+  /* Body small */
+  .text-small {
+    font-size: 0.875rem;
+    line-height: 1.5;
+    color: var(--color-muted-foreground);
+  }
+
+  /* Caption — timestamps, meta only */
   .text-caption {
     font-size: 0.75rem;
-    line-height: 1rem;
-    color: var(--color-text-muted);
+    line-height: 1.4;
+    color: var(--color-subtle-foreground);
   }
 
-  /* ── Animation utilities ── */
+  /* Numeric amount — always IBM Plex Mono + tabular */
+  .text-amount {
+    font-family: var(--font-mono);
+    font-variant-numeric: tabular-nums lining-nums;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+
+  /* ── Shimmer skeleton ── */
+  .animate-shimmer {
+    background: linear-gradient(
+      90deg,
+      var(--color-muted)      25%,
+      color-mix(in srgb, var(--color-muted) 60%, var(--color-surface-elevated)) 50%,
+      var(--color-muted)      75%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 1.5s ease-in-out infinite;
+  }
+
+  /* ── Page / entrance animations ── */
   .animate-fade-slide-up {
-    animation: fade-slide-up 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+    animation: fade-slide-up var(--duration-slow) var(--easing-decelerate) both;
   }
 
   .animate-fade-in {
-    animation: fade-in 0.4s ease both;
+    animation: fade-in var(--duration-normal) ease both;
   }
 
   .animate-slide-in-left {
-    animation: slide-in-left 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+    animation: slide-in-left var(--duration-slow) var(--easing-decelerate) both;
+  }
+
+  .animate-slide-in-top-right {
+    animation: slide-in-top-right var(--duration-normal) var(--easing-decelerate) both;
   }
 
   .animate-error-in {
-    animation: error-in 0.2s ease-out both;
+    animation: error-in var(--duration-fast) ease-out both;
   }
 
-  /* Staggered children delay utility */
+  .animate-step-complete {
+    animation: step-complete 0.35s var(--easing-standard) both;
+  }
+
+  /* ── Stagger delays ── */
   .animation-delay-100 { animation-delay: 100ms; }
   .animation-delay-200 { animation-delay: 200ms; }
   .animation-delay-300 { animation-delay: 300ms; }
   .animation-delay-400 { animation-delay: 400ms; }
+  .animation-delay-500 { animation-delay: 500ms; }
 
-  /* Reduced motion override */
+  /* ── Reduced motion — mandatory override ── */
+  /* All animations collapse. Balance counters show final value instantly. */
   @media (prefers-reduced-motion: reduce) {
-    .animate-fade-slide-up,
-    .animate-fade-in,
-    .animate-slide-in-left,
-    .animate-error-in {
-      animation: none;
-      opacity: 1;
-      transform: none;
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
     }
   }
 }

@@ -1,6 +1,6 @@
 import React from "react";
 import { cn } from "@/lib/utils";
-import { Check } from "lucide-react";
+import { Check } from "@phosphor-icons/react";
 
 export interface CheckboxProps extends Omit<
   React.InputHTMLAttributes<HTMLInputElement>,
@@ -22,20 +22,29 @@ export const Checkbox = React.forwardRef<HTMLInputElement, CheckboxProps>(
             id={checkboxId}
             ref={ref}
             className={cn(
-              "peer h-4 w-4 shrink-0 appearance-none rounded-sm border border-slate-300 bg-white",
-              "ring-offset-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-navy-700/30 focus-visible:ring-offset-2",
+              // Shape — 6px radius matches badge spec
+              "peer h-4 w-4 shrink-0 appearance-none rounded-sm",
+              // Colors — semantic tokens, correct on white + dark shells
+              "border border-(--color-border) bg-(--color-card)",
+              // Focus ring — amber gold per design system
+              "ring-offset-(--color-background) focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-(--color-ring) focus-visible:ring-offset-2",
+              // Checked — amber gold fill
+              "checked:bg-(--color-primary) checked:border-(--color-primary)",
               "disabled:cursor-not-allowed disabled:opacity-50",
-              "checked:bg-navy-900 checked:border-navy-900",
               className,
             )}
             {...props}
           />
-          <Check className="pointer-events-none absolute left-1/2 top-1/2 h-3 w-3 -translate-x-1/2 -translate-y-1/2 text-white opacity-0 peer-checked:opacity-100 transition-opacity" />
+          <Check
+            size={12}
+            weight="bold"
+            className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-(--color-primary-fg) opacity-0 peer-checked:opacity-100 transition-opacity"
+          />
         </div>
         {label && (
           <label
             htmlFor={checkboxId}
-            className="text-sm font-medium leading-none text-slate-700 peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-pointer"
+            className="text-sm font-medium leading-none text-(--color-foreground) peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-pointer"
           >
             {label}
           </label>

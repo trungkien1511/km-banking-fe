@@ -1,6 +1,7 @@
 import { createBrowserRouter, Navigate } from "react-router-dom";
 import { LoginPage } from "@/features/auth/pages/LoginPage";
 import { DashboardPage } from "@/features/dashboard/pages/DashboardPage";
+import { TransferPage } from "@/features/transfer/pages/TransferPage";
 import { AppLayout } from "@/app/layouts/AppLayout";
 import { ProtectedRoute } from "./ProtectedRoute";
 import { GuestRoute } from "./GuestRoute";
@@ -19,7 +20,8 @@ export const router = createBrowserRouter([
       {
         element: <AppLayout />,
         children: [
-          { path: "/dashboard", element: <DashboardPage /> },
+            { path: "/dashboard", element: <DashboardPage /> },
+            { path: "/transfer", element: <TransferPage /> },
         ],
       },
     ],

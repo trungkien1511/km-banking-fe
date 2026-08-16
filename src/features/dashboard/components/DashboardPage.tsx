@@ -1,4 +1,3 @@
-import React from 'react';
 import { useDashboard } from '@/features/dashboard/hooks/useDashboard';
 import {
   useDashboardLoading,

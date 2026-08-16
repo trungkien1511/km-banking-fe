@@ -6,6 +6,21 @@ import { DashboardHeader } from "@/components/shared/DashboardHeader";
 export const AppLayout: React.FC = () => {
   return (
     <div className="flex min-h-dvh bg-background">
+      {/* Skip link — hidden until focused, allows keyboard users to jump past sidebar */}
+      <a
+        href="#main-content"
+        className="
+          sr-only focus:not-sr-only
+          fixed top-2 left-2 z-50
+          rounded-lg px-4 py-2
+          bg-(--color-accent) text-(--color-accent-fg)
+          text-sm font-semibold
+          focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-(--color-accent)
+        "
+      >
+        Skip to content
+      </a>
+
       <Sidebar />
 
       <div className="flex flex-1 flex-col min-w-0">
@@ -16,7 +31,7 @@ export const AppLayout: React.FC = () => {
           id="main-content"
           tabIndex={-1}
         >
-          <div className="mx-auto max-w-2xl">
+          <div className="mx-auto max-w-7xl">
             <Outlet />
           </div>
         </main>
