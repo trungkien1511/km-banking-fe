@@ -5,6 +5,7 @@ import {
   ArrowsLeftRight,
 } from "@phosphor-icons/react";
 import { cn } from "@/lib/utils";
+import { formatCurrency, formatDate } from "@/lib/format";
 import type { Transaction } from "@/features/dashboard/types/dashboard.types";
 
 interface TransactionCardProps {
@@ -24,30 +25,6 @@ const TYPE_LABEL: Record<Transaction["transactionType"], string> = {
   TRANSFER: "Transfer",
   FEE: "Fee",
 };
-
-// js-cache-function-results
-const currencyFormatterCache = new Map<string, Intl.NumberFormat>();
-const formatCurrency = (amount: number, currency: string = "VND"): string => {
-  let fmt = currencyFormatterCache.get(currency);
-  if (fmt === undefined) {
-    fmt = new Intl.NumberFormat("vi-VN", {
-      style: "currency",
-      currency,
-      maximumFractionDigits: 0,
-    });
-    currencyFormatterCache.set(currency, fmt);
-  }
-  return fmt.format(amount);
-};
-
-const dateFormatter = new Intl.DateTimeFormat("vi-VN", {
-  day: "2-digit",
-  month: "short",
-  hour: "2-digit",
-  minute: "2-digit",
-});
-const formatDate = (dateStr: string): string =>
-  dateFormatter.format(new Date(dateStr));
 
 export const TransactionCard = React.memo(function TransactionCard({
   transaction,

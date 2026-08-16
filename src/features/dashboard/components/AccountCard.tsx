@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { Wallet, TrendUp, CreditCard, CaretRight } from "@phosphor-icons/react";
 import { cn } from "@/lib/utils";
+import { formatCurrency } from "@/lib/format";
 import type { Account } from "@/features/dashboard/types/dashboard.types";
 
 interface AccountCardProps {
@@ -30,21 +31,6 @@ const ICON_BG: Record<Account["accountType"], string> = {
   CHECKING: "bg-info/15    text-info",
 };
 
-// js-cache-function-results
-const currencyFormatterCache = new Map<string, Intl.NumberFormat>();
-const formatCurrency = (amount: number, currency: string = "VND"): string => {
-  let fmt = currencyFormatterCache.get(currency);
-  if (fmt === undefined) {
-    fmt = new Intl.NumberFormat("vi-VN", {
-      style: "currency",
-      currency,
-      maximumFractionDigits: 0,
-    });
-    currencyFormatterCache.set(currency, fmt);
-  }
-  return fmt.format(amount);
-};
-
 export const AccountCard = React.memo(function AccountCard({
   account,
 }: AccountCardProps) {
@@ -53,7 +39,7 @@ export const AccountCard = React.memo(function AccountCard({
 
   return (
     <Link
-      to={`/dashboard/accounts/${account.id}`}
+      to={`/accounts/${account.id}`}
       className="
         group flex items-center gap-3.5
         rounded-xl border border-border

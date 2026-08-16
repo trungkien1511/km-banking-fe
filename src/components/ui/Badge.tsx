@@ -12,28 +12,29 @@ export interface BadgeProps extends React.HTMLAttributes<HTMLSpanElement> {
     | "primary";
 }
 
+// Static map hoisted to module scope (rerender-memo: no rebuild per render).
+const variants: Record<NonNullable<BadgeProps["variant"]>, string> = {
+  default: "bg-muted text-foreground",
+
+  // Primary — amber gold (use sparingly: premium tier, key status)
+  primary: "bg-primary text-primary-fg",
+
+  success:
+    "bg-success/15 text-success border border-success/20",
+  warning:
+    "bg-warning/15 text-warning border border-warning/20",
+  danger:
+    "bg-destructive/15 text-destructive border border-destructive/20",
+  info: "bg-info/15 text-info border border-info/20",
+
+  outline: "text-foreground border border-border",
+};
+
 export function Badge({
   className,
   variant = "default",
   ...props
 }: BadgeProps) {
-  const variants = {
-    default: "bg-muted text-foreground",
-
-    // Primary — amber gold (use sparingly: premium tier, key status)
-    primary: "bg-primary text-primary-fg",
-
-    success:
-      "bg-success/15 text-success border border-success/20",
-    warning:
-      "bg-warning/15 text-warning border border-warning/20",
-    danger:
-      "bg-destructive/15 text-destructive border border-destructive/20",
-    info: "bg-info/15 text-info border border-info/20",
-
-    outline: "text-foreground border border-border",
-  };
-
   return (
     <span
       className={cn(

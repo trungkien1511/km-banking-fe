@@ -4,7 +4,6 @@ import type {
   LoginRequest,
   LoginResponse,
   RefreshTokenRequest,
-  AuthUser,
 } from "@/features/auth/types/auth.types";
 
 export const authApi = {
@@ -16,12 +15,6 @@ export const authApi = {
     return response.data;
   },
 
-  me: async (): Promise<ApiResponse<AuthUser>> => {
-    const response =
-      await apiClient.get<ApiResponse<AuthUser>>("/api/v1/auth/me");
-    return response.data;
-  },
-
   refresh: async (
     data: RefreshTokenRequest,
   ): Promise<ApiResponse<LoginResponse>> => {
@@ -30,9 +23,5 @@ export const authApi = {
       data,
     );
     return response.data;
-  },
-
-  logout: async (data: RefreshTokenRequest): Promise<void> => {
-    await apiClient.post("/api/v1/auth/logout", data);
   },
 };

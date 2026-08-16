@@ -1,4 +1,4 @@
-import React, { useCallback, useId, useState } from "react";
+import React, { useCallback, useId, useMemo, useState } from "react";
 import { useForm, type Resolver } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -27,21 +27,26 @@ export const WithdrawalWizard: React.FC = () => {
   const withdrawMut = useWithdrawalMutation();
   const inputId = useId();
 
-  const withdrawSchema = z
-    .object({
-      amount: z.coerce.number().min(0.01, "Amount must be greater than zero"),
-      description: z
-        .string()
-        .max(255, "Description must be 255 characters or less")
-        .optional(),
-    })
-    .refine(
-      (data) => {
-        if (!selectedAccount) return true;
-        return data.amount <= selectedAccount.availableBalance;
-      },
-      { message: "Amount exceeds available balance", path: ["amount"] },
-    );
+  // Memoized — refine depends on selectedAccount (rerender-memo: no rebuild per render).
+  const withdrawSchema = useMemo(
+    () =>
+      z
+        .object({
+          amount: z.coerce.number().min(0.01, "Amount must be greater than zero"),
+          description: z
+            .string()
+            .max(255, "Description must be 255 characters or less")
+            .optional(),
+        })
+        .refine(
+          (data) => {
+            if (!selectedAccount) return true;
+            return data.amount <= selectedAccount.availableBalance;
+          },
+          { message: "Amount exceeds available balance", path: ["amount"] },
+        ),
+    [selectedAccount],
+  );
 
   type WithdrawForm = z.infer<typeof withdrawSchema>;
 

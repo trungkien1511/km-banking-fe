@@ -24,7 +24,7 @@ export const AppLogo: React.FC<AppLogoProps> = ({
         className={cn(
           'relative flex h-9 w-9 items-center justify-center rounded-xl font-bold transition-transform duration-150 hover:scale-[1.03]',
           isLight
-            ? 'bg-primary/10 text-primary border border-primary/20 shadow-[inset_0_1px_0_color-mix(in_srgb,varprimary_15%,transparent)]'
+            ? 'bg-primary/10 text-primary border border-primary/20 shadow-[inset_0_1px_0_color-mix(in_srgb,var(--color-primary)_15%,transparent)]'
             : 'bg-foreground text-background shadow-md shadow-foreground/10'
         )}
       >

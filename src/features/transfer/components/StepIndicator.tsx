@@ -55,7 +55,7 @@ export const StepIndicator: React.FC<StepIndicatorProps> = ({
                   isCompleted
                     ? "bg-primary border-primary text-primary-fg"
                     : isActive
-                    ? "bg-card border-primary text-primary shadow-[0_0_0_3px_color-mix(in_srgb,varprimary_20%,transparent)]"
+                    ? "bg-card border-primary text-primary shadow-[0_0_0_3px_color-mix(in_srgb,var(--color-primary)_20%,transparent)]"
                     : "bg-card border-border text-subtle-foreground"
                 )}
                 aria-current={isActive ? "step" : undefined}

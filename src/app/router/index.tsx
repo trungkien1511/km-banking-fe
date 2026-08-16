@@ -2,6 +2,7 @@ import { createBrowserRouter, Navigate } from "react-router-dom";
 import { AppLayout } from "@/app/layouts/AppLayout";
 import { ProtectedRoute } from "./ProtectedRoute";
 import { GuestRoute } from "./GuestRoute";
+import { PlaceholderPage } from "@/features/placeholder/pages/PlaceholderPage";
 
 export const router = createBrowserRouter([
   {
@@ -47,6 +48,12 @@ export const router = createBrowserRouter([
               return { Component: TransferPage };
             },
           },
+          { path: "/accounts", element: <PlaceholderPage /> },
+          { path: "/accounts/:accountId", element: <PlaceholderPage /> },
+          { path: "/transactions", element: <PlaceholderPage /> },
+          { path: "/settings", element: <PlaceholderPage /> },
+          { path: "/dashboard/history", element: <PlaceholderPage /> },
+          { path: "/dashboard/pending", element: <PlaceholderPage /> },
         ],
       },
     ],

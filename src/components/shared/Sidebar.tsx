@@ -87,7 +87,8 @@ const RailItem: React.FC<RailItemProps> = ({ item }) => {
   );
 };
 
-export const Sidebar: React.FC = () => {
+// Memoized — stateless shell component (rerender-memo: no re-render on route change).
+export const Sidebar = React.memo(function Sidebar() {
   const [logoutHovered, setLogoutHovered] = useState(false);
   const logout = useAuthStore((state) => state.logout);
   const navigate = useNavigate();
@@ -165,4 +166,4 @@ export const Sidebar: React.FC = () => {
       </div>
     </aside>
   );
-};
+});

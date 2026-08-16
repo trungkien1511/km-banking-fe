@@ -14,6 +14,12 @@ import { FormErrorMessage } from "@/components/ui/FormErrorMessage";
 import type { Account, Transaction } from "@/features/dashboard/types/dashboard.types";
 import type { ApiError } from "@/services/api-client";
 
+// Static schema hoisted to module scope (rerender-memo: no rebuild per render).
+const depositSchema = z.object({
+  amount: z.coerce.number().min(0.01, "Amount must be greater than zero"),
+  description: z.string().max(255, "Description must be 255 characters or less").optional(),
+});
+
 export const DepositWizard: React.FC = () => {
   const [step, setStep] = useState(1);
   const [selectedAccount, setSelectedAccount] = useState<Account | null>(null);
@@ -23,11 +29,6 @@ export const DepositWizard: React.FC = () => {
   const accounts = useAccounts();
   const depositMut = useDepositMutation();
   const inputId = useId();
-
-  const depositSchema = z.object({
-    amount: z.coerce.number().min(0.01, "Amount must be greater than zero"),
-    description: z.string().max(255, "Description must be 255 characters or less").optional(),
-  });
 
   type DepositForm = z.infer<typeof depositSchema>;
 

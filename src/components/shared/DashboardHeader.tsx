@@ -19,7 +19,8 @@ function getInitials(name: string): string {
     .toUpperCase();
 }
 
-export const DashboardHeader: React.FC = () => {
+// Memoized — stateless shell component (rerender-memo: no re-render on route change).
+export const DashboardHeader = React.memo(function DashboardHeader() {
   const user = useAuthStore((state) => state.user);
   const logout = useAuthStore((state) => state.logout);
   const navigate = useNavigate();
@@ -104,4 +105,4 @@ export const DashboardHeader: React.FC = () => {
       </div>
     </header>
   );
-};
+});

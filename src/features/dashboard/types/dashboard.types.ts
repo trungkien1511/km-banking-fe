@@ -19,15 +19,3 @@ export interface DashboardState {
   setError: (error: string | null) => void;
   reset: () => void;
 }
-
-export interface PaginatedTransactions {
-  transactions: Transaction[];
-  pagination: {
-    page: number;
-    limit: number;
-    total: number;
-    totalPages: number;
-    hasNextPage: boolean;
-    hasPrevPage: boolean;
-  };
-}

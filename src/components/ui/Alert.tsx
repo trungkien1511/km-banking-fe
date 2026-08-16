@@ -8,28 +8,32 @@ interface AlertProps extends React.HTMLAttributes<HTMLDivElement> {
   children: React.ReactNode;
 }
 
+// Static maps hoisted to module scope (rerender-memo: no rebuild per render).
+const variants: Record<NonNullable<AlertProps["variant"]>, string> = {
+  default:
+    "bg-surface-elevated border-border      text-foreground",
+  danger:
+    "bg-destructive/10  border-destructive/25  text-destructive",
+  success:
+    "bg-success/10 border-success/25          text-success",
+  warning:
+    "bg-warning/10 border-warning/25          text-warning",
+  info: "bg-info/10    border-info/25             text-info",
+};
+
+const icons: Record<
+  NonNullable<AlertProps["variant"]>,
+  React.ComponentType<{ className?: string; "aria-hidden"?: boolean | "true" | "false" }>
+> = {
+  default: Info,
+  danger: WarningCircle,
+  success: CheckCircle,
+  warning: Warning,
+  info: Info,
+};
+
 export const Alert = React.forwardRef<HTMLDivElement, AlertProps>(
   ({ className, variant = "default", title, children, ...props }, ref) => {
-    const variants = {
-      default:
-        "bg-surface-elevated border-border      text-foreground",
-      danger:
-        "bg-destructive/10  border-destructive/25  text-destructive",
-      success:
-        "bg-success/10 border-success/25          text-success",
-      warning:
-        "bg-warning/10 border-warning/25          text-warning",
-      info: "bg-info/10    border-info/25             text-info",
-    };
-
-    const icons = {
-      default: Info,
-      danger: WarningCircle,
-      success: CheckCircle,
-      warning: Warning,
-      info: Info,
-    };
-
     const Icon = icons[variant];
 
     return (

@@ -26,7 +26,7 @@ export const TotalBalanceCard = React.memo(() => {
         className="pointer-events-none absolute -top-16 -right-16 h-56 w-56 rounded-full"
         style={{
           background:
-            "radial-gradient(circle, color-mix(in srgb, varprimary 6%, transparent) 0%, transparent 70%)",
+            "radial-gradient(circle, color-mix(in srgb, var(--color-primary) 6%, transparent) 0%, transparent 70%)",
         }}
         aria-hidden="true"
       />

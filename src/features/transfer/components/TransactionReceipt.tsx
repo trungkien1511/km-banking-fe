@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { CheckCircle, CaretRight } from "@phosphor-icons/react";
 import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
+import { formatCurrency, formatDateTime } from "@/lib/format";
 import type { Transaction } from "@/features/dashboard/types/dashboard.types";
 
 interface TransactionReceiptProps {
@@ -38,7 +39,7 @@ export const TransactionReceipt: React.FC<TransactionReceiptProps> = ({
         <div className="flex justify-between border-b border-border/60 pb-3">
           <span className="text-sm text-muted-foreground">Amount</span>
           <span className="font-bold text-lg text-foreground font-mono tabular-nums" translate="no">
-            {transaction.amount.toLocaleString("vi-VN")} {transaction.currency}
+            {formatCurrency(transaction.amount, transaction.currency)}
           </span>
         </div>
 
@@ -68,7 +69,7 @@ export const TransactionReceipt: React.FC<TransactionReceiptProps> = ({
         <div className="flex justify-between text-sm">
           <span className="text-sm text-muted-foreground">Completed At</span>
           <span className="text-muted-foreground">
-            {new Date(transaction.createdAt).toLocaleString("vi-VN")}
+            {formatDateTime(transaction.createdAt)}
           </span>
         </div>
       </Card>

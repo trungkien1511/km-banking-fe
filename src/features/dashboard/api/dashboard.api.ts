@@ -37,21 +37,4 @@ export const dashboardApi = {
     const response = await apiClient.get("/api/v1/dashboard");
     return response.data.data;
   },
-
-  getAccountDetail: async (accountId: string): Promise<Account> => {
-    const response = await apiClient.get(`/api/v1/accounts/${accountId}`);
-    return response.data.data;
-  },
-
-  getTransactionHistory: async (
-    accountId: string,
-    page: number = 1,
-    limit: number = 20,
-  ) => {
-    const response = await apiClient.get(
-      `/api/v1/accounts/${accountId}/transactions`,
-      { params: { page, limit } },
-    );
-    return response.data.data;
-  },
 };

@@ -1,12 +1,3 @@
-/* ─── IBM Plex Sans + IBM Plex Mono ───────────────────────────────────────
-   @import rules MUST precede all other statements.
-   Google Fonts CDN — font-display: swap prevents FOIT.
-   Preconnect tags are in index.html for faster DNS resolution.
-   Production: swap for @fontsource/ibm-plex-sans + @fontsource/ibm-plex-mono
-   if self-hosting is required for offline/CSP environments.
-─────────────────────────────────────────────────────────────────────────── */
-@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600;700&display=swap');
-
 @import "tailwindcss";
 
 /* ─── Design Tokens ────────────────────────────────────────────────────────
@@ -17,46 +8,46 @@
 @theme {
   /* ── Primary — amber gold ───────────────────────────────────────────── */
   /* Single primary CTA. Used ONLY on primary buttons, key links, ring.    */
-  --color-primary:          #D4A017;
-  --color-primary-hover:    #B88A12;
-  --color-primary-fg:       #0A0F1E;   /* text on gold surfaces */
-  --color-on-primary:       var(--color-primary-fg);   /* spec alias */
+  --color-primary: #d4a017;
+  --color-primary-hover: #b88a12;
+  --color-primary-fg: #0a0f1e; /* text on gold surfaces */
+  --color-on-primary: var(--color-primary-fg); /* spec alias */
 
   /* ── Secondary — trust navy ─────────────────────────────────────────── */
-  --color-secondary:        #1E3A8A;
-  --color-secondary-hover:  #1E40AF;
-  --color-secondary-fg:     #E2E8F0;
-  --color-on-secondary:     var(--color-secondary-fg);   /* spec alias */
+  --color-secondary: #1e3a8a;
+  --color-secondary-hover: #1e40af;
+  --color-secondary-fg: #e2e8f0;
+  --color-on-secondary: var(--color-secondary-fg); /* spec alias */
 
   /* ── Accent — sky blue (charts, sparklines, info highlights) ────────── */
   /* Distinct from primary. Never used for CTA buttons.                    */
-  --color-accent:           #38BDF8;
-  --color-accent-hover:     #0EA5E9;
-  --color-accent-fg:        #0A0F1E;
-  --color-on-accent:        var(--color-accent-fg);   /* spec alias */
+  --color-accent: #38bdf8;
+  --color-accent-hover: #0ea5e9;
+  --color-accent-fg: #0a0f1e;
+  --color-on-accent: var(--color-accent-fg); /* spec alias */
 
   /* ── Surfaces (light defaults — overridden in :root dark block) ──────── */
-  --color-background:       #F8FAFC;
-  --color-card:             #FFFFFF;
-  --color-surface-elevated: #F1F5F9;   /* modals, drawers */
-  --color-muted:            #F1F5F9;
+  --color-background: #f8fafc;
+  --color-card: #ffffff;
+  --color-surface-elevated: #f1f5f9; /* modals, drawers */
+  --color-muted: #f1f5f9;
 
   /* ── Text (light defaults) ───────────────────────────────────────────── */
-  --color-foreground:           #020617;
-  --color-muted-foreground:     #475569;
-  --color-subtle-foreground:    #64748B;   /* placeholders, disabled */
+  --color-foreground: #020617;
+  --color-muted-foreground: #475569;
+  --color-subtle-foreground: #64748b; /* placeholders, disabled */
 
   /* ── Border + Ring ──────────────────────────────────────────────────── */
-  --color-border:           #E2E8F0;
-  --color-border-hover:     #2A4A6F;   /* card hover border (design spec) */
-  --color-ring:             #D4A017;   /* focus ring = amber gold always */
+  --color-border: #e2e8f0;
+  --color-border-hover: #2a4a6f; /* card hover border (design spec) */
+  --color-ring: #d4a017; /* focus ring = amber gold always */
 
   /* ── Status ──────────────────────────────────────────────────────────── */
-  --color-success:          #22C55E;
-  --color-warning:          #F59E0B;
-  --color-destructive:      #EF4444;
-  --color-info:             #38BDF8;
-  --color-on-status:        #0A0F1E;   /* text on status-colored bg */
+  --color-success: #22c55e;
+  --color-warning: #f59e0b;
+  --color-destructive: #ef4444;
+  --color-info: #38bdf8;
+  --color-on-status: #0a0f1e; /* text on status-colored bg */
 
   /* ── Typography ──────────────────────────────────────────────────────── */
   --font-sans: "IBM Plex Sans", ui-sans-serif, system-ui, sans-serif;
@@ -64,26 +55,28 @@
 
   /* ── Border radius ───────────────────────────────────────────────────── */
   /* Swiss / Financial Grade: tight geometry, no bubble-UI rounding.       */
-  --radius-sm:  0.375rem;   /* 6px  — badges, chips */
-  --radius-md:  0.5rem;     /* 8px  — buttons, inputs */
-  --radius-lg:  0.75rem;    /* 12px — cards */
-  --radius-xl:  1rem;       /* 16px — modals, drawers */
-  --radius-2xl: 1.25rem;    /* 20px — large panels */
+  --radius-sm: 0.375rem; /* 6px  — badges, chips */
+  --radius-md: 0.5rem; /* 8px  — buttons, inputs */
+  --radius-lg: 0.75rem; /* 12px — cards */
+  --radius-xl: 1rem; /* 16px — modals, drawers */
+  --radius-2xl: 1.25rem; /* 20px — large panels */
 
   /* ── Motion tokens ───────────────────────────────────────────────────── */
   --duration-instant: 80ms;
-  --duration-fast:    150ms;
-  --duration-normal:  250ms;
-  --duration-slow:    400ms;
-  --easing-standard:   cubic-bezier(0.2, 0, 0, 1);     /* arriving */
-  --easing-decelerate: cubic-bezier(0, 0, 0.2, 1);     /* entering screen */
-  --easing-accelerate: cubic-bezier(0.4, 0, 1, 1);     /* leaving screen */
+  --duration-fast: 150ms;
+  --duration-normal: 250ms;
+  --duration-slow: 400ms;
+  --easing-standard: cubic-bezier(0.2, 0, 0, 1); /* arriving */
+  --easing-decelerate: cubic-bezier(0, 0, 0.2, 1); /* entering screen */
+  --easing-accelerate: cubic-bezier(0.4, 0, 1, 1); /* leaving screen */
 
   /* ── Shadows (light defaults) ────────────────────────────────────────── */
-  --shadow-card:     0 1px 3px 0 rgb(0 0 0 / 0.08), 0 1px 2px -1px rgb(0 0 0 / 0.06);
-  --shadow-elevated: 0 4px 6px -1px rgb(0 0 0 / 0.07), 0 2px 4px -2px rgb(0 0 0 / 0.05);
-  --shadow-modal:    0 8px 32px 0 rgb(0 0 0 / 0.14);
-  --shadow-form:     0 20px 60px -12px rgb(0 0 0 / 0.08);
+  --shadow-card:
+    0 1px 3px 0 rgb(0 0 0 / 0.08), 0 1px 2px -1px rgb(0 0 0 / 0.06);
+  --shadow-elevated:
+    0 4px 6px -1px rgb(0 0 0 / 0.07), 0 2px 4px -2px rgb(0 0 0 / 0.05);
+  --shadow-modal: 0 8px 32px 0 rgb(0 0 0 / 0.14);
+  --shadow-form: 0 20px 60px -12px rgb(0 0 0 / 0.08);
 }
 
 /* ─── Dark Mode (default app shell) ───────────────────────────────────────
@@ -96,30 +89,32 @@
     color-scheme: dark;
 
     /* Surfaces */
-    --color-background:       #0A0F1E;   /* deep navy — security-first */
-    --color-card:             #0F172A;
-    --color-surface-elevated: #1E293B;   /* modals, drawers, dropdowns */
-    --color-muted:            #1E2D40;
+    --color-background: #0a0f1e; /* deep navy — security-first */
+    --color-card: #0f172a;
+    --color-surface-elevated: #1e293b; /* modals, drawers, dropdowns */
+    --color-muted: #1e2d40;
 
     /* Text */
-    --color-foreground:           #F1F5F9;
-    --color-muted-foreground:     #94A3B8;
-    --color-subtle-foreground:    #64748B;
+    --color-foreground: #f1f5f9;
+    --color-muted-foreground: #94a3b8;
+    --color-subtle-foreground: #64748b;
 
     /* Border */
-    --color-border:           #1E3A5F;
+    --color-border: #1e3a5f;
 
     /* Status — desaturated for dark bg readability */
-    --color-success:     #22C55E;
-    --color-warning:     #F59E0B;
-    --color-destructive: #EF4444;
-    --color-info:        #38BDF8;
+    --color-success: #22c55e;
+    --color-warning: #f59e0b;
+    --color-destructive: #ef4444;
+    --color-info: #38bdf8;
 
     /* Shadows — deep dark tints */
-    --shadow-card:     0 1px 0 0 rgba(255,255,255,0.04), 0 4px 12px -2px rgba(0,0,0,0.5);
-    --shadow-elevated: 0 1px 0 0 rgba(255,255,255,0.05), 0 8px 24px -4px rgba(0,0,0,0.6);
-    --shadow-modal:    0 8px 32px 0 rgba(0,0,0,0.7);
-    --shadow-form:     0 20px 60px -12px rgba(0,0,0,0.7);
+    --shadow-card:
+      0 1px 0 0 rgba(255, 255, 255, 0.04), 0 4px 12px -2px rgba(0, 0, 0, 0.5);
+    --shadow-elevated:
+      0 1px 0 0 rgba(255, 255, 255, 0.05), 0 8px 24px -4px rgba(0, 0, 0, 0.6);
+    --shadow-modal: 0 8px 32px 0 rgba(0, 0, 0, 0.7);
+    --shadow-form: 0 20px 60px -12px rgba(0, 0, 0, 0.7);
 
     /* Primary + Accent stay the same in dark (already defined in @theme) */
   }
@@ -130,23 +125,24 @@
    * ─────────────────────────────────────────────────────────────────────*/
   .light-context {
     color-scheme: light;
-    --color-background:       #F8FAFC;
-    --color-card:             #FFFFFF;
-    --color-surface-elevated: #F1F5F9;
-    --color-muted:            #F1F5F9;
-    --color-foreground:       #020617;
+    --color-background: #f8fafc;
+    --color-card: #ffffff;
+    --color-surface-elevated: #f1f5f9;
+    --color-muted: #f1f5f9;
+    --color-foreground: #020617;
     --color-muted-foreground: #475569;
-    --color-subtle-foreground:#64748B;
-    --color-border:           #E2E8F0;
+    --color-subtle-foreground: #64748b;
+    --color-border: #e2e8f0;
 
     /* In light context, primary CTA = navy (login submit) */
-    --color-primary:          #0A0F1E;
-    --color-primary-hover:    #111827;
-    --color-primary-fg:       #FFFFFF;
+    --color-primary: #0a0f1e;
+    --color-primary-hover: #111827;
+    --color-primary-fg: #ffffff;
 
-    --shadow-card:  0 1px 3px 0 rgb(0 0 0 / 0.08), 0 1px 2px -1px rgb(0 0 0 / 0.06);
+    --shadow-card:
+      0 1px 3px 0 rgb(0 0 0 / 0.08), 0 1px 2px -1px rgb(0 0 0 / 0.06);
     --shadow-modal: 0 8px 32px 0 rgb(0 0 0 / 0.12);
-    --shadow-form:  0 20px 60px -12px rgb(0 0 0 / 0.08);
+    --shadow-form: 0 20px 60px -12px rgb(0 0 0 / 0.08);
   }
 
   /* ── Base element styles ─────────────────────────────────────────────── */
@@ -164,7 +160,9 @@
   *:focus-visible {
     outline: 2px solid transparent;
     outline-offset: 2px;
-    box-shadow: 0 0 0 2px var(--color-background), 0 0 0 4px var(--color-ring);
+    box-shadow:
+      0 0 0 2px var(--color-background),
+      0 0 0 4px var(--color-ring);
   }
 
   /* Text selection — gold tint */
@@ -182,11 +180,11 @@
     background: transparent;
   }
   ::-webkit-scrollbar-thumb {
-    background-color: rgba(255, 255, 255, 0.10);
+    background-color: rgba(255, 255, 255, 0.1);
     border-radius: 9999px;
   }
   ::-webkit-scrollbar-thumb:hover {
-    background-color: rgba(255, 255, 255, 0.20);
+    background-color: rgba(255, 255, 255, 0.2);
   }
 
   /* Tabular numerals for all mono-font elements */
@@ -199,50 +197,87 @@
 
 /* Page / card entrance */
 @keyframes fade-slide-up {
-  from { opacity: 0; transform: translateY(12px); }
-  to   { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* Simple fade */
 @keyframes fade-in {
-  from { opacity: 0; }
-  to   { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 /* Sidebar / drawer slide */
 @keyframes slide-in-left {
-  from { opacity: 0; transform: translateX(-16px); }
-  to   { opacity: 1; transform: translateX(0); }
+  from {
+    opacity: 0;
+    transform: translateX(-16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }
 
 /* Toast slide from top-right */
 @keyframes slide-in-top-right {
-  from { opacity: 0; transform: translate(16px, -8px); }
-  to   { opacity: 1; transform: translate(0, 0); }
+  from {
+    opacity: 0;
+    transform: translate(16px, -8px);
+  }
+  to {
+    opacity: 1;
+    transform: translate(0, 0);
+  }
 }
 
 /* Inline form error */
 @keyframes error-in {
-  from { opacity: 0; transform: translateY(-4px); }
-  to   { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* Skeleton shimmer — horizontal sweep */
 @keyframes shimmer {
-  from { background-position: -200% center; }
-  to   { background-position:  200% center; }
+  from {
+    background-position: -200% center;
+  }
+  to {
+    background-position: 200% center;
+  }
 }
 
 /* Step completion pulse */
 @keyframes step-complete {
-  0%   { transform: scale(1); }
-  40%  { transform: scale(1.1); }
-  100% { transform: scale(1); }
+  0% {
+    transform: scale(1);
+  }
+  40% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
 }
 
 /* ─── Utility classes ──────────────────────────────────────────────────── */
 @layer utilities {
-
   /* ── Typography scale ── */
   /* Display (balance hero, key figures) */
   .text-display {
@@ -322,9 +357,10 @@
   .animate-shimmer {
     background: linear-gradient(
       90deg,
-      var(--color-muted)      25%,
-      color-mix(in srgb, var(--color-muted) 60%, var(--color-surface-elevated)) 50%,
-      var(--color-muted)      75%
+      var(--color-muted) 25%,
+      color-mix(in srgb, var(--color-muted) 60%, var(--color-surface-elevated))
+        50%,
+      var(--color-muted) 75%
     );
     background-size: 200% 100%;
     animation: shimmer 1.5s ease-in-out infinite;
@@ -344,7 +380,8 @@
   }
 
   .animate-slide-in-top-right {
-    animation: slide-in-top-right var(--duration-normal) var(--easing-decelerate) both;
+    animation: slide-in-top-right var(--duration-normal)
+      var(--easing-decelerate) both;
   }
 
   .animate-error-in {
@@ -356,11 +393,21 @@
   }
 
   /* ── Stagger delays ── */
-  .animation-delay-100 { animation-delay: 100ms; }
-  .animation-delay-200 { animation-delay: 200ms; }
-  .animation-delay-300 { animation-delay: 300ms; }
-  .animation-delay-400 { animation-delay: 400ms; }
-  .animation-delay-500 { animation-delay: 500ms; }
+  .animation-delay-100 {
+    animation-delay: 100ms;
+  }
+  .animation-delay-200 {
+    animation-delay: 200ms;
+  }
+  .animation-delay-300 {
+    animation-delay: 300ms;
+  }
+  .animation-delay-400 {
+    animation-delay: 400ms;
+  }
+  .animation-delay-500 {
+    animation-delay: 500ms;
+  }
 
   /* ── Reduced motion — mandatory override ── */
   /* All animations collapse. Balance counters show final value instantly. */
