@@ -23,19 +23,19 @@ export const StepIndicator: React.FC<StepIndicatorProps> = ({
       aria-label={`Step ${currentStep} of ${totalSteps}`}
     >
       {/* Text label — always visible for screen readers + small screens */}
-      <p className="text-xs font-medium text-(--color-muted-foreground) mb-4 text-center">
+      <p className="text-xs font-medium text-muted-foreground mb-4 text-center">
         Step {currentStep} of {totalSteps}
       </p>
 
       <div className="relative flex justify-between items-center isolate">
         <div
-          className="absolute top-1/2 left-0 right-0 h-px -translate-y-1/2 bg-(--color-border) -z-10"
+          className="absolute top-1/2 left-0 right-0 h-px -translate-y-1/2 bg-border -z-10"
           aria-hidden="true"
         />
 
         {/* Active progress — width transition matches design system (350ms) */}
         <div
-          className="absolute top-1/2 left-0 h-px -translate-y-1/2 bg-(--color-primary) -z-10 transition-[width] duration-[350ms] ease-out"
+          className="absolute top-1/2 left-0 h-px -translate-y-1/2 bg-primary -z-10 transition-[width] duration-[350ms] ease-out"
           style={{ width: progressWidth }}
           aria-hidden="true"
         />
@@ -53,10 +53,10 @@ export const StepIndicator: React.FC<StepIndicatorProps> = ({
                   "text-sm font-semibold border transition-all duration-200",
                   isActive && "animate-step-complete motion-reduce:animate-none",
                   isCompleted
-                    ? "bg-(--color-primary) border-(--color-primary) text-(--color-primary-fg)"
+                    ? "bg-primary border-primary text-primary-fg"
                     : isActive
-                    ? "bg-(--color-card) border-(--color-primary) text-(--color-primary) shadow-[0_0_0_3px_color-mix(in_srgb,var(--color-primary)_20%,transparent)]"
-                    : "bg-(--color-card) border-(--color-border) text-(--color-subtle-foreground)"
+                    ? "bg-card border-primary text-primary shadow-[0_0_0_3px_color-mix(in_srgb,varprimary_20%,transparent)]"
+                    : "bg-card border-border text-subtle-foreground"
                 )}
                 aria-current={isActive ? "step" : undefined}
               >
@@ -67,10 +67,10 @@ export const StepIndicator: React.FC<StepIndicatorProps> = ({
                 className={cn(
                   "text-xs font-medium hidden sm:inline whitespace-nowrap",
                   isActive
-                    ? "text-(--color-primary)"
+                    ? "text-primary"
                     : isCompleted
-                    ? "text-(--color-foreground)"
-                    : "text-(--color-subtle-foreground)"
+                    ? "text-foreground"
+                    : "text-subtle-foreground"
                 )}
               >
                 {labels[idx]}

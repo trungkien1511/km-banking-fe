@@ -12,10 +12,10 @@ interface TransactionCardProps {
 }
 
 const STATUS_DOT: Record<Transaction["status"], string> = {
-  PENDING: "bg-(--color-warning)",
-  COMPLETED: "bg-(--color-success)",
-  FAILED: "bg-(--color-destructive)",
-  CANCELLED: "bg-(--color-muted-foreground)/40",
+  PENDING: "bg-warning",
+  COMPLETED: "bg-success",
+  FAILED: "bg-destructive",
+  CANCELLED: "bg-muted-foreground/40",
 };
 
 const TYPE_LABEL: Record<Transaction["transactionType"], string> = {
@@ -61,19 +61,19 @@ export const TransactionCard = React.memo(function TransactionCard({
       className="
         flex items-center gap-3
         px-4 py-3
-        border-b border-(--color-border)/60 last:border-b-0
+        border-b border-border/60 last:border-b-0
         transition-colors duration-100
-        hover:bg-(--color-muted)/30
+        hover:bg-muted/30
       "
     >
       <div
         className={cn(
           "flex h-8 w-8 shrink-0 items-center justify-center rounded-full",
           isNeutral
-            ? "bg-(--color-muted)/60 text-(--color-muted-foreground)"
+            ? "bg-muted/60 text-muted-foreground"
             : isIncoming
-              ? "bg-(--color-success)/10 text-(--color-success)"
-              : "bg-(--color-destructive)/10 text-(--color-destructive)",
+              ? "bg-success/10 text-success"
+              : "bg-destructive/10 text-destructive",
         )}
         aria-hidden="true"
       >
@@ -87,7 +87,7 @@ export const TransactionCard = React.memo(function TransactionCard({
       </div>
 
       <div className="min-w-0 flex-1">
-        <p className="truncate text-sm font-medium text-(--color-foreground)">
+        <p className="truncate text-sm font-medium text-foreground">
           {transaction.description !== null
             ? transaction.description
             : typeLabel}
@@ -100,7 +100,7 @@ export const TransactionCard = React.memo(function TransactionCard({
             )}
             aria-hidden="true"
           />
-          <p className="text-[11px] text-(--color-muted-foreground)">
+          <p className="text-[11px] text-muted-foreground">
             {formatDate(transaction.createdAt)}
           </p>
         </div>
@@ -110,10 +110,10 @@ export const TransactionCard = React.memo(function TransactionCard({
         className={cn(
           "shrink-0 font-mono text-sm font-semibold tabular-nums",
           isNeutral
-            ? "text-(--color-foreground)"
+            ? "text-foreground"
             : isIncoming
-              ? "text-(--color-success)"
-              : "text-(--color-destructive)",
+              ? "text-success"
+              : "text-destructive",
         )}
         translate="no"
       >

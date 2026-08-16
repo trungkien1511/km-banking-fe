@@ -23,7 +23,7 @@ export const LoginPage = () => {
         className="
           hidden lg:flex flex-col justify-between
           relative overflow-hidden
-          bg-(--color-background) text-(--color-foreground)
+          bg-background text-foreground
           px-14 py-12
         "
         aria-hidden="true"
@@ -33,7 +33,7 @@ export const LoginPage = () => {
           style={{ backgroundImage: "url('/login-banner.jpg')" }}
           role="presentation"
         />
-        <div className="absolute inset-0 bg-linear-to-b from-(--color-background)/60 via-(--color-background)/40 to-(--color-background)/80" />
+        <div className="absolute inset-0 bg-linear-to-b from-background/60 via-background/40 to-background/80" />
         <div
           className="absolute inset-0 opacity-[0.03]"
           style={{
@@ -47,37 +47,37 @@ export const LoginPage = () => {
           <AppLogo variant="light" />
 
           <div className="animate-fade-slide-up animation-delay-100">
-            <p className="text-xs font-mono tracking-[0.18em] uppercase text-(--color-primary) mb-4 select-none">
+            <p className="text-xs font-mono tracking-[0.18em] uppercase text-primary mb-4 select-none">
               Secure Digital Banking
             </p>
-            <p className="text-4xl xl:text-5xl font-bold tracking-tight leading-[1.1] text-(--color-foreground) max-w-sm text-balance">
+            <p className="text-4xl xl:text-5xl font-bold tracking-tight leading-[1.1] text-foreground max-w-sm text-balance">
               Modern banking, built for{" "}
-              <span className="text-(--color-primary)">clarity.</span>
+              <span className="text-primary">clarity.</span>
             </p>
-            <p className="mt-5 text-[15px] text-(--color-foreground)/50 leading-relaxed max-w-xs">
+            <p className="mt-5 text-[15px] text-foreground/50 leading-relaxed max-w-xs">
               Manage your accounts, track every transaction, and move money with
               confidence.
             </p>
           </div>
 
           <div className="animate-fade-slide-up animation-delay-300 space-y-3">
-            <p className="text-[11px] font-mono tracking-widest uppercase text-(--color-foreground)/30 mb-4 select-none">
+            <p className="text-[11px] font-mono tracking-widest uppercase text-foreground/30 mb-4 select-none">
               Why customers trust us
             </p>
             {TRUST_BADGES.map(({ icon: Icon, label, sub }) => (
               <div key={label} className="flex items-center gap-3 group">
-                <div className="shrink-0 w-9 h-9 rounded-lg bg-(--color-foreground)/5 border border-(--color-foreground)/10 flex items-center justify-center transition-colors group-hover:bg-(--color-foreground)/10">
+                <div className="shrink-0 w-9 h-9 rounded-lg bg-foreground/5 border border-foreground/10 flex items-center justify-center transition-colors group-hover:bg-foreground/10">
                   <Icon
                     size={16}
-                    className="text-(--color-primary)"
+                    className="text-primary"
                     aria-hidden="true"
                   />
                 </div>
                 <div>
-                  <p className="text-sm font-medium text-(--color-foreground)/80 leading-none">
+                  <p className="text-sm font-medium text-foreground/80 leading-none">
                     {label}
                   </p>
-                  <p className="text-xs text-(--color-foreground)/35 mt-0.5">{sub}</p>
+                  <p className="text-xs text-foreground/35 mt-0.5">{sub}</p>
                 </div>
               </div>
             ))}

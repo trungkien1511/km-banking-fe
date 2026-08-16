@@ -119,7 +119,7 @@ export const TransferWizard: React.FC = () => {
 
       {step === 1 && (
         <div className="animate-fade-slide-up">
-          <h3 className="text-lg font-semibold mb-3 text-(--color-foreground)">
+          <h3 className="text-lg font-semibold mb-3 text-foreground">
             Choose Source Account
           </h3>
           <AccountSelector
@@ -135,19 +135,19 @@ export const TransferWizard: React.FC = () => {
           onSubmit={handleSubmit(() => { setServerError(null); setStep(3); })}
           className="space-y-4 animate-fade-slide-up"
         >
-          <Card className="p-4 bg-(--color-muted)/30 border-(--color-border)/60 flex items-center justify-between">
+          <Card className="p-4 bg-muted/30 border-border/60 flex items-center justify-between">
             <div>
-              <span className="text-xs text-(--color-subtle-foreground) uppercase font-semibold tracking-wide">
+              <span className="text-xs text-subtle-foreground uppercase font-semibold tracking-wide">
                 Source Account
               </span>
-              <div className="font-mono text-sm text-(--color-foreground) mt-0.5">
+              <div className="font-mono text-sm text-foreground mt-0.5">
                 •••• {selectedAccount.accountNumber.slice(-4)}
               </div>
             </div>
             <button
               type="button"
               onClick={() => setStep(1)}
-              className="text-xs font-semibold text-(--color-primary) hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-(--color-ring) rounded"
+              className="text-xs font-semibold text-primary hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded"
             >
               Change
             </button>
@@ -156,7 +156,7 @@ export const TransferWizard: React.FC = () => {
           <div className="space-y-1">
             <label
               htmlFor={`${inputId}-dest`}
-              className="text-sm font-medium text-(--color-muted-foreground)"
+              className="text-sm font-medium text-muted-foreground"
             >
               Recipient Account Number
             </label>
@@ -180,11 +180,11 @@ export const TransferWizard: React.FC = () => {
             <div className="flex justify-between items-baseline">
               <label
                 htmlFor={`${inputId}-amount`}
-                className="text-sm font-medium text-(--color-muted-foreground)"
+                className="text-sm font-medium text-muted-foreground"
               >
                 Amount (VND)
               </label>
-              <span className="text-xs text-(--color-subtle-foreground)">
+              <span className="text-xs text-subtle-foreground">
                 Max: {selectedAccount.availableBalance.toLocaleString("vi-VN")} ₫
               </span>
             </div>
@@ -210,9 +210,9 @@ export const TransferWizard: React.FC = () => {
           <div className="space-y-1">
             <label
               htmlFor={`${inputId}-desc`}
-              className="text-sm font-medium text-(--color-muted-foreground)"
+              className="text-sm font-medium text-muted-foreground"
             >
-              Description <span className="text-(--color-subtle-foreground) font-normal">(Optional)</span>
+              Description <span className="text-subtle-foreground font-normal">(Optional)</span>
             </label>
             <Input
               id={`${inputId}-desc`}
@@ -248,37 +248,37 @@ export const TransferWizard: React.FC = () => {
 
       {step === 3 && selectedAccount && (
         <div className="space-y-6 animate-fade-slide-up">
-          <h3 className="text-lg font-semibold text-(--color-foreground)">
+          <h3 className="text-lg font-semibold text-foreground">
             Review Details
           </h3>
 
           <Card className="p-5 space-y-4">
             <div className="flex justify-between text-sm">
-              <span className="text-(--color-muted-foreground)">From</span>
-              <span className="font-semibold text-(--color-foreground)">
+              <span className="text-muted-foreground">From</span>
+              <span className="font-semibold text-foreground">
                 {selectedAccount.accountType === "PRIMARY" ? "Primary Account" : "Savings"}
                 {" "}(•••• {selectedAccount.accountNumber.slice(-4)})
               </span>
             </div>
 
             <div className="flex justify-between text-sm">
-              <span className="text-(--color-muted-foreground)">To</span>
-              <span className="font-mono text-(--color-foreground)">
+              <span className="text-muted-foreground">To</span>
+              <span className="font-mono text-foreground">
                 {getValues("destinationAccountNumber")}
               </span>
             </div>
 
-            <div className="flex justify-between text-sm border-t border-(--color-border) pt-4">
-              <span className="text-(--color-muted-foreground)">Amount</span>
-              <span className="font-mono font-bold text-lg text-(--color-primary) tabular-nums">
+            <div className="flex justify-between text-sm border-t border-border pt-4">
+              <span className="text-muted-foreground">Amount</span>
+              <span className="font-mono font-bold text-lg text-primary tabular-nums">
                 {Number(getValues("amount")).toLocaleString("vi-VN")} ₫
               </span>
             </div>
 
             {getValues("description") && (
               <div className="flex justify-between text-sm">
-                <span className="text-(--color-muted-foreground)">Note</span>
-                <span className="text-(--color-muted-foreground) max-w-[60%] text-right">
+                <span className="text-muted-foreground">Note</span>
+                <span className="text-muted-foreground max-w-[60%] text-right">
                   {getValues("description")}
                 </span>
               </div>

@@ -24,8 +24,8 @@ export const AppLogo: React.FC<AppLogoProps> = ({
         className={cn(
           'relative flex h-9 w-9 items-center justify-center rounded-xl font-bold transition-transform duration-150 hover:scale-[1.03]',
           isLight
-            ? 'bg-(--color-primary)/10 text-(--color-primary) border border-(--color-primary)/20 shadow-[inset_0_1px_0_color-mix(in_srgb,var(--color-primary)_15%,transparent)]'
-            : 'bg-(--color-foreground) text-(--color-background) shadow-md shadow-(--color-foreground)/10'
+            ? 'bg-primary/10 text-primary border border-primary/20 shadow-[inset_0_1px_0_color-mix(in_srgb,varprimary_15%,transparent)]'
+            : 'bg-foreground text-background shadow-md shadow-foreground/10'
         )}
       >
         <svg
@@ -58,7 +58,7 @@ export const AppLogo: React.FC<AppLogoProps> = ({
             className={cn(
               'text-lg font-bold tracking-tight leading-none',
               // foreground adapts: light on dark shell, dark on light-context
-              'text-(--color-foreground)'
+              'text-foreground'
             )}
           >
             {APP_NAME}
@@ -66,7 +66,7 @@ export const AppLogo: React.FC<AppLogoProps> = ({
           <span
             className={cn(
               'text-[10px] tracking-widest uppercase font-mono mt-0.5',
-              'text-(--color-muted-foreground)'
+              'text-muted-foreground'
             )}
           >
             Digital Banking

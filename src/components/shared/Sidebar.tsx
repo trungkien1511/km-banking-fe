@@ -36,9 +36,9 @@ const Tooltip: React.FC<TooltipProps> = ({ label, visible }) => (
     className={cn(
       "pointer-events-none absolute left-[calc(100%+12px)] top-1/2 -translate-y-1/2 z-50",
       "whitespace-nowrap rounded-md px-2.5 py-1.5",
-      "bg-(--color-surface-elevated) border border-(--color-border)",
-      "text-xs font-medium text-(--color-foreground)",
-      "shadow-(--shadow-elevated)",
+      "bg-surface-elevated border border-border",
+      "text-xs font-medium text-foreground",
+      "shadow-elevated",
       "transition-all duration-150",
       visible ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-1",
     )}
@@ -66,10 +66,10 @@ const RailItem: React.FC<RailItemProps> = ({ item }) => {
         cn(
           "relative flex h-11 w-11 items-center justify-center rounded-xl",
           "transition-all duration-150",
-          "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-(--color-primary)/50",
+          "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50",
           isActive
-            ? "bg-(--color-primary)/10 text-(--color-primary)"
-            : "text-(--color-muted-foreground) hover:bg-(--color-muted)/50 hover:text-(--color-foreground)",
+            ? "bg-primary/10 text-primary"
+            : "text-muted-foreground hover:bg-muted/50 hover:text-foreground",
         )
       }
     >
@@ -103,15 +103,15 @@ export const Sidebar: React.FC = () => {
         hidden lg:flex flex-col items-center
         w-16 shrink-0
         h-screen sticky top-0
-        bg-(--color-card)
-        border-r border-(--color-border)
+        bg-card
+        border-r border-border
         py-4
       "
       aria-label="Main navigation"
     >
-      <div className="mb-6 flex h-9 w-9 items-center justify-center rounded-xl bg-(--color-primary)/10">
+      <div className="mb-6 flex h-9 w-9 items-center justify-center rounded-xl bg-primary/10">
         <svg
-          className="h-5 w-5 text-(--color-primary)"
+          className="h-5 w-5 text-primary"
           viewBox="0 0 24 24"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
@@ -152,10 +152,10 @@ export const Sidebar: React.FC = () => {
           aria-label="Sign out"
           className="
             flex h-11 w-11 items-center justify-center rounded-xl
-            text-(--color-muted-foreground)
-            hover:bg-(--color-destructive)/10 hover:text-(--color-destructive)
+            text-muted-foreground
+            hover:bg-destructive/10 hover:text-destructive
             transition-all duration-150
-            focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-(--color-destructive)/40
+            focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-destructive/40
             active:scale-[0.95]
           "
         >

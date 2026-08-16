@@ -18,16 +18,16 @@ const STATUS_BADGE: Record<
   Account["status"],
   { text: string; className: string }
 > = {
-  ACTIVE: { text: "Active", className: "text-(--color-success) bg-(--color-success)/10" },
-  INACTIVE: { text: "Inactive", className: "text-(--color-muted-foreground)  bg-(--color-muted)/60" },
-  FROZEN: { text: "Frozen", className: "text-(--color-warning)  bg-(--color-warning)/10" },
-  CLOSED: { text: "Closed", className: "text-(--color-destructive)    bg-(--color-destructive)/10" },
+  ACTIVE: { text: "Active", className: "text-success bg-success/10" },
+  INACTIVE: { text: "Inactive", className: "text-muted-foreground  bg-muted/60" },
+  FROZEN: { text: "Frozen", className: "text-warning  bg-warning/10" },
+  CLOSED: { text: "Closed", className: "text-destructive    bg-destructive/10" },
 };
 
 const ICON_BG: Record<Account["accountType"], string> = {
-  PRIMARY: "bg-(--color-accent)/10  text-(--color-accent)",
-  SAVINGS: "bg-(--color-primary)/15 text-(--color-primary)",
-  CHECKING: "bg-(--color-info)/15    text-(--color-info)",
+  PRIMARY: "bg-accent/10  text-accent",
+  SAVINGS: "bg-primary/15 text-primary",
+  CHECKING: "bg-info/15    text-info",
 };
 
 // js-cache-function-results
@@ -56,13 +56,13 @@ export const AccountCard = React.memo(function AccountCard({
       to={`/dashboard/accounts/${account.id}`}
       className="
         group flex items-center gap-3.5
-        rounded-xl border border-(--color-border)
+        rounded-xl border border-border
         bg-card
         px-4 py-3.5
         transition-[background-color,border-color,box-shadow,transform,opacity] duration-normal ease-out
-        hover:border-(--color-border-hover) hover:-translate-y-0.5
+        hover:border-border-hover hover:-translate-y-0.5
         focus-visible:outline-none focus-visible:ring-2
-        focus-visible:ring-(--color-ring)/40
+        focus-visible:ring-ring/40
         active:scale-[0.995]
         touch-action-manipulation
       "

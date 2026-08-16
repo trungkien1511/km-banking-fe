@@ -95,7 +95,7 @@ export const LoginForm = () => {
           </label>
           <button
             type="button"
-            className="text-xs font-medium text-(--color-primary) hover:text-primary-hover transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-(--color-ring) rounded"
+            className="text-xs font-medium text-primary hover:text-primary-hover transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded"
           >
             Forgot password?
           </button>
@@ -133,11 +133,11 @@ export const LoginForm = () => {
         className={cn(
           "relative w-full h-11 rounded-lg font-semibold text-sm",
           "flex items-center justify-center gap-2",
-          "bg-(--color-primary) text-(--color-primary-fg)",
+          "bg-primary text-primary-fg",
           "hover:bg-primary-hover",
           "transition-[transform,box-shadow,background-color,opacity] duration-150",
           "active:scale-[0.98]",
-          "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-(--color-ring) focus-visible:ring-offset-2 focus-visible:ring-offset-background",
+          "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
           "disabled:pointer-events-none disabled:opacity-60",
           "shadow-sm hover:shadow-md",
         )}

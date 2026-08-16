@@ -11,18 +11,18 @@ export const AccountsSection = React.memo(function AccountsSection() {
       <div className="mb-3 flex items-center justify-between">
         <h2
           id="accounts-heading"
-          className="text-xs font-semibold uppercase tracking-widest text-(--color-muted-foreground)"
+          className="text-xs font-semibold uppercase tracking-widest text-muted-foreground"
         >
           Accounts
         </h2>
         <Link
           to="/accounts"
           className="
-            text-xs font-medium text-(--color-muted-foreground)
-            hover:text-(--color-foreground)
+            text-xs font-medium text-muted-foreground
+            hover:text-foreground
             transition-colors duration-150
             focus-visible:outline-none focus-visible:ring-2
-            focus-visible:ring-(--color-ring)/40 rounded
+            focus-visible:ring-ring/40 rounded
           "
         >
           View all
@@ -30,8 +30,8 @@ export const AccountsSection = React.memo(function AccountsSection() {
       </div>
 
       {accounts.length === 0 ? (
-        <div className="rounded-xl border border-dashed border-(--color-border) px-4 py-10 text-center">
-          <p className="text-sm text-(--color-muted-foreground)">No accounts yet.</p>
+        <div className="rounded-xl border border-dashed border-border px-4 py-10 text-center">
+          <p className="text-sm text-muted-foreground">No accounts yet.</p>
         </div>
       ) : (
         <div className="space-y-2">

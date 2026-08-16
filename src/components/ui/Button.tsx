@@ -17,8 +17,8 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       "transition-[background-color,border-color,color,box-shadow,transform,opacity]",
       "duration-150",
       "focus-visible:outline-none",
-      "focus-visible:ring-2 focus-visible:ring-(--color-ring) focus-visible:ring-offset-2",
-      "focus-visible:ring-offset-(--color-background)",
+      "focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
+      "focus-visible:ring-offset-background",
       "disabled:pointer-events-none disabled:opacity-50",
       "active:scale-[0.97]",
       "[touch-action:manipulation]",
@@ -27,31 +27,31 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     const variants = {
       // Primary — single primary CTA per screen
       primary: [
-        "bg-(--color-primary) text-(--color-primary-fg)",
-        "hover:bg-(--color-primary-hover)",
+        "bg-primary text-primary-fg",
+        "hover:bg-primary-hover",
         "shadow-sm",
       ].join(' '),
 
       secondary: [
-        "bg-(--color-muted) text-(--color-foreground)",
-        "border border-(--color-border)",
-        "hover:bg-(--color-surface-elevated)",
+        "bg-muted text-foreground",
+        "border border-border",
+        "hover:bg-surface-elevated",
       ].join(' '),
 
       outline: [
-        "border border-(--color-border) bg-transparent",
-        "text-(--color-foreground)",
-        "hover:bg-(--color-muted)",
+        "border border-border bg-transparent",
+        "text-foreground",
+        "hover:bg-muted",
       ].join(' '),
 
       ghost: [
-        "bg-transparent text-(--color-muted-foreground)",
-        "hover:bg-(--color-muted) hover:text-(--color-foreground)",
+        "bg-transparent text-muted-foreground",
+        "hover:bg-muted hover:text-foreground",
       ].join(' '),
 
       danger: [
-        "bg-(--color-destructive) text-white",
-        "hover:bg-(--color-destructive)/90",
+        "bg-destructive text-white",
+        "hover:bg-destructive/90",
         "shadow-sm",
       ].join(' '),
     };

@@ -23,7 +23,7 @@ export const TransferPage: React.FC = () => {
       </div>
 
       <div
-        className="border-b border-(--color-border)/60 flex gap-6"
+        className="border-b border-border/60 flex gap-6"
         role="tablist"
         aria-label="Transaction Operations"
       >
@@ -45,10 +45,10 @@ export const TransferPage: React.FC = () => {
               aria-controls={`panel-${tab}`}
               onClick={() => setActiveTab(tab)}
               className={cn(
-                "py-3 text-sm font-semibold border-b-2 transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-(--color-primary)/50",
+                "py-3 text-sm font-semibold border-b-2 transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50",
                 isActive
-                  ? "border-(--color-primary) text-(--color-primary)"
-                  : "border-transparent text-muted-foreground hover:text-(--color-foreground)",
+                  ? "border-primary text-primary"
+                  : "border-transparent text-muted-foreground hover:text-foreground",
               )}
             >
               {label}

@@ -12,14 +12,14 @@ export const Alert = React.forwardRef<HTMLDivElement, AlertProps>(
   ({ className, variant = "default", title, children, ...props }, ref) => {
     const variants = {
       default:
-        "bg-(--color-surface-elevated) border-(--color-border)      text-(--color-foreground)",
+        "bg-surface-elevated border-border      text-foreground",
       danger:
-        "bg-(--color-destructive)/10  border-(--color-destructive)/25  text-(--color-destructive)",
+        "bg-destructive/10  border-destructive/25  text-destructive",
       success:
-        "bg-(--color-success)/10 border-(--color-success)/25          text-(--color-success)",
+        "bg-success/10 border-success/25          text-success",
       warning:
-        "bg-(--color-warning)/10 border-(--color-warning)/25          text-(--color-warning)",
-      info: "bg-(--color-info)/10    border-(--color-info)/25             text-(--color-info)",
+        "bg-warning/10 border-warning/25          text-warning",
+      info: "bg-info/10    border-info/25             text-info",
     };
 
     const icons = {

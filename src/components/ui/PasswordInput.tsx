@@ -23,12 +23,12 @@ export const PasswordInput = React.forwardRef<HTMLInputElement, InputProps>(
             "absolute right-3 top-1/2 -translate-y-1/2",
             "p-1 rounded-md",
             // Semantic tokens — correct on both white (light-context) and dark shell
-            "text-(--color-subtle-foreground)",
-            "hover:text-(--color-foreground)",
-            "hover:bg-(--color-surface-elevated)",
+            "text-subtle-foreground",
+            "hover:text-foreground",
+            "hover:bg-surface-elevated",
             "transition-colors duration-150",
             "focus-visible:outline-none focus-visible:ring-2",
-            "focus-visible:ring-(--color-ring)/30",
+            "focus-visible:ring-ring/30",
           )}
           tabIndex={-1}
           aria-label={showPassword ? "Hide password" : "Show password"}

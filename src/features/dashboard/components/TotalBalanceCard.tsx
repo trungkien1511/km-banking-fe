@@ -18,21 +18,21 @@ export const TotalBalanceCard = React.memo(() => {
     <div
       className="
         relative overflow-hidden rounded-2xl
-        bg-(--color-card) border border-(--color-border)
-        px-5 py-5 shadow-(--shadow-card)
+        bg-card border border-border
+        px-5 py-5 shadow-card
       "
     >
       <div
         className="pointer-events-none absolute -top-16 -right-16 h-56 w-56 rounded-full"
         style={{
           background:
-            "radial-gradient(circle, color-mix(in srgb, var(--color-primary) 6%, transparent) 0%, transparent 70%)",
+            "radial-gradient(circle, color-mix(in srgb, varprimary 6%, transparent) 0%, transparent 70%)",
         }}
         aria-hidden="true"
       />
 
       <div className="flex items-center justify-between">
-        <p className="text-xs font-medium text-(--color-muted-foreground) uppercase tracking-widest">
+        <p className="text-xs font-medium text-muted-foreground uppercase tracking-widest">
           Total balance
         </p>
         <button
@@ -41,10 +41,10 @@ export const TotalBalanceCard = React.memo(() => {
           aria-label={hidden ? "Show balance" : "Hide balance"}
           className="
             flex h-7 w-7 items-center justify-center rounded-lg
-            text-(--color-muted-foreground)
-            hover:bg-(--color-muted)/50 hover:text-(--color-foreground)
+            text-muted-foreground
+            hover:bg-muted/50 hover:text-foreground
             transition-colors duration-150
-            focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-(--color-ring)/50
+            focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50
             touch-manipulation
           "
         >
@@ -66,14 +66,14 @@ export const TotalBalanceCard = React.memo(() => {
             {Array.from({ length: 8 }).map((_, i) => (
               <div
                 key={i}
-                className="h-3 w-3 rounded-full bg-(--color-muted-foreground)/40"
+                className="h-3 w-3 rounded-full bg-muted-foreground/40"
                 aria-hidden="true"
               />
             ))}
           </div>
         ) : (
           <p
-            className="font-mono text-3xl font-bold tracking-tight text-(--color-foreground) leading-none"
+            className="font-mono text-3xl font-bold tracking-tight text-foreground leading-none"
             aria-label={`Total balance: ${formatted}`}
           >
             {formatted}
@@ -86,11 +86,11 @@ export const TotalBalanceCard = React.memo(() => {
           to="/transfer"
           className="
             inline-flex items-center gap-2 rounded-xl
-            bg-(--color-primary) px-4 py-2.5
-            text-xs font-semibold text-(--color-primary-fg)
+            bg-primary px-4 py-2.5
+            text-xs font-semibold text-primary-fg
             transition-[background-color,box-shadow,transform,opacity] duration-150
-            hover:bg-(--color-primary-hover)
-            focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-(--color-primary)/50
+            hover:bg-primary-hover
+            focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50
             active:scale-[0.97]
             touch-manipulation
           "
@@ -107,11 +107,11 @@ export const TotalBalanceCard = React.memo(() => {
           to="/accounts"
           className="
             inline-flex items-center gap-2 rounded-xl
-            bg-(--color-muted) border border-(--color-border) px-4 py-2.5
-            text-xs font-semibold text-(--color-muted-foreground)
+            bg-muted border border-border px-4 py-2.5
+            text-xs font-semibold text-muted-foreground
             transition-[background-color,color,border-color,transform,opacity] duration-150
-            hover:bg-(--color-surface-elevated) hover:text-(--color-foreground)
-            focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-(--color-ring)/50
+            hover:bg-surface-elevated hover:text-foreground
+            focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50
             active:scale-[0.97]
             touch-manipulation
           "

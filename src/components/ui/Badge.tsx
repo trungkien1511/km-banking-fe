@@ -18,20 +18,20 @@ export function Badge({
   ...props
 }: BadgeProps) {
   const variants = {
-    default: "bg-(--color-muted) text-(--color-foreground)",
+    default: "bg-muted text-foreground",
 
     // Primary — amber gold (use sparingly: premium tier, key status)
-    primary: "bg-(--color-primary) text-(--color-primary-fg)",
+    primary: "bg-primary text-primary-fg",
 
     success:
-      "bg-(--color-success)/15 text-(--color-success) border border-(--color-success)/20",
+      "bg-success/15 text-success border border-success/20",
     warning:
-      "bg-(--color-warning)/15 text-(--color-warning) border border-(--color-warning)/20",
+      "bg-warning/15 text-warning border border-warning/20",
     danger:
-      "bg-(--color-destructive)/15 text-(--color-destructive) border border-(--color-destructive)/20",
-    info: "bg-(--color-info)/15 text-(--color-info) border border-(--color-info)/20",
+      "bg-destructive/15 text-destructive border border-destructive/20",
+    info: "bg-info/15 text-info border border-info/20",
 
-    outline: "text-(--color-foreground) border border-(--color-border)",
+    outline: "text-foreground border border-border",
   };
 
   return (
@@ -41,7 +41,7 @@ export function Badge({
         "text-xs font-medium",
         "transition-colors duration-150",
         "focus-visible:outline-none",
-        "focus-visible:ring-2 focus-visible:ring-(--color-ring) focus-visible:ring-offset-2",
+        "focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
         "focus-visible:ring-offset-background",
         variants[variant],
         className,

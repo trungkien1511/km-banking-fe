@@ -12,13 +12,13 @@ export const PendingTransactionSection = React.memo(
         <div className="mb-3 flex items-center justify-between">
           <h2
             id="pending-transactions-heading"
-            className="text-base font-semibold text-(--color-foreground)"
+            className="text-base font-semibold text-foreground"
           >
             Pending Transactions
           </h2>
           <Link
             to="/dashboard/pending"
-            className="text-sm font-medium text-(--color-accent) hover:text-accent-hover transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-(--color-accent)/50 rounded"
+            className="text-sm font-medium text-accent hover:text-accent-hover transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/50 rounded"
           >
             View all pending
           </Link>

@@ -101,7 +101,7 @@ export const DepositWizard: React.FC = () => {
       {step === 1 && (
         <div className="space-y-6 animate-fade-slide-up">
           <div>
-            <h3 className="text-lg font-semibold mb-3 text-(--color-foreground)">
+            <h3 className="text-lg font-semibold mb-3 text-foreground">
               Select Account
             </h3>
             <AccountSelector
@@ -119,7 +119,7 @@ export const DepositWizard: React.FC = () => {
               <div className="space-y-1">
                 <label
                   htmlFor={`${inputId}-amount`}
-                  className="text-sm font-medium text-(--color-muted-foreground)"
+                  className="text-sm font-medium text-muted-foreground"
                 >
                   Deposit Amount (VND)
                 </label>
@@ -145,9 +145,9 @@ export const DepositWizard: React.FC = () => {
               <div className="space-y-1">
                 <label
                   htmlFor={`${inputId}-desc`}
-                  className="text-sm font-medium text-(--color-muted-foreground)"
+                  className="text-sm font-medium text-muted-foreground"
                 >
-                  Note <span className="text-(--color-subtle-foreground) font-normal">(Optional)</span>
+                  Note <span className="text-subtle-foreground font-normal">(Optional)</span>
                 </label>
                 <Input
                   id={`${inputId}-desc`}
@@ -175,30 +175,30 @@ export const DepositWizard: React.FC = () => {
 
       {step === 2 && selectedAccount && (
         <div className="space-y-6 animate-fade-slide-up">
-          <h3 className="text-lg font-semibold text-(--color-foreground)">
+          <h3 className="text-lg font-semibold text-foreground">
             Review Deposit Details
           </h3>
 
           <Card className="p-5 space-y-4">
             <div className="flex justify-between text-sm">
-              <span className="text-(--color-muted-foreground)">Deposit to</span>
-              <span className="font-semibold text-(--color-foreground)">
+              <span className="text-muted-foreground">Deposit to</span>
+              <span className="font-semibold text-foreground">
                 {selectedAccount.accountType === "PRIMARY" ? "Primary Account" : "Savings"}
                 {" "}(•••• {selectedAccount.accountNumber.slice(-4)})
               </span>
             </div>
 
-            <div className="flex justify-between text-sm border-t border-(--color-border) pt-4">
-              <span className="text-(--color-muted-foreground)">Amount</span>
-              <span className="font-mono font-bold text-lg text-(--color-primary) tabular-nums">
+            <div className="flex justify-between text-sm border-t border-border pt-4">
+              <span className="text-muted-foreground">Amount</span>
+              <span className="font-mono font-bold text-lg text-primary tabular-nums">
                 {Number(getValues("amount")).toLocaleString("vi-VN")} ₫
               </span>
             </div>
 
             {getValues("description") && (
               <div className="flex justify-between text-sm">
-                <span className="text-(--color-muted-foreground)">Note</span>
-                <span className="text-(--color-muted-foreground) max-w-[60%] text-right">
+                <span className="text-muted-foreground">Note</span>
+                <span className="text-muted-foreground max-w-[60%] text-right">
                   {getValues("description")}
                 </span>
               </div>

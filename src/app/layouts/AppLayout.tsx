@@ -13,9 +13,9 @@ export const AppLayout: React.FC = () => {
           sr-only focus:not-sr-only
           fixed top-2 left-2 z-50
           rounded-lg px-4 py-2
-          bg-(--color-accent) text-(--color-accent-fg)
+          bg-accent text-accent-fg
           text-sm font-semibold
-          focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-(--color-accent)
+          focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent
         "
       >
         Skip to content

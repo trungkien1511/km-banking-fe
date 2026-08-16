@@ -38,8 +38,8 @@ export const DashboardHeader: React.FC = () => {
       className="
         flex items-center justify-between
         px-5 py-3
-        border-b border-(--color-border)
-        bg-(--color-card)
+        border-b border-border
+        bg-card
       "
       aria-label="Dashboard header"
     >
@@ -49,8 +49,8 @@ export const DashboardHeader: React.FC = () => {
         <div
           className="
             flex h-8 w-8 items-center justify-center rounded-full
-            bg-(--color-primary)/15 border border-(--color-primary)/20
-            text-(--color-primary) text-xs font-semibold
+            bg-primary/15 border border-primary/20
+            text-primary text-xs font-semibold
             select-none
           "
           aria-hidden="true"
@@ -75,9 +75,9 @@ export const DashboardHeader: React.FC = () => {
           className="
             flex h-8 w-8 items-center justify-center rounded-lg
             text-muted-foreground
-            hover:bg-(--color-muted)/50 hover:text-foreground
+            hover:bg-muted/50 hover:text-foreground
             transition-colors duration-150
-            focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-(--color-accent)/50
+            focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/50
             active:scale-[0.94]
           "
         >
@@ -93,9 +93,9 @@ export const DashboardHeader: React.FC = () => {
             lg:hidden
             flex h-8 w-8 items-center justify-center rounded-lg
             text-muted-foreground
-            hover:bg-(--color-destructive)/10 hover:text-(--color-destructive)
+            hover:bg-destructive/10 hover:text-destructive
             transition-colors duration-150
-            focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-(--color-destructive)/40
+            focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-destructive/40
             active:scale-[0.94]
           "
         >

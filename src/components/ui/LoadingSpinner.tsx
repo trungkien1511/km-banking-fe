@@ -20,7 +20,7 @@ export const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({
   return (
     <CircleNotch
       className={cn(
-        "animate-spin text-(--color-primary)",
+        "animate-spin text-primary",
         sizeClasses[size],
         className,
       )}

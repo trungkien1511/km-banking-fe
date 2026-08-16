@@ -36,11 +36,11 @@ export const AccountSelector: React.FC<AccountSelectorProps> = React.memo(
             className={cn(
               "p-4 flex justify-between items-center transition-all duration-200 select-none",
               isActive
-                ? "cursor-pointer hover:bg-(--color-muted)/40 active:scale-[0.99]"
+                ? "cursor-pointer hover:bg-muted/40 active:scale-[0.99]"
                 : "opacity-40 cursor-not-allowed",
               isSelected &&
                 isActive &&
-                "ring-2 ring-(--color-primary) border-transparent bg-(--color-muted)/40",
+                "ring-2 ring-primary border-transparent bg-muted/40",
             )}
             role="radio"
             aria-checked={isSelected}
@@ -48,7 +48,7 @@ export const AccountSelector: React.FC<AccountSelectorProps> = React.memo(
           >
             <div className="flex flex-col gap-1">
               <div className="flex items-center gap-2">
-                <span className="font-semibold text-(--color-foreground)">
+                <span className="font-semibold text-foreground">
                   {acc.accountType === "PRIMARY"
                     ? "Primary Account"
                     : acc.accountType === "SAVINGS"
@@ -59,15 +59,15 @@ export const AccountSelector: React.FC<AccountSelectorProps> = React.memo(
                   {acc.status}
                 </Badge>
               </div>
-              <span className="text-sm font-mono text-(--color-muted-foreground)">
+              <span className="text-sm font-mono text-muted-foreground">
                 •••• {acc.accountNumber.slice(-4)}
               </span>
             </div>
             <div className="text-right">
-              <div className="text-lg font-bold text-(--color-foreground)" translate="no">
+              <div className="text-lg font-bold text-foreground" translate="no">
                 {acc.availableBalance.toLocaleString("vi-VN")} {acc.currency}
               </div>
-              <span className="text-xs text-(--color-muted-foreground)">Available Balance</span>
+              <span className="text-xs text-muted-foreground">Available Balance</span>
             </div>
           </Card>
         );
