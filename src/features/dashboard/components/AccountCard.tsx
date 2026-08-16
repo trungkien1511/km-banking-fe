@@ -69,7 +69,6 @@ export const AccountCard = React.memo(function AccountCard({
       // em-dash replaced with hyphen - screen readers handle hyphen better
       aria-label={`${typeLabel} account - ${account.accountNumber}`}
     >
-      {/* Icon */}
       <div
         className={cn(
           "flex h-9 w-9 shrink-0 items-center justify-center rounded-xl",
@@ -86,7 +85,6 @@ export const AccountCard = React.memo(function AccountCard({
         )}
       </div>
 
-      {/* Info */}
       <div className="min-w-0 flex-1">
         <div className="flex items-center gap-2">
           <p className="text-sm font-semibold text-foreground">{typeLabel}</p>
@@ -111,7 +109,6 @@ export const AccountCard = React.memo(function AccountCard({
         </p>
       </div>
 
-      {/* Balance */}
       <div className="shrink-0 text-right">
         {/* translate="no" — currency amounts must not be modified by auto-translation */}
         <p

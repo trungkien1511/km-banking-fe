@@ -44,7 +44,7 @@ apiClient.interceptors.response.use(
   async (error) => {
     const originalRequest = error.config;
 
-    // 1. Format user-friendly error message FIRST for all errors
+    // Format user-friendly error message for all errors
     let errorMessage = "Đã xảy ra lỗi không xác định. Vui lòng thử lại.";
 
     if (error.response) {
@@ -63,7 +63,7 @@ apiClient.interceptors.response.use(
 
     (error as AxiosError & ApiError).formattedMessage = errorMessage;
 
-    // 2. Handle 401 Token Refresh (Skip for login and refresh endpoints)
+    // 401 token refresh — skip login/refresh endpoints
     const isAuthEndpoint =
       originalRequest?.url?.includes("/api/v1/auth/login") ||
       originalRequest?.url?.includes("/api/v1/auth/refresh");

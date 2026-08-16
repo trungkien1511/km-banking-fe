@@ -42,7 +42,6 @@ export const LoginForm = () => {
       className="space-y-5"
       aria-label="Sign in form"
     >
-      {/* ── Server error banner ── */}
       {serverError && (
         <div
           role="alert"
@@ -57,7 +56,6 @@ export const LoginForm = () => {
         </div>
       )}
 
-      {/* ── Identifier ── */}
       <div className="space-y-1.5">
         <label
           htmlFor="identifier"
@@ -87,7 +85,6 @@ export const LoginForm = () => {
         )}
       </div>
 
-      {/* ── Password ── */}
       <div className="space-y-1.5">
         <div className="flex items-center justify-between">
           <label
@@ -122,7 +119,6 @@ export const LoginForm = () => {
         )}
       </div>
 
-      {/* ── Remember me ── */}
       <Checkbox
         id="rememberMe"
         label="Keep me signed in"
@@ -130,19 +126,13 @@ export const LoginForm = () => {
         {...register("rememberMe")}
       />
 
-      {/* ── Submit ──
-       * In .light-context: --color-primary = #0A0F1E (navy), --color-primary-fg = #FFFFFF
-       * So this button renders as dark navy on white — correct for auth panel.
-       * Outside light-context (dark shell): --color-primary = #D4A017 (gold).
-       * Token-driven — no hardcoded colors.
-       */}
+      {/* --color-primary token adapts: navy in light-context, gold in dark shell */}
       <button
         type="submit"
         disabled={isPending}
         className={cn(
           "relative w-full h-11 rounded-lg font-semibold text-sm",
           "flex items-center justify-center gap-2",
-          // Uses --color-primary token — navy in light-context, gold in dark shell
           "bg-(--color-primary) text-(--color-primary-fg)",
           "hover:bg-primary-hover",
           "transition-[transform,box-shadow,background-color,opacity] duration-150",

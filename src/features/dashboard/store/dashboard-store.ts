@@ -6,7 +6,6 @@ interface DashboardState {
   isLoading: boolean
   error: string | null
 
-  // Actions
   setDashboardData: (data: DashboardData) => void
   setLoading: (isLoading: boolean) => void
   setError: (error: string | null) => void
@@ -28,9 +27,8 @@ export const useDashboardStore = create<DashboardState>((set) => ({
   reset: () => set(initialState),
 }))
 
-// Stable fallbacks — must be module-level constants so their references never change.
-// Using `?? []` inline creates a new array object on every render, causing Zustand
-// to detect a "change" every cycle → infinite re-render loop.
+// Stable fallbacks — module-level so references never change; inline `?? []`
+// would create a new array each render → Zustand change detection → re-render loop.
 const EMPTY_ACCOUNTS: Account[] = []
 const EMPTY_TRANSACTIONS: Transaction[] = []
 
@@ -49,8 +47,7 @@ export const useRecentTransactions = (): Transaction[] => {
   return all.filter((t) => t.status !== 'PENDING').slice(0, 10)
 }
 
-// Pending transactions — PENDING status only, shown in the pending section.
-// Falls back to EMPTY_TRANSACTIONS to preserve referential stability.
+// Pending transactions — PENDING status only (pending section)
 export const usePendingTransactions = (): Transaction[] =>
   useDashboardStore((state) => {
     const all = state.dashboardData?.recentTransactions ?? EMPTY_TRANSACTIONS

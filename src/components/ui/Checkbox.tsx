@@ -22,13 +22,10 @@ export const Checkbox = React.forwardRef<HTMLInputElement, CheckboxProps>(
             id={checkboxId}
             ref={ref}
             className={cn(
-              // Shape — 6px radius matches badge spec
               "peer h-4 w-4 shrink-0 appearance-none rounded-sm",
-              // Colors — semantic tokens, correct on white + dark shells
+              // Semantic tokens — correct on white + dark shells
               "border border-(--color-border) bg-(--color-card)",
-              // Focus ring — amber gold per design system
               "ring-offset-(--color-background) focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-(--color-ring) focus-visible:ring-offset-2",
-              // Checked — amber gold fill
               "checked:bg-(--color-primary) checked:border-(--color-primary)",
               "disabled:cursor-not-allowed disabled:opacity-50",
               className,

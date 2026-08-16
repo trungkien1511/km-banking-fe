@@ -117,7 +117,6 @@ export const TransferWizard: React.FC = () => {
         </Alert>
       )}
 
-      {/* ── Step 1: Source Account ── */}
       {step === 1 && (
         <div className="animate-fade-slide-up">
           <h3 className="text-lg font-semibold mb-3 text-(--color-foreground)">
@@ -131,13 +130,11 @@ export const TransferWizard: React.FC = () => {
         </div>
       )}
 
-      {/* ── Step 2: Transfer Details ── */}
       {step === 2 && selectedAccount && (
         <form
           onSubmit={handleSubmit(() => { setServerError(null); setStep(3); })}
           className="space-y-4 animate-fade-slide-up"
         >
-          {/* Source account summary */}
           <Card className="p-4 bg-(--color-muted)/30 border-(--color-border)/60 flex items-center justify-between">
             <div>
               <span className="text-xs text-(--color-subtle-foreground) uppercase font-semibold tracking-wide">
@@ -156,7 +153,6 @@ export const TransferWizard: React.FC = () => {
             </button>
           </Card>
 
-          {/* Recipient */}
           <div className="space-y-1">
             <label
               htmlFor={`${inputId}-dest`}
@@ -180,7 +176,6 @@ export const TransferWizard: React.FC = () => {
             )}
           </div>
 
-          {/* Amount — font-mono + tabular-nums for financial input */}
           <div className="space-y-1">
             <div className="flex justify-between items-baseline">
               <label
@@ -212,7 +207,6 @@ export const TransferWizard: React.FC = () => {
             )}
           </div>
 
-          {/* Description */}
           <div className="space-y-1">
             <label
               htmlFor={`${inputId}-desc`}
@@ -252,7 +246,6 @@ export const TransferWizard: React.FC = () => {
         </form>
       )}
 
-      {/* ── Step 3: Confirm & Review ── */}
       {step === 3 && selectedAccount && (
         <div className="space-y-6 animate-fade-slide-up">
           <h3 className="text-lg font-semibold text-(--color-foreground)">
@@ -277,7 +270,6 @@ export const TransferWizard: React.FC = () => {
 
             <div className="flex justify-between text-sm border-t border-(--color-border) pt-4">
               <span className="text-(--color-muted-foreground)">Amount</span>
-              {/* Amount in confirm summary — font-mono tabular-nums per design system */}
               <span className="font-mono font-bold text-lg text-(--color-primary) tabular-nums">
                 {Number(getValues("amount")).toLocaleString("vi-VN")} ₫
               </span>

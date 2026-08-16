@@ -37,7 +37,6 @@ export const Alert = React.forwardRef<HTMLDivElement, AlertProps>(
         ref={ref}
         role="alert"
         className={cn(
-          // rounded-xl consistent with the rest of the system
           "relative w-full rounded-xl border p-4",
           "[&>svg]:absolute [&>svg]:text-inherit [&>svg]:left-4 [&>svg]:top-4",
           "[&>svg+div]:-translate-y-0.75 [&>svg~*]:pl-7",

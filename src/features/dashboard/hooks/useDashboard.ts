@@ -17,9 +17,8 @@ export const useDashboard = () => {
     retry: 1,
   })
 
-  // Sync react-query state into zustand store
-  // Use isLoading (not isFetching) — isLoading is true only on first fetch with no
-  // cached data, so the spinner shows during initial load but not background refetches.
+  // Sync react-query into zustand. isLoading (not isFetching) — true only on the
+  // first fetch with no cached data, so the spinner skips background refetches.
   useEffect(() => {
     setLoading(query.isLoading)
   }, [query.isLoading, setLoading])

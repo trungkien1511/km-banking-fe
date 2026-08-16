@@ -20,14 +20,11 @@ export const AppLogo: React.FC<AppLogoProps> = ({
 
   return (
     <div className={cn('flex items-center gap-3 select-none', className)}>
-      {/* Icon mark */}
       <div
         className={cn(
           'relative flex h-9 w-9 items-center justify-center rounded-xl font-bold transition-transform duration-150 hover:scale-[1.03]',
           isLight
-            // Dark panel: amber-gold tinted mark (design primary)
             ? 'bg-(--color-primary)/10 text-(--color-primary) border border-(--color-primary)/20 shadow-[inset_0_1px_0_color-mix(in_srgb,var(--color-primary)_15%,transparent)]'
-            // Light panel: solid foreground (near-navy) with background icon
             : 'bg-(--color-foreground) text-(--color-background) shadow-md shadow-(--color-foreground)/10'
         )}
       >

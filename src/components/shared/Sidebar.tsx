@@ -109,7 +109,6 @@ export const Sidebar: React.FC = () => {
       "
       aria-label="Main navigation"
     >
-      {/* Logo mark - hexagon icon only */}
       <div className="mb-6 flex h-9 w-9 items-center justify-center rounded-xl bg-(--color-primary)/10">
         <svg
           className="h-5 w-5 text-(--color-primary)"
@@ -135,7 +134,6 @@ export const Sidebar: React.FC = () => {
         </svg>
       </div>
 
-      {/* Nav rail */}
       <nav
         className="flex flex-1 flex-col items-center gap-1"
         aria-label="App sections"
@@ -145,7 +143,6 @@ export const Sidebar: React.FC = () => {
         ))}
       </nav>
 
-      {/* Logout */}
       <div className="relative">
         <button
           type="button"

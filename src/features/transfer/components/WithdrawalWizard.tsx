@@ -99,7 +99,6 @@ export const WithdrawalWizard: React.FC = () => {
         </Alert>
       )}
 
-      {/* ── Step 1: Select Account + Amount ── */}
       {step === 1 && (
         <div className="space-y-6 animate-fade-slide-up">
           <div>
@@ -118,7 +117,6 @@ export const WithdrawalWizard: React.FC = () => {
               onSubmit={handleSubmit(() => { setServerError(null); setStep(2); })}
               className="space-y-4 pt-2"
             >
-              {/* Amount — font-mono + tabular-nums for financial input */}
               <div className="space-y-1">
                 <div className="flex justify-between items-baseline">
                   <label
@@ -181,7 +179,6 @@ export const WithdrawalWizard: React.FC = () => {
         </div>
       )}
 
-      {/* ── Step 2: Confirm ── */}
       {step === 2 && selectedAccount && (
         <div className="space-y-6 animate-fade-slide-up">
           <h3 className="text-lg font-semibold text-(--color-foreground)">

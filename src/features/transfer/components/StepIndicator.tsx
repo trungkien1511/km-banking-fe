@@ -28,7 +28,6 @@ export const StepIndicator: React.FC<StepIndicatorProps> = ({
       </p>
 
       <div className="relative flex justify-between items-center isolate">
-        {/* Track background */}
         <div
           className="absolute top-1/2 left-0 right-0 h-px -translate-y-1/2 bg-(--color-border) -z-10"
           aria-hidden="true"
@@ -50,18 +49,13 @@ export const StepIndicator: React.FC<StepIndicatorProps> = ({
             <div key={stepNum} className="flex flex-col items-center gap-2">
               <div
                 className={cn(
-                  // Size + shape
                   "flex h-9 w-9 items-center justify-center rounded-full",
                   "text-sm font-semibold border transition-all duration-200",
-                  // animate-step-complete fires when step becomes active
                   isActive && "animate-step-complete motion-reduce:animate-none",
                   isCompleted
-                    // Completed: filled amber gold
                     ? "bg-(--color-primary) border-(--color-primary) text-(--color-primary-fg)"
                     : isActive
-                    // Active: outlined amber gold + subtle glow
                     ? "bg-(--color-card) border-(--color-primary) text-(--color-primary) shadow-[0_0_0_3px_color-mix(in_srgb,var(--color-primary)_20%,transparent)]"
-                    // Future: muted
                     : "bg-(--color-card) border-(--color-border) text-(--color-subtle-foreground)"
                 )}
                 aria-current={isActive ? "step" : undefined}
@@ -69,7 +63,6 @@ export const StepIndicator: React.FC<StepIndicatorProps> = ({
                 {stepNum}
               </div>
 
-              {/* Label — visible on sm+ */}
               <span
                 className={cn(
                   "text-xs font-medium hidden sm:inline whitespace-nowrap",

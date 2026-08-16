@@ -93,7 +93,6 @@ export const DepositWizard: React.FC = () => {
         </Alert>
       )}
 
-      {/* ── Step 1: Select Account + Amount ── */}
       {step === 1 && (
         <div className="space-y-6 animate-fade-slide-up">
           <div>
@@ -112,7 +111,6 @@ export const DepositWizard: React.FC = () => {
               onSubmit={handleSubmit(() => { setServerError(null); setStep(2); })}
               className="space-y-4 pt-2"
             >
-              {/* Amount — font-mono + tabular-nums for financial input */}
               <div className="space-y-1">
                 <label
                   htmlFor={`${inputId}-amount`}
@@ -170,7 +168,6 @@ export const DepositWizard: React.FC = () => {
         </div>
       )}
 
-      {/* ── Step 2: Confirm ── */}
       {step === 2 && selectedAccount && (
         <div className="space-y-6 animate-fade-slide-up">
           <h3 className="text-lg font-semibold text-(--color-foreground)">

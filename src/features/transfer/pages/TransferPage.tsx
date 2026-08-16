@@ -21,7 +21,6 @@ export const TransferPage: React.FC = () => {
         </p>
       </div>
 
-      {/* Custom Tabs */}
       <div className="border-b border-(--color-border)/60 flex gap-6" role="tablist" aria-label="Transaction Operations">
         {(["transfer", "deposit", "withdrawal"] as TabType[]).map((tab) => {
           const isActive = activeTab === tab;
@@ -48,7 +47,6 @@ export const TransferPage: React.FC = () => {
         })}
       </div>
 
-      {/* Tab panels */}
       <div className="mt-4">
         {(["transfer", "deposit", "withdrawal"] as TabType[]).map((tab) => (
           <div

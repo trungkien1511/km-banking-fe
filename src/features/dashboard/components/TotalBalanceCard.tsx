@@ -31,7 +31,6 @@ export const TotalBalanceCard = React.memo(() => {
         aria-hidden="true"
       />
 
-      {/* Label + toggle */}
       <div className="flex items-center justify-between">
         <p className="text-xs font-medium text-(--color-muted-foreground) uppercase tracking-widest">
           Total balance
@@ -82,7 +81,6 @@ export const TotalBalanceCard = React.memo(() => {
         )}
       </div>
 
-      {/* Quick actions */}
       <div className="flex items-center gap-2">
         <Link
           to="/transfer"

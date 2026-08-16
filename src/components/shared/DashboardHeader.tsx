@@ -43,7 +43,7 @@ export const DashboardHeader: React.FC = () => {
       "
       aria-label="Dashboard header"
     >
-      {/* Left: greeting */}
+      {/* Greeting */}
       <div className="flex items-center gap-3">
         {/* User avatar initials - mobile only (desktop sidebar has logo) */}
         <div
@@ -67,7 +67,7 @@ export const DashboardHeader: React.FC = () => {
         </div>
       </div>
 
-      {/* Right: action buttons */}
+      {/* Actions */}
       <div className="flex items-center gap-0.5">
         <button
           type="button"

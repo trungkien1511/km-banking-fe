@@ -16,7 +16,6 @@ const TRUST_BADGES = [
 export const LoginPage = () => {
   return (
     <main className="min-h-dvh w-full grid lg:grid-cols-2">
-      {/* ── LEFT: Dark brand panel (desktop only, decorative) ─────────────── */}
       <section
         className="
           hidden lg:flex flex-col justify-between
@@ -26,15 +25,12 @@ export const LoginPage = () => {
         "
         aria-hidden="true"
       >
-        {/* Background image */}
         <div
           className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-20"
           style={{ backgroundImage: "url('/login-banner.jpg')" }}
           role="presentation"
         />
-        {/* Gradient overlay */}
         <div className="absolute inset-0 bg-linear-to-b from-(--color-background)/60 via-(--color-background)/40 to-(--color-background)/80" />
-        {/* Subtle grid texture */}
         <div
           className="absolute inset-0 opacity-[0.03]"
           style={{
@@ -86,13 +82,7 @@ export const LoginPage = () => {
         </div>
       </section>
 
-      {/* ── RIGHT: Form panel — white background, light context ───────────── */}
-      {/*
-       * .light-context restores light-mode tokens on this section only.
-       * bg-white is explicit — guarantees white even if token resolves differently.
-       * All text uses --color-foreground / --color-muted-foreground tokens
-       * which .light-context maps to dark values (#020617 / #475569).
-       */}
+      {/* Form panel — light-context (white bg, light-mode tokens) */}
       <section
         className="
           light-context
@@ -109,11 +99,7 @@ export const LoginPage = () => {
 
         <div className="w-full max-w-sm animate-fade-slide-up">
           <div className="mb-8">
-            {/*
-             * h1 is the page title for screen readers.
-             * Left panel is aria-hidden so this is the only heading.
-             * text-balance prevents a widow on narrow screens.
-             */}
+            {/* Screen-reader page title; left panel is aria-hidden so this is the only heading */}
             <h1 className="text-2xl font-bold tracking-tight text-foreground text-balance">
               Welcome back
             </h1>

@@ -66,7 +66,6 @@ export const TransactionCard = React.memo(function TransactionCard({
         hover:bg-(--color-muted)/30
       "
     >
-      {/* Direction icon */}
       <div
         className={cn(
           "flex h-8 w-8 shrink-0 items-center justify-center rounded-full",
@@ -87,7 +86,6 @@ export const TransactionCard = React.memo(function TransactionCard({
         )}
       </div>
 
-      {/* Description + meta */}
       <div className="min-w-0 flex-1">
         <p className="truncate text-sm font-medium text-(--color-foreground)">
           {transaction.description !== null
@@ -95,7 +93,6 @@ export const TransactionCard = React.memo(function TransactionCard({
             : typeLabel}
         </p>
         <div className="mt-0.5 flex items-center gap-1.5">
-          {/* Status dot - semantic state only */}
           <span
             className={cn(
               "h-1.5 w-1.5 rounded-full shrink-0",
@@ -109,7 +106,6 @@ export const TransactionCard = React.memo(function TransactionCard({
         </div>
       </div>
 
-      {/* Amount */}
       <p
         className={cn(
           "shrink-0 font-mono text-sm font-semibold tabular-nums",
