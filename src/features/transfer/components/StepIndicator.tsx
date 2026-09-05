@@ -35,7 +35,7 @@ export const StepIndicator: React.FC<StepIndicatorProps> = ({
 
         {/* Active progress — width transition matches design system (350ms) */}
         <div
-          className="absolute top-1/2 left-0 h-px -translate-y-1/2 bg-primary -z-10 transition-[width] duration-[350ms] ease-out"
+          className="absolute top-1/2 left-0 h-px -translate-y-1/2 bg-primary -z-10 transition-[width] duration-350 ease-out"
           style={{ width: progressWidth }}
           aria-hidden="true"
         />
@@ -51,12 +51,13 @@ export const StepIndicator: React.FC<StepIndicatorProps> = ({
                 className={cn(
                   "flex h-9 w-9 items-center justify-center rounded-full",
                   "text-sm font-semibold border transition-all duration-200",
-                  isActive && "animate-step-complete motion-reduce:animate-none",
+                  isActive &&
+                    "animate-step-complete motion-reduce:animate-none",
                   isCompleted
                     ? "bg-primary border-primary text-primary-fg"
                     : isActive
-                    ? "bg-card border-primary text-primary shadow-[0_0_0_3px_color-mix(in_srgb,var(--color-primary)_20%,transparent)]"
-                    : "bg-card border-border text-subtle-foreground"
+                      ? "bg-card border-primary text-primary shadow-[0_0_0_3px_color-mix(in_srgb,var(--color-primary)_20%,transparent)]"
+                      : "bg-card border-border text-subtle-foreground",
                 )}
                 aria-current={isActive ? "step" : undefined}
               >
@@ -69,8 +70,8 @@ export const StepIndicator: React.FC<StepIndicatorProps> = ({
                   isActive
                     ? "text-primary"
                     : isCompleted
-                    ? "text-foreground"
-                    : "text-subtle-foreground"
+                      ? "text-foreground"
+                      : "text-subtle-foreground",
                 )}
               >
                 {labels[idx]}
