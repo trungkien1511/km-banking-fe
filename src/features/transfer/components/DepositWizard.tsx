@@ -2,6 +2,7 @@ import React, { useCallback, useId, useState } from "react";
 import { useForm, type Resolver } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
+import { v4 as uuidv4 } from "uuid";
 import { useAccounts } from "@/features/dashboard/store/dashboard-store";
 import { useDepositMutation } from "../hooks/useTransferMutation";
 import { AccountSelector } from "./AccountSelector";
@@ -11,13 +12,20 @@ import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
 import { Alert } from "@/components/ui/Alert";
 import { FormErrorMessage } from "@/components/ui/FormErrorMessage";
-import type { Account, Transaction } from "@/features/dashboard/types/dashboard.types";
+import type {
+  Account,
+  Transaction,
+} from "@/features/dashboard/types/dashboard.types";
 import type { ApiError } from "@/services/api-client";
+import { VndCurrencyInput } from "./VndCurrencyInput";
 
 // Static schema hoisted to module scope (rerender-memo: no rebuild per render).
 const depositSchema = z.object({
-  amount: z.coerce.number().min(0.01, "Amount must be greater than zero"),
-  description: z.string().max(255, "Description must be 255 characters or less").optional(),
+  amount: z.number().min(0.01, "Amount must be greater than zero"),
+  description: z
+    .string()
+    .max(255, "Description must be 255 characters or less")
+    .optional(),
 });
 
 export const DepositWizard: React.FC = () => {
@@ -36,6 +44,8 @@ export const DepositWizard: React.FC = () => {
     register,
     handleSubmit,
     getValues,
+    setValue,
+    watch,
     trigger,
     formState: { errors, isValid },
     reset: resetForm,
@@ -45,10 +55,13 @@ export const DepositWizard: React.FC = () => {
     defaultValues: { amount: undefined, description: "" },
   });
 
-  const handleSelectAccount = useCallback((acc: Account) => {
-    setSelectedAccount(acc);
-    trigger("amount");
-  }, [trigger]);
+  const handleSelectAccount = useCallback(
+    (acc: Account) => {
+      setSelectedAccount(acc);
+      trigger("amount");
+    },
+    [trigger],
+  );
 
   const handleConfirm = () => {
     if (!selectedAccount || depositMut.isPending) return;
@@ -59,6 +72,7 @@ export const DepositWizard: React.FC = () => {
         accountId: selectedAccount.id,
         amount: Number(values.amount),
         description: values.description || undefined,
+        idempotencyKey: uuidv4(), // Generate UUID client-side for idempotency
       },
       {
         onSuccess: (data) => setCompletedTxn(data),
@@ -66,10 +80,10 @@ export const DepositWizard: React.FC = () => {
           setStep(1);
           setServerError(
             (err as ApiError | null)?.formattedMessage ||
-            "Failed to process deposit. Please try again."
+              "Failed to process deposit. Please try again.",
           );
         },
-      }
+      },
     );
   };
 
@@ -94,7 +108,11 @@ export const DepositWizard: React.FC = () => {
   return (
     <div className="max-w-md mx-auto py-4">
       {serverError && (
-        <Alert variant="danger" title="Deposit Failed" className="mb-4 animate-error-in">
+        <Alert
+          variant="danger"
+          title="Deposit Failed"
+          className="mb-4 animate-error-in"
+        >
           {serverError}
         </Alert>
       )}
@@ -114,48 +132,37 @@ export const DepositWizard: React.FC = () => {
 
           {selectedAccount && (
             <form
-              onSubmit={handleSubmit(() => { setServerError(null); setStep(2); })}
+              onSubmit={handleSubmit(() => {
+                setServerError(null);
+                setStep(2);
+              })}
               className="space-y-4 pt-2"
             >
-              <div className="space-y-1">
-                <label
-                  htmlFor={`${inputId}-amount`}
-                  className="text-sm font-medium text-muted-foreground"
-                >
-                  Deposit Amount (VND)
-                </label>
-                <Input
-                  id={`${inputId}-amount`}
-                  type="number"
-                  step="1"
-                  placeholder="0"
-                  inputMode="numeric"
-                  className="font-mono tabular-nums"
-                  error={!!errors.amount}
-                  aria-describedby={errors.amount ? `${inputId}-amount-err` : undefined}
-                  {...register("amount")}
-                />
-                {errors.amount && (
-                  <FormErrorMessage
-                    id={`${inputId}-amount-err`}
-                    message={errors.amount.message}
-                  />
-                )}
-              </div>
+              <VndCurrencyInput
+                value={watch("amount")}
+                onChange={(val) => setValue("amount", val as number, { shouldValidate: true })}
+                fieldError={errors.amount?.message}
+                disabled={depositMut.isPending}
+              />
 
               <div className="space-y-1">
                 <label
                   htmlFor={`${inputId}-desc`}
                   className="text-sm font-medium text-muted-foreground"
                 >
-                  Note <span className="text-subtle-foreground font-normal">(Optional)</span>
+                  Note{" "}
+                  <span className="text-subtle-foreground font-normal">
+                    (Optional)
+                  </span>
                 </label>
                 <Input
                   id={`${inputId}-desc`}
                   type="text"
                   placeholder="Enter deposit note"
                   error={!!errors.description}
-                  aria-describedby={errors.description ? `${inputId}-desc-err` : undefined}
+                  aria-describedby={
+                    errors.description ? `${inputId}-desc-err` : undefined
+                  }
                   {...register("description")}
                 />
                 {errors.description && (
@@ -184,8 +191,10 @@ export const DepositWizard: React.FC = () => {
             <div className="flex justify-between text-sm">
               <span className="text-muted-foreground">Deposit to</span>
               <span className="font-semibold text-foreground">
-                {selectedAccount.accountType === "PRIMARY" ? "Primary Account" : "Savings"}
-                {" "}(•••• {selectedAccount.accountNumber.slice(-4)})
+                {selectedAccount.accountType === "PRIMARY"
+                  ? "Primary Account"
+                  : "Savings"}{" "}
+                (•••• {selectedAccount.accountNumber.slice(-4)})
               </span>
             </div>
 

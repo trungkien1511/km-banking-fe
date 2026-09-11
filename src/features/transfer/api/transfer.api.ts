@@ -1,6 +1,11 @@
 import { apiClient } from "@/services/api-client";
 import type { Transaction } from "@/features/dashboard/types/dashboard.types";
-import type { TransferPayload, DepositPayload, WithdrawalPayload } from "../types/transfer.types";
+import type {
+  DepositPayload,
+  RecipientLookup,
+  TransferPayload,
+  WithdrawalPayload,
+} from "../types/transfer.types";
 
 export const transferApi = {
   transfer: async (payload: TransferPayload): Promise<Transaction> => {
@@ -13,6 +18,12 @@ export const transferApi = {
   },
   withdraw: async (payload: WithdrawalPayload): Promise<Transaction> => {
     const response = await apiClient.post("/api/v1/accounts/transactions/withdrawal", payload);
+    return response.data.data;
+  },
+  lookupRecipient: async (accountNumber: string): Promise<RecipientLookup> => {
+    const response = await apiClient.get("/api/v1/accounts/lookup-recipient", {
+      params: { accountNumber },
+    });
     return response.data.data;
   },
 };

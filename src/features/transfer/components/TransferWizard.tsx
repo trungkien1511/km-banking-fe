@@ -2,17 +2,21 @@ import React, { useCallback, useId, useMemo, useState } from "react";
 import { useForm, type Resolver } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
+import { v4 as uuidv4 } from "uuid";
 import { useAccounts } from "@/features/dashboard/store/dashboard-store";
 import { useTransferMutation } from "../hooks/useTransferMutation";
 import { StepIndicator } from "./StepIndicator";
 import { AccountSelector } from "./AccountSelector";
+import { RecipientInput } from "./RecipientInput";
+import { VndCurrencyInput } from "./VndCurrencyInput";
 import { TransactionReceipt } from "./TransactionReceipt";
-import { Input } from "@/components/ui/Input";
 import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
 import { Alert } from "@/components/ui/Alert";
 import { FormErrorMessage } from "@/components/ui/FormErrorMessage";
+import { Input } from "@/components/ui/Input";
 import type { Account, Transaction } from "@/features/dashboard/types/dashboard.types";
+import type { RecipientLookup } from "../types/transfer.types";
 import type { ApiError } from "@/services/api-client";
 
 const STEPS = ["Source Account", "Transfer Details", "Confirm & Review"];
@@ -22,6 +26,7 @@ export const TransferWizard: React.FC = () => {
   const [selectedAccount, setSelectedAccount] = useState<Account | null>(null);
   const [serverError, setServerError] = useState<string | null>(null);
   const [completedTxn, setCompletedTxn] = useState<Transaction | null>(null);
+  const [resolvedRecipient, setResolvedRecipient] = useState<RecipientLookup | null>(null);
 
   const accounts = useAccounts();
   const transferMut = useTransferMutation();
@@ -32,7 +37,7 @@ export const TransferWizard: React.FC = () => {
     () =>
       z.object({
         destinationAccountNumber: z.string().min(1, "Destination account number is required"),
-        amount: z.coerce.number().min(0.01, "Amount must be greater than zero"),
+        amount: z.number().min(0.01, "Amount must be greater than zero"),
         description: z.string().max(255, "Description must be 255 characters or less").optional(),
       }).refine(
         (data) => {
@@ -50,6 +55,8 @@ export const TransferWizard: React.FC = () => {
     register,
     handleSubmit,
     getValues,
+    setValue,
+    watch,
     trigger,
     formState: { errors, isValid },
     reset: resetForm,
@@ -69,6 +76,10 @@ export const TransferWizard: React.FC = () => {
     trigger("amount");
   }, [trigger]);
 
+  const handleRecipientResolved = useCallback((recipient: RecipientLookup | null) => {
+    setResolvedRecipient(recipient);
+  }, []);
+
   const handleConfirm = () => {
     if (!selectedAccount || transferMut.isPending) return;
     setServerError(null);
@@ -80,6 +91,7 @@ export const TransferWizard: React.FC = () => {
         destinationAccountNumber: values.destinationAccountNumber,
         amount: Number(values.amount),
         description: values.description || undefined,
+        idempotencyKey: uuidv4(), // Generate UUID client-side for idempotency
       },
       {
         onSuccess: (data) => setCompletedTxn(data),
@@ -99,6 +111,7 @@ export const TransferWizard: React.FC = () => {
     setSelectedAccount(null);
     setCompletedTxn(null);
     setServerError(null);
+    setResolvedRecipient(null);
     resetForm();
   };
 
@@ -158,59 +171,23 @@ export const TransferWizard: React.FC = () => {
             </button>
           </Card>
 
-          <div className="space-y-1">
-            <label
-              htmlFor={`${inputId}-dest`}
-              className="text-sm font-medium text-muted-foreground"
-            >
-              Recipient Account Number
-            </label>
-            <Input
-              id={`${inputId}-dest`}
-              type="text"
-              placeholder="Enter recipient account number"
-              error={!!errors.destinationAccountNumber}
-              aria-describedby={errors.destinationAccountNumber ? `${inputId}-dest-err` : undefined}
-              {...register("destinationAccountNumber")}
-            />
-            {errors.destinationAccountNumber && (
-              <FormErrorMessage
-                id={`${inputId}-dest-err`}
-                message={errors.destinationAccountNumber.message}
-              />
-            )}
-          </div>
+          <RecipientInput
+            value={getValues("destinationAccountNumber")}
+            onChange={(val) => {
+              setValue("destinationAccountNumber", val, { shouldValidate: true });
+            }}
+            fieldError={errors.destinationAccountNumber?.message}
+            onRecipientResolved={handleRecipientResolved}
+            disabled={transferMut.isPending}
+          />
 
-          <div className="space-y-1">
-            <div className="flex justify-between items-baseline">
-              <label
-                htmlFor={`${inputId}-amount`}
-                className="text-sm font-medium text-muted-foreground"
-              >
-                Amount (VND)
-              </label>
-              <span className="text-xs text-subtle-foreground">
-                Max: {selectedAccount.availableBalance.toLocaleString("vi-VN")} ₫
-              </span>
-            </div>
-            <Input
-              id={`${inputId}-amount`}
-              type="number"
-              step="1"
-              placeholder="0"
-              inputMode="numeric"
-              className="font-mono tabular-nums"
-              error={!!errors.amount}
-              aria-describedby={errors.amount ? `${inputId}-amount-err` : undefined}
-              {...register("amount")}
-            />
-            {errors.amount && (
-              <FormErrorMessage
-                id={`${inputId}-amount-err`}
-                message={errors.amount.message}
-              />
-            )}
-          </div>
+          <VndCurrencyInput
+            value={watch("amount")}
+            onChange={(val) => setValue("amount", val as number, { shouldValidate: true })}
+            max={selectedAccount.availableBalance}
+            fieldError={errors.amount?.message}
+            disabled={transferMut.isPending}
+          />
 
           <div className="space-y-1">
             <label
@@ -268,9 +245,16 @@ export const TransferWizard: React.FC = () => {
 
             <div className="flex justify-between text-sm">
               <span className="text-muted-foreground">To</span>
-              <span className="font-mono text-foreground">
-                {getValues("destinationAccountNumber")}
-              </span>
+              <div className="text-right">
+                <span className="font-mono text-foreground">
+                  {getValues("destinationAccountNumber")}
+                </span>
+                {resolvedRecipient && (
+                  <p className="text-xs text-muted-foreground mt-0.5">
+                    {resolvedRecipient.accountHolderName} · KM Bank
+                  </p>
+                )}
+              </div>
             </div>
 
             <div className="flex justify-between text-sm border-t border-border pt-4">

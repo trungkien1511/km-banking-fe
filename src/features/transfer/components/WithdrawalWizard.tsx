@@ -2,9 +2,11 @@ import React, { useCallback, useId, useMemo, useState } from "react";
 import { useForm, type Resolver } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
+import { v4 as uuidv4 } from "uuid";
 import { useAccounts } from "@/features/dashboard/store/dashboard-store";
 import { useWithdrawalMutation } from "../hooks/useTransferMutation";
 import { AccountSelector } from "./AccountSelector";
+import { VndCurrencyInput } from "./VndCurrencyInput";
 import { TransactionReceipt } from "./TransactionReceipt";
 import { Input } from "@/components/ui/Input";
 import { Button } from "@/components/ui/Button";
@@ -32,7 +34,7 @@ export const WithdrawalWizard: React.FC = () => {
     () =>
       z
         .object({
-          amount: z.coerce.number().min(0.01, "Amount must be greater than zero"),
+          amount: z.number().min(0.01, "Amount must be greater than zero"),
           description: z
             .string()
             .max(255, "Description must be 255 characters or less")
@@ -54,6 +56,8 @@ export const WithdrawalWizard: React.FC = () => {
     register,
     handleSubmit,
     getValues,
+    setValue,
+    watch,
     trigger,
     formState: { errors, isValid },
     reset: resetForm,
@@ -80,6 +84,7 @@ export const WithdrawalWizard: React.FC = () => {
         accountId: selectedAccount.id,
         amount: Number(values.amount),
         description: values.description || undefined,
+        idempotencyKey: uuidv4(), // Generate UUID client-side for idempotency
       },
       {
         onSuccess: (data) => setCompletedTxn(data),
@@ -145,39 +150,13 @@ export const WithdrawalWizard: React.FC = () => {
               })}
               className="space-y-4 pt-2"
             >
-              <div className="space-y-1">
-                <div className="flex justify-between items-baseline">
-                  <label
-                    htmlFor={`${inputId}-amount`}
-                    className="text-sm font-medium text-muted-foreground"
-                  >
-                    Withdrawal Amount (VND)
-                  </label>
-                  <span className="text-xs text-subtle-foreground">
-                    Max:{" "}
-                    {selectedAccount.availableBalance.toLocaleString("vi-VN")} ₫
-                  </span>
-                </div>
-                <Input
-                  id={`${inputId}-amount`}
-                  type="number"
-                  step="1"
-                  placeholder="0"
-                  inputMode="numeric"
-                  className="font-mono tabular-nums"
-                  error={!!errors.amount}
-                  aria-describedby={
-                    errors.amount ? `${inputId}-amount-err` : undefined
-                  }
-                  {...register("amount")}
-                />
-                {errors.amount && (
-                  <FormErrorMessage
-                    id={`${inputId}-amount-err`}
-                    message={errors.amount.message}
-                  />
-                )}
-              </div>
+              <VndCurrencyInput
+                value={watch("amount")}
+                onChange={(val) => setValue("amount", val as number, { shouldValidate: true })}
+                max={selectedAccount?.availableBalance}
+                fieldError={errors.amount?.message}
+                disabled={withdrawMut.isPending}
+              />
 
               <div className="space-y-1">
                 <label
