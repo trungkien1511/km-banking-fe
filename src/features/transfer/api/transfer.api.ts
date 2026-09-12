@@ -3,6 +3,7 @@ import type { Transaction } from "@/features/dashboard/types/dashboard.types";
 import type {
   DepositPayload,
   RecipientLookup,
+  RecentRecipient,
   TransferPayload,
   WithdrawalPayload,
 } from "../types/transfer.types";
@@ -23,6 +24,12 @@ export const transferApi = {
   lookupRecipient: async (accountNumber: string): Promise<RecipientLookup> => {
     const response = await apiClient.get("/api/v1/accounts/lookup-recipient", {
       params: { accountNumber },
+    });
+    return response.data.data;
+  },
+  getRecentRecipients: async (limit = 5): Promise<RecentRecipient[]> => {
+    const response = await apiClient.get("/api/v1/accounts/recent-recipients", {
+      params: { limit },
     });
     return response.data.data;
   },

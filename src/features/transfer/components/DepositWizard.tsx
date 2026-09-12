@@ -194,7 +194,7 @@ export const DepositWizard: React.FC = () => {
                 {selectedAccount.accountType === "PRIMARY"
                   ? "Primary Account"
                   : "Savings"}{" "}
-                (•••• {selectedAccount.accountNumber.slice(-4)})
+                ({selectedAccount.accountNumber})
               </span>
             </div>
 

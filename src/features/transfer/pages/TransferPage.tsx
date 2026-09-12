@@ -2,10 +2,11 @@ import React, { Activity, useState } from "react";
 import { TransferWizard } from "../components/TransferWizard";
 import { DepositWizard } from "../components/DepositWizard";
 import { WithdrawalWizard } from "../components/WithdrawalWizard";
+import { BetweenAccountsWizard } from "../components/BetweenAccountsWizard";
 import { cn } from "@/lib/utils";
 import { useDashboard } from "@/features/dashboard/hooks/useDashboard";
 
-type TabType = "transfer" | "deposit" | "withdrawal";
+type TabType = "transfer" | "between" | "deposit" | "withdrawal";
 
 export const TransferPage: React.FC = () => {
   const [activeTab, setActiveTab] = useState<TabType>("transfer");
@@ -27,14 +28,16 @@ export const TransferPage: React.FC = () => {
         role="tablist"
         aria-label="Transaction Operations"
       >
-        {(["transfer", "deposit", "withdrawal"] as TabType[]).map((tab) => {
+        {(["transfer", "between", "deposit", "withdrawal"] as TabType[]).map((tab) => {
           const isActive = activeTab === tab;
           const label =
             tab === "transfer"
-              ? "Internal Transfer"
-              : tab === "deposit"
-                ? "Mock Deposit"
-                : "Mock Withdrawal";
+              ? "Chuyển khoản"
+              : tab === "between"
+                ? "Tài khoản của tôi"
+                : tab === "deposit"
+                  ? "Mock Deposit"
+                  : "Mock Withdrawal";
 
           return (
             <button
@@ -58,7 +61,7 @@ export const TransferPage: React.FC = () => {
       </div>
 
       <div className="mt-4">
-        {(["transfer", "deposit", "withdrawal"] as TabType[]).map((tab) => (
+        {(["transfer", "between", "deposit", "withdrawal"] as TabType[]).map((tab) => (
           <Activity
             key={tab}
             mode={activeTab === tab ? "visible" : "hidden"}
@@ -70,6 +73,7 @@ export const TransferPage: React.FC = () => {
               aria-labelledby={`tab-${tab}`}
             >
               {tab === "transfer" && <TransferWizard />}
+              {tab === "between" && <BetweenAccountsWizard />}
               {tab === "deposit" && <DepositWizard />}
               {tab === "withdrawal" && <WithdrawalWizard />}
             </div>

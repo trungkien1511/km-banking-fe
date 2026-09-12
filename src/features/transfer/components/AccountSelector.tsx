@@ -60,7 +60,7 @@ export const AccountSelector: React.FC<AccountSelectorProps> = React.memo(
                 </Badge>
               </div>
               <span className="text-sm font-mono text-muted-foreground">
-                •••• {acc.accountNumber.slice(-4)}
+                {acc.accountNumber}
               </span>
             </div>
             <div className="text-right">

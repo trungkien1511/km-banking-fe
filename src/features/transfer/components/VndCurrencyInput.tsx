@@ -14,11 +14,11 @@ interface VndCurrencyInputProps {
 }
 
 const QUICK_CHIPS: { label: string; value: number }[] = [
-  { label: "+100K",  value: 100_000 },
-  { label: "+500K",  value: 500_000 },
-  { label: "+1M",    value: 1_000_000 },
-  { label: "+5M",    value: 5_000_000 },
-  { label: "+10M",   value: 10_000_000 },
+  { label: "+100K", value: 100_000 },
+  { label: "+500K", value: 500_000 },
+  { label: "+1M", value: 1_000_000 },
+  { label: "+5M", value: 5_000_000 },
+  { label: "+10M", value: 10_000_000 },
 ];
 
 export const VndCurrencyInput: React.FC<VndCurrencyInputProps> = ({
@@ -35,19 +35,23 @@ export const VndCurrencyInput: React.FC<VndCurrencyInputProps> = ({
   const errId = `${inputId}-err`;
   const wordsId = `${inputId}-words`;
 
-  // Display the raw number; Intl formatting is shown read-only below the input.
-  const displayValue = value !== undefined ? String(value) : "";
+  // Format with vi-VN thousands separators directly in the field (150000 → 150.000)
+  const displayValue = value !== undefined ? value.toLocaleString("vi-VN") : "";
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const raw = e.target.value.replace(/\D/g, "");
-    if (raw === "") { onChange(undefined); return; }
+    if (raw === "") {
+      onChange(undefined);
+      return;
+    }
     const parsed = parseInt(raw, 10);
     onChange(isNaN(parsed) ? undefined : parsed);
   };
 
   const addAmount = (delta: number) => {
     const current = value ?? 0;
-    const next = max !== undefined ? Math.min(current + delta, max) : current + delta;
+    const next =
+      max !== undefined ? Math.min(current + delta, max) : current + delta;
     onChange(next);
   };
 
@@ -56,14 +60,14 @@ export const VndCurrencyInput: React.FC<VndCurrencyInputProps> = ({
   };
 
   const words = value ? numberToVietnamese(value) : "";
-  const formatted = value !== undefined
-    ? value.toLocaleString("vi-VN") + " ₫"
-    : "";
 
   return (
     <div className="space-y-2">
       <div className="flex justify-between items-baseline">
-        <label htmlFor={inputId} className="text-sm font-medium text-muted-foreground">
+        <label
+          htmlFor={inputId}
+          className="text-sm font-medium text-muted-foreground"
+        >
           {label}
         </label>
         {max !== undefined && (
@@ -72,6 +76,35 @@ export const VndCurrencyInput: React.FC<VndCurrencyInputProps> = ({
           </span>
         )}
       </div>
+
+      {/* Numeric input */}
+      <Input
+        id={inputId}
+        type="text"
+        inputMode="numeric"
+        value={displayValue}
+        onChange={handleChange}
+        placeholder="0"
+        disabled={disabled}
+        error={!!fieldError}
+        aria-describedby={
+          [fieldError ? errId : null, words ? wordsId : null]
+            .filter(Boolean)
+            .join(" ") || undefined
+        }
+        autoComplete="off"
+      />
+
+      {/* Vietnamese words preview */}
+      {words && (
+        <p
+          id={wordsId}
+          className="text-xs text-muted-foreground italic"
+          aria-live="polite"
+        >
+          {words}
+        </p>
+      )}
 
       {/* Quick chips */}
       <div className="flex flex-wrap gap-1.5">
@@ -97,44 +130,6 @@ export const VndCurrencyInput: React.FC<VndCurrencyInputProps> = ({
           </button>
         )}
       </div>
-
-      {/* Numeric input */}
-      <Input
-        id={inputId}
-        type="text"
-        inputMode="numeric"
-        pattern="[0-9]*"
-        value={displayValue}
-        onChange={handleChange}
-        placeholder="0"
-        disabled={disabled}
-        error={!!fieldError}
-        className="font-mono tabular-nums text-lg"
-        aria-describedby={
-          [fieldError ? errId : null, words ? wordsId : null]
-            .filter(Boolean)
-            .join(" ") || undefined
-        }
-        autoComplete="off"
-      />
-
-      {/* Formatted display */}
-      {formatted && (
-        <p className="text-sm font-mono font-semibold text-foreground tabular-nums" translate="no">
-          {formatted}
-        </p>
-      )}
-
-      {/* Vietnamese words preview */}
-      {words && (
-        <p
-          id={wordsId}
-          className="text-xs text-muted-foreground italic"
-          aria-live="polite"
-        >
-          {words}
-        </p>
-      )}
 
       {fieldError && <FormErrorMessage id={errId} message={fieldError} />}
     </div>

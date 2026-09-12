@@ -27,3 +27,9 @@ export interface RecipientLookup {
   /** ACTIVE | FROZEN | INACTIVE */
   status: string;
 }
+
+export interface RecentRecipient {
+  accountNumber: string;
+  accountHolderName: string;
+  lastTransferAt: string; // ISO string from backend Instant
+}

@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { CheckCircle, CaretRight } from "@phosphor-icons/react";
+import { CheckCircle, CaretRight, CopySimple } from "@phosphor-icons/react";
+import { toast } from "sonner";
 import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
 import { formatCurrency, formatDateTime } from "@/lib/format";
@@ -43,11 +44,28 @@ export const TransactionReceipt: React.FC<TransactionReceiptProps> = ({
           </span>
         </div>
 
-        <div className="flex justify-between text-sm">
+        <div className="flex justify-between items-center text-sm">
           <span className="text-sm text-muted-foreground">Reference No.</span>
-          <span className="font-mono font-medium text-foreground" translate="no">
-            {transaction.referenceNumber}
-          </span>
+          <button
+            type="button"
+            onClick={() => {
+              navigator.clipboard.writeText(transaction.referenceNumber).then(() => {
+                toast.success("Đã sao chép mã tham chiếu");
+              }).catch(() => {
+                toast.error("Không thể sao chép");
+              });
+            }}
+            className="flex items-center gap-1.5 font-mono font-medium text-foreground hover:text-primary transition-colors group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded"
+            aria-label={`Copy reference number ${transaction.referenceNumber}`}
+          >
+            <span translate="no">{transaction.referenceNumber}</span>
+            <CopySimple
+              size={14}
+              weight="bold"
+              className="text-muted-foreground group-hover:text-primary transition-colors"
+              aria-hidden="true"
+            />
+          </button>
         </div>
 
         <div className="flex justify-between text-sm">
@@ -76,13 +94,13 @@ export const TransactionReceipt: React.FC<TransactionReceiptProps> = ({
 
       <div className="flex flex-col gap-3">
         <Button onClick={onNewTransaction} className="w-full justify-center">
-          New Transaction
+          Giao dịch mới
         </Button>
         <Link
           to="/dashboard"
           className="flex items-center justify-center gap-1 py-2 text-sm font-semibold text-primary hover:text-primary-hover transition-all duration-200 hover:gap-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50"
         >
-          Go to Dashboard <CaretRight size={16} weight="bold" aria-hidden="true" />
+          Về trang chủ <CaretRight size={16} weight="bold" aria-hidden="true" />
         </Link>
       </div>
     </div>
