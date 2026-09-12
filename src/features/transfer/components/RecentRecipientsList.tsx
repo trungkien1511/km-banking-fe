@@ -14,7 +14,7 @@ export const RecentRecipientsList: React.FC<RecentRecipientsListProps> = ({ onSe
   return (
     <div className="space-y-1.5">
       <p className="text-xs text-subtle-foreground font-medium uppercase tracking-wide">
-        Gần đây
+        Recent
       </p>
       <div
         className="flex gap-3 overflow-x-auto pb-1"

@@ -4,6 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { v4 as uuidv4 } from "uuid";
 import { useAccounts } from "@/features/dashboard/store/dashboard-store";
+import { useAuthStore } from "@/features/auth/store/auth-store";
 import { useTransferMutation } from "../hooks/useTransferMutation";
 import { StepIndicator } from "./StepIndicator";
 import { AccountSelector } from "./AccountSelector";
@@ -23,7 +24,7 @@ import type {
 import type { RecipientLookup } from "../types/transfer.types";
 import type { ApiError } from "@/services/api-client";
 
-const STEPS = ["Tài khoản nguồn", "Chi tiết chuyển khoản", "Xác nhận & Gửi"];
+const STEPS = ["Source Account", "Transfer Details", "Confirm & Send"];
 
 export const TransferWizard: React.FC = () => {
   const [step, setStep] = useState(1);
@@ -36,6 +37,11 @@ export const TransferWizard: React.FC = () => {
   const accounts = useAccounts();
   const transferMut = useTransferMutation();
   const inputId = useId();
+
+  const userFullName = useAuthStore((s) => s.user?.fullName);
+  const defaultDescription = userFullName
+    ? `${userFullName} is transferring money`
+    : "";
 
   // All account numbers that belong to the current user — used to block self-transfers
   const ownAccountNumbers = React.useMemo(
@@ -59,10 +65,10 @@ export const TransferWizard: React.FC = () => {
         .object({
           destinationAccountNumber: z
             .string()
-            .min(1, "Vui lòng nhập số tài khoản thụ hưởng"),
+            .min(1, "Please enter recipient account number"),
           amount: z
-            .number({ error: "Vui lòng nhập số tiền" })
-            .min(0.01, "Số tiền phải lớn hơn 0"),
+            .number({ error: "Please enter an amount" })
+            .min(0.01, "Amount must be greater than 0"),
           description: z.string().optional(),
         })
         .refine(
@@ -70,7 +76,7 @@ export const TransferWizard: React.FC = () => {
             if (!selectedAccount) return true;
             return data.amount <= selectedAccount.availableBalance;
           },
-          { message: "Số tiền vượt quá số dư khả dụng", path: ["amount"] },
+          { message: "Amount exceeds available balance", path: ["amount"] },
         ),
     [selectedAccount],
   );
@@ -91,17 +97,14 @@ export const TransferWizard: React.FC = () => {
     defaultValues: {
       destinationAccountNumber: "",
       amount: undefined,
-      description: "",
+      description: defaultDescription,
     },
   });
 
-  const handleSelectAccount = useCallback(
-    (account: Account) => {
-      setSelectedAccount(account);
-      setStep(2);
-    },
-    [],
-  );
+  const handleSelectAccount = useCallback((account: Account) => {
+    setSelectedAccount(account);
+    setStep(2);
+  }, []);
 
   const handleRecipientResolved = useCallback(
     (recipient: RecipientLookup | null) => {
@@ -195,7 +198,10 @@ export const TransferWizard: React.FC = () => {
               <span className="text-xs text-subtle-foreground uppercase font-semibold tracking-wide">
                 Source Account
               </span>
-              <div className="font-mono text-sm text-foreground mt-0.5" translate="no">
+              <div
+                className="font-mono text-sm text-foreground mt-0.5"
+                translate="no"
+              >
                 {selectedAccount.accountNumber}
               </div>
             </div>
@@ -210,7 +216,9 @@ export const TransferWizard: React.FC = () => {
 
           <RecentRecipientsList
             onSelect={(accountNumber) => {
-              setValue("destinationAccountNumber", accountNumber, { shouldValidate: true });
+              setValue("destinationAccountNumber", accountNumber, {
+                shouldValidate: true,
+              });
             }}
           />
 
@@ -273,7 +281,9 @@ export const TransferWizard: React.FC = () => {
             </Button>
             <Button
               type="submit"
-              disabled={ownAccountNumbers.includes(watch("destinationAccountNumber")?.trim() ?? "")}
+              disabled={ownAccountNumbers.includes(
+                watch("destinationAccountNumber")?.trim() ?? "",
+              )}
               className="w-2/3"
             >
               Continue

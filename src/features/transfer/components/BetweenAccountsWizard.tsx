@@ -15,9 +15,9 @@ import type { Account, Transaction } from "@/features/dashboard/types/dashboard.
 import type { ApiError } from "@/services/api-client";
 
 const ACCOUNT_TYPE_LABEL: Record<Account["accountType"], string> = {
-  PRIMARY: "Tài khoản Chính",
-  SAVINGS: "Tài khoản Tiết kiệm",
-  CHECKING: "Tài khoản Vãng lai",
+  PRIMARY: "Primary Account",
+  SAVINGS: "Savings Account",
+  CHECKING: "Checking Account",
 };
 
 const accountLabel = (account: Account) =>
@@ -49,11 +49,11 @@ export const BetweenAccountsWizard: React.FC = () => {
   const schema = useMemo(
     () =>
       z.object({
-        amount: z.number({ required_error: "Vui lòng nhập số tiền" })
-          .min(1, "Số tiền tối thiểu là 1 ₫"),
+        amount: z.number({ required_error: "Please enter an amount" })
+          .min(1, "Minimum amount is 1 ₫"),
       }).refine(
         (data) => !fromAccount || data.amount <= fromAccount.availableBalance,
-        { message: "Số tiền vượt quá số dư khả dụng", path: ["amount"] },
+        { message: "Amount exceeds available balance", path: ["amount"] },
       ),
     [fromAccount],
   );
@@ -78,7 +78,7 @@ export const BetweenAccountsWizard: React.FC = () => {
         sourceAccountId: fromAccount.id,
         destinationAccountNumber: toAccount.accountNumber,
         amount: data.amount,
-        description: "Chuyển khoản nội bộ",
+        description: "Internal transfer",
         idempotencyKey: uuidv4(),
       },
       {
@@ -86,7 +86,7 @@ export const BetweenAccountsWizard: React.FC = () => {
         onError: (err: unknown) => {
           setServerError(
             (err as ApiError | null)?.formattedMessage ||
-            "Chuyển khoản thất bại. Vui lòng thử lại."
+            "Transfer failed. Please try again."
           );
         },
       }
@@ -102,7 +102,7 @@ export const BetweenAccountsWizard: React.FC = () => {
   if (activeAccounts.length < 2) {
     return (
       <p className="text-sm text-muted-foreground text-center py-8">
-        Bạn cần ít nhất 2 tài khoản ACTIVE để sử dụng tính năng này.
+        You need at least 2 ACTIVE accounts to use this feature.
       </p>
     );
   }
@@ -124,7 +124,7 @@ export const BetweenAccountsWizard: React.FC = () => {
   return (
     <div className="max-w-md mx-auto py-4 space-y-6">
       {serverError && (
-        <Alert variant="danger" title="Chuyển khoản thất bại" className="animate-error-in">
+        <Alert variant="danger" title="Transfer Failed" className="animate-error-in">
           {serverError}
         </Alert>
       )}
@@ -133,7 +133,7 @@ export const BetweenAccountsWizard: React.FC = () => {
         {/* From account */}
         <Card className="p-4">
           <label htmlFor="between-from" className="block text-xs text-subtle-foreground uppercase font-semibold tracking-wide mb-2">
-            Từ
+            From
           </label>
           <select
             id="between-from"
@@ -141,7 +141,7 @@ export const BetweenAccountsWizard: React.FC = () => {
             onChange={(e) => setFromId(e.target.value)}
             disabled={transferMut.isPending}
             className="w-full bg-transparent border-none outline-none cursor-pointer appearance-none text-sm font-semibold text-foreground disabled:opacity-40"
-            aria-label="Chọn tài khoản nguồn"
+            aria-label="Select source account"
           >
             {activeAccounts.map((acc) => (
               <option key={acc.id} value={acc.id}>
@@ -153,7 +153,7 @@ export const BetweenAccountsWizard: React.FC = () => {
             {fromAccount.accountNumber}
           </p>
           <p className="text-xs text-muted-foreground mt-1" translate="no">
-            Khả dụng: {fromAccount.availableBalance.toLocaleString("vi-VN")} ₫
+            Available: {fromAccount.availableBalance.toLocaleString("vi-VN")} ₫
           </p>
         </Card>
 
@@ -164,7 +164,7 @@ export const BetweenAccountsWizard: React.FC = () => {
             onClick={handleSwap}
             disabled={transferMut.isPending || activeAccounts.length < 2}
             className="w-9 h-9 rounded-full bg-background border border-border shadow-sm flex items-center justify-center hover:bg-muted transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-            aria-label="Hoán đổi tài khoản nguồn và đích"
+            aria-label="Swap source and destination accounts"
           >
             <ArrowsLeftRight size={16} weight="bold" aria-hidden="true" />
           </button>
@@ -173,7 +173,7 @@ export const BetweenAccountsWizard: React.FC = () => {
         {/* To account */}
         <Card className="p-4">
           <label htmlFor="between-to" className="block text-xs text-subtle-foreground uppercase font-semibold tracking-wide mb-2">
-            Đến
+            To
           </label>
           <select
             id="between-to"
@@ -181,7 +181,7 @@ export const BetweenAccountsWizard: React.FC = () => {
             onChange={(e) => setToId(e.target.value)}
             disabled={transferMut.isPending}
             className="w-full bg-transparent border-none outline-none cursor-pointer appearance-none text-sm font-semibold text-foreground disabled:opacity-40"
-            aria-label="Chọn tài khoản đích"
+            aria-label="Select destination account"
           >
             {activeAccounts
               .filter((acc) => acc.id !== fromAccount.id)
@@ -204,17 +204,17 @@ export const BetweenAccountsWizard: React.FC = () => {
           max={fromAccount.availableBalance}
           fieldError={errors.amount?.message}
           disabled={transferMut.isPending}
-          label="Số tiền (VND)"
+          label="Amount (VND)"
         />
 
         <div className="space-y-1 text-sm text-muted-foreground border-t border-border pt-4">
           <div className="flex justify-between">
-            <span>Phí chuyển khoản</span>
-            <span className="text-green-600 font-medium">0 ₫ (Miễn phí)</span>
+            <span>Transfer fee</span>
+            <span className="text-green-600 font-medium">0 ₫ (Free)</span>
           </div>
           <div className="flex justify-between">
-            <span>Tốc độ xử lý</span>
-            <span className="text-green-600 font-medium">Ngay lập tức · 24/7</span>
+            <span>Processing speed</span>
+            <span className="text-green-600 font-medium">Instant · 24/7</span>
           </div>
         </div>
 
@@ -224,7 +224,7 @@ export const BetweenAccountsWizard: React.FC = () => {
           disabled={!isValid || transferMut.isPending}
           className="w-full"
         >
-          {transferMut.isPending ? "Đang xử lý…" : "Xác nhận chuyển khoản"}
+          {transferMut.isPending ? "Processing…" : "Confirm transfer"}
         </Button>
       </form>
     </div>

@@ -1,5 +1,5 @@
 import React, { useId } from "react";
-import { numberToVietnamese } from "../utils/number-to-vietnamese";
+import { numberToEnglish } from "../utils/number-to-english";
 import { Input } from "@/components/ui/Input";
 import { FormErrorMessage } from "@/components/ui/FormErrorMessage";
 
@@ -59,7 +59,7 @@ export const VndCurrencyInput: React.FC<VndCurrencyInputProps> = ({
     if (max !== undefined) onChange(max);
   };
 
-  const words = value ? numberToVietnamese(value) : "";
+  const words = value ? numberToEnglish(value) : "";
 
   return (
     <div className="space-y-2">
@@ -95,7 +95,7 @@ export const VndCurrencyInput: React.FC<VndCurrencyInputProps> = ({
         autoComplete="off"
       />
 
-      {/* Vietnamese words preview */}
+      {/* Amount words preview */}
       {words && (
         <p
           id={wordsId}
@@ -126,7 +126,7 @@ export const VndCurrencyInput: React.FC<VndCurrencyInputProps> = ({
             onClick={setMax}
             className="text-xs px-2.5 py-1 rounded-full border border-primary/40 bg-primary/5 text-primary hover:bg-primary/10 transition-colors duration-150 disabled:opacity-40 disabled:pointer-events-none"
           >
-            Tất cả
+            Max
           </button>
         )}
       </div>

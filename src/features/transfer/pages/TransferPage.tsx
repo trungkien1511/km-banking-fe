@@ -32,9 +32,9 @@ export const TransferPage: React.FC = () => {
           const isActive = activeTab === tab;
           const label =
             tab === "transfer"
-              ? "Chuyển khoản"
+              ? "Transfer"
               : tab === "between"
-                ? "Tài khoản của tôi"
+                ? "My Accounts"
                 : tab === "deposit"
                   ? "Mock Deposit"
                   : "Mock Withdrawal";

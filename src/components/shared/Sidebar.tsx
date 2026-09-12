@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import {
   SquaresFour,
@@ -25,34 +25,11 @@ const NAV_ITEMS: NavItem[] = [
   { label: "Settings", to: "/settings", icon: Gear },
 ];
 
-interface TooltipProps {
-  label: string;
-  visible: boolean;
-}
-
-const Tooltip: React.FC<TooltipProps> = ({ label, visible }) => (
-  <div
-    role="tooltip"
-    className={cn(
-      "pointer-events-none absolute left-[calc(100%+12px)] top-1/2 -translate-y-1/2 z-50",
-      "whitespace-nowrap rounded-md px-2.5 py-1.5",
-      "bg-surface-elevated border border-border",
-      "text-xs font-medium text-foreground",
-      "shadow-elevated",
-      "transition-all duration-150",
-      visible ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-1",
-    )}
-  >
-    {label}
-  </div>
-);
-
 interface RailItemProps {
   item: NavItem;
 }
 
 const RailItem: React.FC<RailItemProps> = ({ item }) => {
-  const [hovered, setHovered] = useState(false);
   const Icon = item.icon;
 
   return (
@@ -60,11 +37,9 @@ const RailItem: React.FC<RailItemProps> = ({ item }) => {
       to={item.to}
       end={item.to === "/dashboard"}
       aria-label={item.label}
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
       className={({ isActive }) =>
         cn(
-          "relative flex h-11 w-11 items-center justify-center rounded-xl",
+          "flex w-full items-center gap-3 rounded-xl px-3 py-2.5",
           "transition-all duration-150",
           "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50",
           isActive
@@ -79,8 +54,9 @@ const RailItem: React.FC<RailItemProps> = ({ item }) => {
             size={20}
             weight={isActive ? "bold" : "regular"}
             aria-hidden="true"
+            className="flex-shrink-0"
           />
-          <Tooltip label={item.label} visible={hovered} />
+          <span className="text-sm font-medium">{item.label}</span>
         </>
       )}
     </NavLink>
@@ -89,7 +65,6 @@ const RailItem: React.FC<RailItemProps> = ({ item }) => {
 
 // Memoized — stateless shell component (rerender-memo: no re-render on route change).
 export const Sidebar = React.memo(function Sidebar() {
-  const [logoutHovered, setLogoutHovered] = useState(false);
   const logout = useAuthStore((state) => state.logout);
   const navigate = useNavigate();
 
@@ -101,12 +76,12 @@ export const Sidebar = React.memo(function Sidebar() {
   return (
     <aside
       className="
-        hidden lg:flex flex-col items-center
-        w-16 shrink-0
+        hidden lg:flex flex-col
+        w-52 shrink-0
         h-screen sticky top-0
         bg-card
         border-r border-border
-        py-4
+        py-4 px-3
       "
       aria-label="Main navigation"
     >
@@ -136,7 +111,7 @@ export const Sidebar = React.memo(function Sidebar() {
       </div>
 
       <nav
-        className="flex flex-1 flex-col items-center gap-1"
+        className="flex flex-1 flex-col gap-1"
         aria-label="App sections"
       >
         {NAV_ITEMS.map((item) => (
@@ -144,26 +119,22 @@ export const Sidebar = React.memo(function Sidebar() {
         ))}
       </nav>
 
-      <div className="relative">
-        <button
-          type="button"
-          onClick={handleLogout}
-          onMouseEnter={() => setLogoutHovered(true)}
-          onMouseLeave={() => setLogoutHovered(false)}
-          aria-label="Sign out"
-          className="
-            flex h-11 w-11 items-center justify-center rounded-xl
-            text-muted-foreground
-            hover:bg-destructive/10 hover:text-destructive
-            transition-all duration-150
-            focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-destructive/40
-            active:scale-[0.95]
-          "
-        >
-          <SignOut size={20} aria-hidden="true" />
-          <Tooltip label="Sign out" visible={logoutHovered} />
-        </button>
-      </div>
+      <button
+        type="button"
+        onClick={handleLogout}
+        aria-label="Sign out"
+        className="
+          flex w-full items-center gap-3 rounded-xl px-3 py-2.5
+          text-muted-foreground
+          hover:bg-destructive/10 hover:text-destructive
+          transition-all duration-150
+          focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-destructive/40
+          active:scale-[0.95]
+        "
+      >
+        <SignOut size={20} aria-hidden="true" />
+        <span className="text-sm font-medium">Sign out</span>
+      </button>
     </aside>
   );
 });

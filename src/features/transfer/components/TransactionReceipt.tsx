@@ -1,11 +1,12 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { CheckCircle, CaretRight, CopySimple } from "@phosphor-icons/react";
+import { CheckCircle, CaretRight, CopySimple, Printer } from "@phosphor-icons/react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
 import { formatCurrency, formatDateTime } from "@/lib/format";
 import type { Transaction } from "@/features/dashboard/types/dashboard.types";
+import { printReceipt } from "../utils/receipt-print";
 
 interface TransactionReceiptProps {
   transaction: Transaction;
@@ -50,9 +51,9 @@ export const TransactionReceipt: React.FC<TransactionReceiptProps> = ({
             type="button"
             onClick={() => {
               navigator.clipboard.writeText(transaction.referenceNumber).then(() => {
-                toast.success("Đã sao chép mã tham chiếu");
+                toast.success("Reference number copied");
               }).catch(() => {
-                toast.error("Không thể sao chép");
+                toast.error("Could not copy");
               });
             }}
             className="flex items-center gap-1.5 font-mono font-medium text-foreground hover:text-primary transition-colors group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded"
@@ -93,14 +94,22 @@ export const TransactionReceipt: React.FC<TransactionReceiptProps> = ({
       </Card>
 
       <div className="flex flex-col gap-3">
+        <Button
+          variant="outline"
+          className="w-full justify-center"
+          onClick={() => printReceipt(transaction, operationType)}
+        >
+          <Printer size={16} weight="bold" aria-hidden="true" />
+          Print / Download receipt
+        </Button>
         <Button onClick={onNewTransaction} className="w-full justify-center">
-          Giao dịch mới
+          New transaction
         </Button>
         <Link
           to="/dashboard"
           className="flex items-center justify-center gap-1 py-2 text-sm font-semibold text-primary hover:text-primary-hover transition-all duration-200 hover:gap-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50"
         >
-          Về trang chủ <CaretRight size={16} weight="bold" aria-hidden="true" />
+          Back to Home <CaretRight size={16} weight="bold" aria-hidden="true" />
         </Link>
       </div>
     </div>

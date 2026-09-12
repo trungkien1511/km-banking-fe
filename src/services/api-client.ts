@@ -45,20 +45,20 @@ apiClient.interceptors.response.use(
     const originalRequest = error.config;
 
     // Format user-friendly error message for all errors
-    let errorMessage = "Đã xảy ra lỗi không xác định. Vui lòng thử lại.";
+    let errorMessage = "An unexpected error has occurred. Please try again.";
 
     if (error.response) {
       const { status, data } = error.response;
 
       if (status === 401 && originalRequest?.url?.includes("/api/v1/auth/login")) {
-        errorMessage = data?.message || "Tên đăng nhập hoặc mật khẩu không chính xác.";
+        errorMessage = data?.message || "Incorrect username or password.";
       } else if (status >= 500) {
-        errorMessage = "Hệ thống đang bảo trì hoặc gặp sự cố. Vui lòng thử lại sau.";
+        errorMessage = "The system is under maintenance or experiencing issues. Please try again later.";
       } else {
-        errorMessage = data?.message || data?.error || "Yêu cầu không hợp lệ.";
+        errorMessage = data?.message || data?.error || "Invalid request.";
       }
     } else if (error.code === "ERR_NETWORK") {
-      errorMessage = "Lỗi kết nối mạng. Vui lòng kiểm tra lại kết nối Internet.";
+      errorMessage = "Network connection error. Please check your internet connection.";
     }
 
     (error as AxiosError & ApiError).formattedMessage = errorMessage;
