@@ -33,3 +33,16 @@ export interface RecentRecipient {
   accountHolderName: string;
   lastTransferAt: string; // ISO string from backend Instant
 }
+
+export interface Beneficiary {
+  id: string;
+  accountNumber: string;
+  accountHolderName: string;
+  displayName: string;
+  createdAt: string;
+}
+
+export interface SaveBeneficiaryPayload {
+  accountNumber: string;
+  displayName: string;
+}

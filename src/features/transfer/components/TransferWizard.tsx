@@ -9,7 +9,6 @@ import { useTransferMutation } from "../hooks/useTransferMutation";
 import { StepIndicator } from "./StepIndicator";
 import { AccountSelector } from "./AccountSelector";
 import { RecipientInput } from "./RecipientInput";
-import { RecentRecipientsList } from "./RecentRecipientsList";
 import { VndCurrencyInput } from "./VndCurrencyInput";
 import { TransactionReceipt } from "./TransactionReceipt";
 import { Button } from "@/components/ui/Button";
@@ -154,6 +153,7 @@ export const TransferWizard: React.FC = () => {
         transaction={completedTxn}
         operationType="transfer"
         onNewTransaction={handleReset}
+        destinationAccountNumber={getValues("destinationAccountNumber")}
       />
     );
   }
@@ -213,14 +213,6 @@ export const TransferWizard: React.FC = () => {
               Change
             </button>
           </Card>
-
-          <RecentRecipientsList
-            onSelect={(accountNumber) => {
-              setValue("destinationAccountNumber", accountNumber, {
-                shouldValidate: true,
-              });
-            }}
-          />
 
           <RecipientInput
             value={getValues("destinationAccountNumber")}

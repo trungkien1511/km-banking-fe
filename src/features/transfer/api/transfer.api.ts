@@ -1,9 +1,11 @@
 import { apiClient } from "@/services/api-client";
 import type { Transaction } from "@/features/dashboard/types/dashboard.types";
 import type {
+  Beneficiary,
   DepositPayload,
   RecipientLookup,
   RecentRecipient,
+  SaveBeneficiaryPayload,
   TransferPayload,
   WithdrawalPayload,
 } from "../types/transfer.types";
@@ -31,6 +33,14 @@ export const transferApi = {
     const response = await apiClient.get("/api/v1/accounts/recent-recipients", {
       params: { limit },
     });
+    return response.data.data;
+  },
+  saveBeneficiary: async (payload: SaveBeneficiaryPayload): Promise<Beneficiary> => {
+    const response = await apiClient.post("/api/v1/accounts/beneficiaries", payload);
+    return response.data.data;
+  },
+  getBeneficiaries: async (): Promise<Beneficiary[]> => {
+    const response = await apiClient.get("/api/v1/accounts/beneficiaries");
     return response.data.data;
   },
 };

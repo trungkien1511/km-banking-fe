@@ -49,7 +49,8 @@ export const BetweenAccountsWizard: React.FC = () => {
   const schema = useMemo(
     () =>
       z.object({
-        amount: z.number({ required_error: "Please enter an amount" })
+        amount: z
+          .number({ error: "Please enter an amount" })
           .min(1, "Minimum amount is 1 ₫"),
       }).refine(
         (data) => !fromAccount || data.amount <= fromAccount.availableBalance,

@@ -1,24 +1,48 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { CheckCircle, CaretRight, CopySimple, Printer } from "@phosphor-icons/react";
+import { BookmarkSimple, CaretRight, CheckCircle, CopySimple, Printer } from "@phosphor-icons/react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
+import { Input } from "@/components/ui/Input";
 import { formatCurrency, formatDateTime } from "@/lib/format";
 import type { Transaction } from "@/features/dashboard/types/dashboard.types";
+import { useSaveBeneficiary } from "../hooks/useBeneficiaries";
 import { printReceipt } from "../utils/receipt-print";
 
 interface TransactionReceiptProps {
   transaction: Transaction;
   operationType: "transfer" | "deposit" | "withdrawal";
   onNewTransaction: () => void;
+  destinationAccountNumber?: string;
 }
 
 export const TransactionReceipt: React.FC<TransactionReceiptProps> = ({
   transaction,
   operationType,
   onNewTransaction,
+  destinationAccountNumber,
 }) => {
+  const saveBeneficiaryMut = useSaveBeneficiary();
+  const [beneficiarySaved, setBeneficiarySaved] = React.useState(false);
+  const [namingBeneficiary, setNamingBeneficiary] = React.useState(false);
+  const [beneficiaryName, setBeneficiaryName] = React.useState("");
+
+  const handleSaveBeneficiary = () => {
+    const displayName = beneficiaryName.trim() || destinationAccountNumber || "";
+    saveBeneficiaryMut.mutate(
+      { accountNumber: destinationAccountNumber || "", displayName },
+      {
+        onSuccess: () => {
+          setBeneficiarySaved(true);
+          setNamingBeneficiary(false);
+          toast.success("Beneficiary saved");
+        },
+        onError: () => toast.error("Could not save beneficiary"),
+      },
+    );
+  };
+
   return (
     <div className="animate-fade-slide-up text-center max-w-md mx-auto py-6">
       <div className="flex justify-center mb-4">
@@ -102,6 +126,70 @@ export const TransactionReceipt: React.FC<TransactionReceiptProps> = ({
           <Printer size={16} weight="bold" aria-hidden="true" />
           Print / Download receipt
         </Button>
+        {operationType === "transfer" &&
+          destinationAccountNumber &&
+          !beneficiarySaved &&
+          !namingBeneficiary && (
+            <Button
+              variant="outline"
+              className="w-full justify-center"
+              onClick={() => setNamingBeneficiary(true)}
+            >
+              <BookmarkSimple size={16} weight="bold" aria-hidden="true" />
+              Save beneficiary
+            </Button>
+          )}
+        {operationType === "transfer" &&
+          destinationAccountNumber &&
+          !beneficiarySaved &&
+          namingBeneficiary && (
+            <Card className="p-4 space-y-3 text-left">
+              <label
+                htmlFor="beneficiary-name"
+                className="block text-sm font-medium text-muted-foreground"
+              >
+                Name this beneficiary
+              </label>
+              <Input
+                id="beneficiary-name"
+                type="text"
+                placeholder="e.g. Mom, Company ABC"
+                value={beneficiaryName}
+                onChange={(e) => setBeneficiaryName(e.target.value)}
+                autoFocus
+                autoComplete="off"
+              />
+              <p className="text-xs text-subtle-foreground" translate="no">
+                {destinationAccountNumber}
+              </p>
+              <div className="flex gap-2">
+                <Button
+                  variant="outline"
+                  className="w-1/3 justify-center"
+                  onClick={() => {
+                    setNamingBeneficiary(false);
+                    setBeneficiaryName("");
+                  }}
+                  disabled={saveBeneficiaryMut.isPending}
+                >
+                  Cancel
+                </Button>
+                <Button
+                  className="w-2/3 justify-center"
+                  isLoading={saveBeneficiaryMut.isPending}
+                  onClick={handleSaveBeneficiary}
+                >
+                  <BookmarkSimple size={16} weight="bold" aria-hidden="true" />
+                  Save
+                </Button>
+              </div>
+            </Card>
+          )}
+        {beneficiarySaved && (
+          <p className="text-xs text-center text-green-600 font-medium">
+            Beneficiary saved
+          </p>
+        )}
         <Button onClick={onNewTransaction} className="w-full justify-center">
           New transaction
         </Button>

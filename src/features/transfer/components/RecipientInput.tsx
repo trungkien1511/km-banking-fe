@@ -1,20 +1,16 @@
 import React, { useEffect, useId, useRef, useState } from "react";
-import {
-  CheckCircle,
-  Warning,
-  SpinnerGap,
-  XCircle,
-} from "@phosphor-icons/react";
+import { AddressBook, Warning } from "@phosphor-icons/react";
+import { cn } from "@/lib/utils";
 import { transferApi } from "../api/transfer.api";
 import type { RecipientLookup } from "../types/transfer.types";
 import { Input } from "@/components/ui/Input";
 import { FormErrorMessage } from "@/components/ui/FormErrorMessage";
+import { RecipientPickerPopup } from "./RecipientPickerPopup";
 
 type LookupState =
   | { phase: "idle" }
   | { phase: "loading" }
-  | { phase: "found"; recipient:Recipient Account Number
- RecipientLookup }
+  | { phase: "found"; recipient: RecipientLookup }
   | { phase: "self" } // typed their own account number
   | { phase: "not_found" }
   | { phase: "error"; message: string };
@@ -43,46 +39,75 @@ export const RecipientInput: React.FC<RecipientInputProps> = ({
   ownAccountNumbers = [],
   disabled,
 }) => {
-  const [lookup, setLookup] = useState<LookupState>({ phase: "idle" });
+  // Async-only outcome — set exclusively inside the debounce callback,
+  // never synchronously in an effect. Idle/loading/self are derived at render.
+  type LookupOutcome =
+    | { phase: "found"; recipient: RecipientLookup }
+    | { phase: "not_found" }
+    | { phase: "error"; message: string };
+
+  const [outcome, setOutcome] = useState<LookupOutcome | null>(null);
+  const [outcomeValue, setOutcomeValue] = useState("");
+  const [pickerOpen, setPickerOpen] = useState(false);
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const inputId = useId();
+  const wrapperRef = useRef<HTMLDivElement | null>(null);
+
+  const trimmed = value.trim();
+  const isSelf = ownAccountNumbers.includes(trimmed);
+  const isShort = !trimmed || trimmed.length < MIN_LOOKUP_LENGTH;
+
+  // Derived lookup phase computed during render (no effect setState needed)
+  const lookup: LookupState = isShort
+    ? { phase: "idle" }
+    : isSelf
+      ? { phase: "self" }
+      : outcome && outcomeValue === trimmed
+        ? outcome
+        : { phase: "loading" };
+
+  // Close popup on outside click — Escape is handled inside RecipientPickerPopup
+  React.useEffect(() => {
+    if (!pickerOpen) return;
+    const onPointerDown = (e: PointerEvent) => {
+      if (
+        wrapperRef.current &&
+        !wrapperRef.current.contains(e.target as Node)
+      ) {
+        setPickerOpen(false);
+      }
+    };
+    document.addEventListener("pointerdown", onPointerDown);
+    return () => document.removeEventListener("pointerdown", onPointerDown);
+  }, [pickerOpen]);
 
   useEffect(() => {
     if (debounceRef.current) clearTimeout(debounceRef.current);
 
-    const trimmed = value.trim();
-
-    if (!trimmed || trimmed.length < MIN_LOOKUP_LENGTH) {
-      setLookup({ phase: "idle" });
+    if (isShort || isSelf) {
       onRecipientResolved(null);
       return;
     }
-
-    // Self-account check — instant, no API call needed
-    if (ownAccountNumbers.includes(trimmed)) {
-      setLookup({ phase: "self" });
-      onRecipientResolved(null);
-      return;
-    }
-
-    setLookup({ phase: "loading" });
 
     debounceRef.current = setTimeout(async () => {
       try {
         const recipient = await transferApi.lookupRecipient(trimmed);
-        setLookup({ phase: "found", recipient });
+        setOutcome({ phase: "found", recipient });
+        setOutcomeValue(trimmed);
         onRecipientResolved(recipient);
       } catch (err: unknown) {
         const status = (err as { response?: { status?: number } })?.response
           ?.status;
         if (status === 404) {
-          setLookup({ phase: "not_found" });
+          setOutcome({ phase: "not_found" });
+          setOutcomeValue(trimmed);
           onRecipientResolved(null);
         } else {
-          setLookup({
+          setOutcome({
             phase: "error",
             message: "Unable to verify account. Please check the number.",
           });
+          setOutcomeValue(trimmed);
           onRecipientResolved(null);
         }
       }
@@ -94,7 +119,6 @@ export const RecipientInput: React.FC<RecipientInputProps> = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [value, ownAccountNumbers]);
 
-  const isSelf = lookup.phase === "self";
   const isNonActive =
     lookup.phase === "found" && lookup.recipient.status !== "ACTIVE";
 
@@ -112,7 +136,7 @@ export const RecipientInput: React.FC<RecipientInputProps> = ({
         Recipient Account Number
       </label>
 
-      <div className="relative">
+      <div className="relative" ref={wrapperRef}>
         <Input
           id={inputId}
           type="text"
@@ -132,45 +156,36 @@ export const RecipientInput: React.FC<RecipientInputProps> = ({
               .filter(Boolean)
               .join(" ") || undefined
           }
-          className="pr-9"
+          className="pr-14"
           autoComplete="off"
         />
 
-        {/* Right-side status icon */}
-        <span className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2">
-          {lookup.phase === "loading" && (
-            <SpinnerGap
-              size={16}
-              weight="bold"
-              className="animate-spin text-muted-foreground"
-              aria-hidden="true"
-            />
+        {/* Picker trigger — opens Saved/Recent popup */}
+        <button
+          type="button"
+          onClick={() => setPickerOpen((prev) => !prev)}
+          aria-label="Choose from saved or recent recipients"
+          aria-haspopup="dialog"
+          aria-expanded={pickerOpen}
+          className={cn(
+            "absolute right-2 top-1/2 -translate-y-1/2 h-8 w-8 flex items-center justify-center rounded-md transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+            pickerOpen
+              ? "text-primary bg-primary/10"
+              : "text-muted-foreground hover:text-foreground hover:bg-muted",
           )}
-          {lookup.phase === "found" && !isNonActive && (
-            <CheckCircle
-              size={16}
-              weight="fill"
-              className="text-green-500"
-              aria-hidden="true"
-            />
-          )}
-          {isNonActive && (
-            <Warning
-              size={16}
-              weight="fill"
-              className="text-yellow-500"
-              aria-hidden="true"
-            />
-          )}
-          {(lookup.phase === "not_found" || isSelf) && (
-            <XCircle
-              size={16}
-              weight="fill"
-              className="text-destructive"
-              aria-hidden="true"
-            />
-          )}
-        </span>
+        >
+          <AddressBook size={18} weight="regular" aria-hidden="true" />
+        </button>
+
+        {pickerOpen && (
+          <RecipientPickerPopup
+            onSelect={(accountNumber) => {
+              onChange(accountNumber);
+              setPickerOpen(false);
+            }}
+            onClose={() => setPickerOpen(false)}
+          />
+        )}
       </div>
 
       {/* react-hook-form field error */}
@@ -189,16 +204,32 @@ export const RecipientInput: React.FC<RecipientInputProps> = ({
         </p>
       )}
 
-      {/* Verified recipient — full name, no masking */}
+      {/* Verified recipient — read-only Account Name field, only when STK is valid */}
       {lookup.phase === "found" && !isNonActive && (
-        <p
-          id={`${inputId}-verified`}
-          className="flex items-center gap-1 text-xs text-green-600 font-normal"
-          aria-live="polite"
-        >
-          <CheckCircle size={13} weight="fill" aria-hidden="true" />
-          {lookup.recipient.accountHolderName}
-        </p>
+        <div className="space-y-1.5">
+          <label
+            htmlFor={`${inputId}-account-name`}
+            className="text-sm font-medium text-muted-foreground"
+          >
+            Account Name
+          </label>
+          <div className="relative">
+            <Input
+              id={`${inputId}-account-name`}
+              type="text"
+              value={lookup.recipient.accountHolderName}
+              readOnly
+              aria-readonly="true"
+              autoComplete="off"
+              className="bg-muted/50 text-foreground cursor-default"
+            />
+            {/* Locked overlay — signals the field is read-only */}
+            <span
+              className="pointer-events-none absolute inset-0 rounded-md bg-muted/70"
+              aria-hidden="true"
+            />
+          </div>
+        </div>
       )}
 
       {/* Non-ACTIVE account warning */}

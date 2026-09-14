@@ -263,16 +263,21 @@
   }
 }
 
-/* Step completion pulse */
-@keyframes step-complete {
+/* Active step — scale pop + soft ring pulse (single combined animation) */
+@keyframes step-active {
   0% {
     transform: scale(1);
+    box-shadow: 0 0 0 0 color-mix(in srgb, var(--color-primary) 25%, transparent);
   }
-  40% {
-    transform: scale(1.1);
+  45% {
+    transform: scale(1.12);
+  }
+  70% {
+    box-shadow: 0 0 0 6px transparent;
   }
   100% {
     transform: scale(1);
+    box-shadow: 0 0 0 0 transparent;
   }
 }
 
@@ -388,8 +393,8 @@
     animation: error-in var(--duration-fast) ease-out both;
   }
 
-  .animate-step-complete {
-    animation: step-complete 0.35s var(--easing-standard) both;
+  .animate-step-active {
+    animation: step-active 0.5s var(--easing-standard) both;
   }
 
   /* ── Stagger delays ── */

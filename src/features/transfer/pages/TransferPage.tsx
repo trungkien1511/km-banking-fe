@@ -1,12 +1,10 @@
 import React, { Activity, useState } from "react";
 import { TransferWizard } from "../components/TransferWizard";
-import { DepositWizard } from "../components/DepositWizard";
-import { WithdrawalWizard } from "../components/WithdrawalWizard";
 import { BetweenAccountsWizard } from "../components/BetweenAccountsWizard";
 import { cn } from "@/lib/utils";
 import { useDashboard } from "@/features/dashboard/hooks/useDashboard";
 
-type TabType = "transfer" | "between" | "deposit" | "withdrawal";
+type TabType = "transfer" | "between";
 
 export const TransferPage: React.FC = () => {
   const [activeTab, setActiveTab] = useState<TabType>("transfer");
@@ -18,8 +16,7 @@ export const TransferPage: React.FC = () => {
       <div>
         <h1 className="text-page-title text-foreground mb-2">Move Money</h1>
         <p className="text-sm text-muted-foreground">
-          Transfer funds to another account or run mock deposits & withdrawals
-          for testing.
+          Send money to another account or move funds between your own accounts.
         </p>
       </div>
 
@@ -28,16 +25,12 @@ export const TransferPage: React.FC = () => {
         role="tablist"
         aria-label="Transaction Operations"
       >
-        {(["transfer", "between", "deposit", "withdrawal"] as TabType[]).map((tab) => {
+        {(["transfer", "between"] as TabType[]).map((tab) => {
           const isActive = activeTab === tab;
           const label =
             tab === "transfer"
               ? "Transfer"
-              : tab === "between"
-                ? "My Accounts"
-                : tab === "deposit"
-                  ? "Mock Deposit"
-                  : "Mock Withdrawal";
+              : "My Accounts";
 
           return (
             <button
@@ -61,7 +54,7 @@ export const TransferPage: React.FC = () => {
       </div>
 
       <div className="mt-4">
-        {(["transfer", "between", "deposit", "withdrawal"] as TabType[]).map((tab) => (
+        {(["transfer", "between"] as TabType[]).map((tab) => (
           <Activity
             key={tab}
             mode={activeTab === tab ? "visible" : "hidden"}
@@ -74,8 +67,6 @@ export const TransferPage: React.FC = () => {
             >
               {tab === "transfer" && <TransferWizard />}
               {tab === "between" && <BetweenAccountsWizard />}
-              {tab === "deposit" && <DepositWizard />}
-              {tab === "withdrawal" && <WithdrawalWizard />}
             </div>
           </Activity>
         ))}
