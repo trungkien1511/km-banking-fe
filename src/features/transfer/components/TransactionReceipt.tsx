@@ -3,12 +3,32 @@ import { Link } from "react-router-dom";
 import { BookmarkSimple, CaretRight, CheckCircle, CopySimple, Printer } from "@phosphor-icons/react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/Button";
+import { Badge } from "@/components/ui/Badge";
 import { Card } from "@/components/ui/Card";
 import { Input } from "@/components/ui/Input";
 import { formatCurrency, formatDateTime } from "@/lib/format";
 import type { Transaction } from "@/features/dashboard/types/dashboard.types";
 import { useSaveBeneficiary } from "../hooks/useBeneficiaries";
 import { printReceipt } from "../utils/receipt-print";
+
+// Human-readable status labels — mirrors TransactionCard to stay consistent.
+const STATUS_LABEL: Record<Transaction["status"], string> = {
+  PENDING: "Pending",
+  COMPLETED: "Completed",
+  FAILED: "Failed",
+  CANCELLED: "Cancelled",
+};
+
+// Badge variant per status — text + color, never color alone (WCAG 1.4.1).
+const STATUS_BADGE_VARIANT: Record<
+  Transaction["status"],
+  React.ComponentProps<typeof Badge>["variant"]
+> = {
+  PENDING: "warning",
+  COMPLETED: "success",
+  FAILED: "danger",
+  CANCELLED: "default",
+};
 
 interface TransactionReceiptProps {
   transaction: Transaction;
@@ -95,9 +115,9 @@ export const TransactionReceipt: React.FC<TransactionReceiptProps> = ({
 
         <div className="flex justify-between text-sm">
           <span className="text-sm text-muted-foreground">Status</span>
-          <span className="font-semibold text-success">
-            {transaction.status}
-          </span>
+          <Badge variant={STATUS_BADGE_VARIANT[transaction.status]}>
+            {STATUS_LABEL[transaction.status]}
+          </Badge>
         </div>
 
         {transaction.description && (
@@ -159,7 +179,7 @@ export const TransactionReceipt: React.FC<TransactionReceiptProps> = ({
                 autoFocus
                 autoComplete="off"
               />
-              <p className="text-xs text-subtle-foreground" translate="no">
+              <p className="text-sm text-muted-foreground" translate="no">
                 {destinationAccountNumber}
               </p>
               <div className="flex gap-2">
@@ -186,7 +206,7 @@ export const TransactionReceipt: React.FC<TransactionReceiptProps> = ({
             </Card>
           )}
         {beneficiarySaved && (
-          <p className="text-xs text-center text-green-600 font-medium">
+          <p className="text-sm text-center text-success font-medium">
             Beneficiary saved
           </p>
         )}

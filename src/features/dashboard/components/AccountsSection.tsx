@@ -11,15 +11,16 @@ export const AccountsSection = React.memo(function AccountsSection() {
       <div className="mb-3 flex items-center justify-between">
         <h2
           id="accounts-heading"
-          className="text-xs font-semibold uppercase tracking-widest text-muted-foreground"
+          className="text-sm font-semibold uppercase tracking-widest text-muted-foreground"
         >
           Accounts
         </h2>
         <Link
           to="/accounts"
           className="
-            text-xs font-medium text-muted-foreground
-            hover:text-foreground
+            text-sm font-medium text-muted-foreground
+            underline underline-offset-2 decoration-foreground/20
+            hover:decoration-foreground/60 hover:text-foreground
             transition-colors duration-150
             focus-visible:outline-none focus-visible:ring-2
             focus-visible:ring-ring/40 rounded

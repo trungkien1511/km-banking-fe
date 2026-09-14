@@ -197,7 +197,7 @@ export const RecipientInput: React.FC<RecipientInputProps> = ({
       {isSelf && (
         <p
           id={`${inputId}-self-err`}
-          className="text-xs text-destructive font-medium"
+          className="text-sm text-destructive font-medium"
           aria-live="polite"
         >
           Cannot transfer to your own account
@@ -213,22 +213,20 @@ export const RecipientInput: React.FC<RecipientInputProps> = ({
           >
             Account Name
           </label>
-          <div className="relative">
-            <Input
-              id={`${inputId}-account-name`}
-              type="text"
-              value={lookup.recipient.accountHolderName}
-              readOnly
-              aria-readonly="true"
-              autoComplete="off"
-              className="bg-muted/50 text-foreground cursor-default"
-            />
-            {/* Locked overlay — signals the field is read-only */}
-            <span
-              className="pointer-events-none absolute inset-0 rounded-md bg-muted/70"
-              aria-hidden="true"
-            />
-          </div>
+          {/*
+           * read-only field: no overlay — the input signals lock via bg-muted,
+           * cursor-default, select-all, and aria-readonly. The opaque span that
+           * was here before obscured the text on the dark shell.
+           */}
+          <Input
+            id={`${inputId}-account-name`}
+            type="text"
+            value={lookup.recipient.accountHolderName}
+            readOnly
+            aria-readonly="true"
+            autoComplete="off"
+            className="bg-muted text-foreground cursor-default select-all"
+          />
         </div>
       )}
 
@@ -236,7 +234,7 @@ export const RecipientInput: React.FC<RecipientInputProps> = ({
       {isNonActive && (
         <p
           id={`${inputId}-non-active`}
-          className="flex items-center gap-1 text-xs text-yellow-600 font-medium"
+          className="flex items-center gap-1 text-sm text-warning font-medium"
           aria-live="polite"
         >
           <Warning size={13} weight="fill" aria-hidden="true" />
@@ -249,7 +247,7 @@ export const RecipientInput: React.FC<RecipientInputProps> = ({
       {lookup.phase === "not_found" && (
         <p
           id={`${inputId}-not-found`}
-          className="text-xs text-destructive"
+          className="text-sm text-destructive"
           aria-live="polite"
         >
           Account not found
@@ -260,7 +258,7 @@ export const RecipientInput: React.FC<RecipientInputProps> = ({
       {lookup.phase === "error" && (
         <p
           id={`${inputId}-lookup-err`}
-          className="text-xs text-muted-foreground"
+          className="text-sm text-muted-foreground"
           aria-live="polite"
         >
           {lookup.message}

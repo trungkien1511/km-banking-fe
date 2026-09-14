@@ -151,7 +151,7 @@ export const DepositWizard: React.FC = () => {
                   className="text-sm font-medium text-muted-foreground"
                 >
                   Note{" "}
-                  <span className="text-subtle-foreground font-normal">
+                  <span className="text-muted-foreground font-normal">
                     (Optional)
                   </span>
                 </label>

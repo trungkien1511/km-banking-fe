@@ -12,18 +12,26 @@ interface TransactionCardProps {
   transaction: Transaction;
 }
 
-const STATUS_DOT: Record<Transaction["status"], string> = {
-  PENDING: "bg-warning",
-  COMPLETED: "bg-success",
-  FAILED: "bg-destructive",
-  CANCELLED: "bg-muted-foreground/40",
+// English status labels — visible text, not color-only (WCAG 1.4.1)
+const STATUS_LABEL: Record<Transaction["status"], string> = {
+  PENDING: "Pending",
+  COMPLETED: "Completed",
+  FAILED: "Failed",
+  CANCELLED: "Cancelled",
+};
+
+const STATUS_CLASS: Record<Transaction["status"], string> = {
+  PENDING: "text-warning",
+  COMPLETED: "text-success",
+  FAILED: "text-destructive",
+  CANCELLED: "text-muted-foreground",
 };
 
 const TYPE_LABEL: Record<Transaction["transactionType"], string> = {
   DEPOSIT: "Deposit",
   WITHDRAWAL: "Withdrawal",
   TRANSFER: "Transfer",
-  FEE: "Fee",
+  FEE: "Service fee",
 };
 
 export const TransactionCard = React.memo(function TransactionCard({
@@ -43,6 +51,7 @@ export const TransactionCard = React.memo(function TransactionCard({
         hover:bg-muted/30
       "
     >
+      {/* Direction icon */}
       <div
         className={cn(
           "flex h-8 w-8 shrink-0 items-center justify-center rounded-full",
@@ -63,26 +72,28 @@ export const TransactionCard = React.memo(function TransactionCard({
         )}
       </div>
 
+      {/* Description + status row */}
       <div className="min-w-0 flex-1">
         <p className="truncate text-sm font-medium text-foreground">
-          {transaction.description !== null
-            ? transaction.description
-            : typeLabel}
+          {transaction.description ?? typeLabel}
         </p>
-        <div className="mt-0.5 flex items-center gap-1.5">
+        <div className="mt-0.5 flex items-center gap-2">
+          {/* Visible status text — satisfies WCAG 1.4.1, no aria-hidden */}
           <span
             className={cn(
-              "h-1.5 w-1.5 rounded-full shrink-0",
-              STATUS_DOT[transaction.status],
+              "text-sm font-semibold",
+              STATUS_CLASS[transaction.status],
             )}
-            aria-hidden="true"
-          />
-          <p className="text-[11px] text-muted-foreground">
+          >
+            {STATUS_LABEL[transaction.status]}
+          </span>
+          <p className="text-sm text-muted-foreground">
             {formatDate(transaction.createdAt)}
           </p>
         </div>
       </div>
 
+      {/* Amount */}
       <p
         className={cn(
           "shrink-0 font-mono text-sm font-semibold tabular-nums",

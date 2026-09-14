@@ -16,15 +16,22 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <RouterProvider router={router} />
-      <Toaster 
-        position="top-right" 
+      {/*
+       * Sonner Toaster — tokens from the dark shell (default :root).
+       * We use CSS variables directly so toasts always match the shell
+       * surface colors rather than Sonner's own hardcoded defaults.
+       */}
+      <Toaster
+        position="top-right"
         toastOptions={{
           style: {
             padding: '16px',
-            borderRadius: '8px',
-            border: '1px solid var(--color-border, #1E3A5F)',
-            boxShadow: '0 4px 12px rgba(0, 0, 0, 0.05)',
-          }
+            borderRadius: 'var(--radius-md, 8px)',
+            background: 'var(--color-surface-elevated)',
+            color: 'var(--color-foreground)',
+            border: '1px solid var(--color-border)',
+            boxShadow: 'var(--shadow-elevated)',
+          },
         }}
       />
     </QueryClientProvider>

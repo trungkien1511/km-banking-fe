@@ -16,7 +16,7 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
           // Semantic tokens — correct in both .light-context and dark shell
           "bg-muted border border-border",
           "text-sm text-foreground",
-          "placeholder:text-subtle-foreground",
+          "placeholder:text-muted-foreground",
           "hover:border-muted-foreground/40",
           "transition-[border-color,box-shadow] duration-150",
           "focus-visible:outline-none",

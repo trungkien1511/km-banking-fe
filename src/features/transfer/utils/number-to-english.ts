@@ -56,3 +56,61 @@ export function numberToEnglish(amount: number): string {
   const words = parts.join(" ");
   return words.charAt(0).toUpperCase() + words.slice(1) + " VND";
 }
+
+const VI_DIGITS = ["không", "một", "hai", "ba", "bốn", "năm", "sáu", "bảy", "tám", "chín"];
+
+function readThreeVi(n: number, full: boolean): string {
+  const h = Math.floor(n / 100);
+  const t = Math.floor((n % 100) / 10);
+  const u = n % 10;
+  let res = "";
+
+  if (h > 0 || full) {
+    res += VI_DIGITS[h] + " trăm ";
+  }
+
+  if (t > 1) {
+    res += VI_DIGITS[t] + " mươi ";
+    if (u === 1) res += "mốt";
+    else if (u === 5) res += "lăm";
+    else if (u > 0) res += VI_DIGITS[u];
+  } else if (t === 1) {
+    res += "mười ";
+    if (u === 5) res += "lăm";
+    else if (u > 0) res += VI_DIGITS[u];
+  } else if (u > 0) {
+    if (h > 0 || full) res += "lẻ ";
+    res += VI_DIGITS[u];
+  }
+
+  return res.trim();
+}
+
+export function numberToVietnamese(amount: number): string {
+  if (!Number.isFinite(amount) || amount <= 0) return "";
+
+  const n = Math.floor(amount);
+
+  const tỷ = Math.floor(n / 1_000_000_000);
+  const triệu = Math.floor((n % 1_000_000_000) / 1_000_000);
+  const nghìn = Math.floor((n % 1_000_000) / 1_000);
+  const đồng = n % 1_000;
+
+  const parts: string[] = [];
+  if (tỷ > 0) parts.push(readThreeVi(tỷ, false) + " tỷ");
+  if (triệu > 0) parts.push(readThreeVi(triệu, tỷ > 0) + " triệu");
+  if (nghìn > 0) parts.push(readThreeVi(nghìn, tỷ > 0 || triệu > 0) + " nghìn");
+  if (đồng > 0) parts.push(readThreeVi(đồng, tỷ > 0 || triệu > 0 || nghìn > 0));
+
+  if (parts.length === 0) return "";
+
+  const words = parts.join(" ").trim();
+  return words.charAt(0).toUpperCase() + words.slice(1) + " đồng";
+}
+
+export function formatVndInWords(amount: number): string {
+  const vi = numberToVietnamese(amount);
+  const en = numberToEnglish(amount);
+  if (!vi) return "";
+  return `${vi} (${en})`;
+}

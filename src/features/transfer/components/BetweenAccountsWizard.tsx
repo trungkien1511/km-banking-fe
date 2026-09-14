@@ -1,6 +1,6 @@
 import React, { useState, useCallback, useMemo } from "react";
 import { v4 as uuidv4 } from "uuid";
-import { ArrowsLeftRight } from "@phosphor-icons/react";
+import { ArrowsLeftRight, CaretDown } from "@phosphor-icons/react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -11,6 +11,7 @@ import { TransactionReceipt } from "./TransactionReceipt";
 import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
 import { Alert } from "@/components/ui/Alert";
+import { formatCurrency } from "@/lib/format";
 import type { Account, Transaction } from "@/features/dashboard/types/dashboard.types";
 import type { ApiError } from "@/services/api-client";
 
@@ -32,6 +33,7 @@ export const BetweenAccountsWizard: React.FC = () => {
     [accounts],
   );
 
+  const [step, setStep] = useState<1 | 2>(1);
   const [fromId, setFromId] = useState<string>("");
   const [toId, setToId] = useState<string>("");
   const [serverError, setServerError] = useState<string | null>(null);
@@ -59,7 +61,7 @@ export const BetweenAccountsWizard: React.FC = () => {
     [fromAccount],
   );
 
-  const { handleSubmit, watch, setValue, formState: { errors, isValid }, reset } =
+  const { handleSubmit, watch, setValue, getValues, formState: { errors, isValid }, reset } =
     useForm<BetweenForm>({
       resolver: zodResolver(schema) as import("react-hook-form").Resolver<BetweenForm>,
       mode: "onChange",
@@ -71,20 +73,22 @@ export const BetweenAccountsWizard: React.FC = () => {
     setToId(fromAccount.id);
   }, [fromAccount, toAccount]);
 
-  const onSubmit = (data: BetweenForm) => {
+  const handleConfirm = () => {
     if (!fromAccount || !toAccount || transferMut.isPending) return;
     setServerError(null);
+    const amount = Number(getValues("amount"));
     transferMut.mutate(
       {
         sourceAccountId: fromAccount.id,
         destinationAccountNumber: toAccount.accountNumber,
-        amount: data.amount,
+        amount,
         description: "Internal transfer",
         idempotencyKey: uuidv4(),
       },
       {
         onSuccess: (txn) => setCompletedTxn(txn),
         onError: (err: unknown) => {
+          setStep(1);
           setServerError(
             (err as ApiError | null)?.formattedMessage ||
             "Transfer failed. Please try again."
@@ -95,6 +99,7 @@ export const BetweenAccountsWizard: React.FC = () => {
   };
 
   const handleReset = () => {
+    setStep(1);
     setCompletedTxn(null);
     setServerError(null);
     reset();
@@ -130,104 +135,170 @@ export const BetweenAccountsWizard: React.FC = () => {
         </Alert>
       )}
 
-      <div className="relative flex flex-col gap-3">
-        {/* From account */}
-        <Card className="p-4">
-          <label htmlFor="between-from" className="block text-xs text-subtle-foreground uppercase font-semibold tracking-wide mb-2">
-            From
-          </label>
-          <select
-            id="between-from"
-            value={fromAccount.id}
-            onChange={(e) => setFromId(e.target.value)}
-            disabled={transferMut.isPending}
-            className="w-full bg-transparent border-none outline-none cursor-pointer appearance-none text-sm font-semibold text-foreground disabled:opacity-40"
-            aria-label="Select source account"
-          >
-            {activeAccounts.map((acc) => (
-              <option key={acc.id} value={acc.id}>
-                {accountLabel(acc)}
-              </option>
-            ))}
-          </select>
-          <p className="font-mono text-sm text-muted-foreground mt-1" translate="no">
-            {fromAccount.accountNumber}
-          </p>
-          <p className="text-xs text-muted-foreground mt-1" translate="no">
-            Available: {fromAccount.availableBalance.toLocaleString("vi-VN")} ₫
-          </p>
-        </Card>
-
-        {/* Swap button */}
-        <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-10">
-          <button
-            type="button"
-            onClick={handleSwap}
-            disabled={transferMut.isPending || activeAccounts.length < 2}
-            className="w-9 h-9 rounded-full bg-background border border-border shadow-sm flex items-center justify-center hover:bg-muted transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-            aria-label="Swap source and destination accounts"
-          >
-            <ArrowsLeftRight size={16} weight="bold" aria-hidden="true" />
-          </button>
-        </div>
-
-        {/* To account */}
-        <Card className="p-4">
-          <label htmlFor="between-to" className="block text-xs text-subtle-foreground uppercase font-semibold tracking-wide mb-2">
-            To
-          </label>
-          <select
-            id="between-to"
-            value={toAccount.id}
-            onChange={(e) => setToId(e.target.value)}
-            disabled={transferMut.isPending}
-            className="w-full bg-transparent border-none outline-none cursor-pointer appearance-none text-sm font-semibold text-foreground disabled:opacity-40"
-            aria-label="Select destination account"
-          >
-            {activeAccounts
-              .filter((acc) => acc.id !== fromAccount.id)
-              .map((acc) => (
-                <option key={acc.id} value={acc.id}>
-                  {accountLabel(acc)}
-                </option>
-              ))}
-          </select>
-          <p className="font-mono text-sm text-muted-foreground mt-1" translate="no">
-            {toAccount.accountNumber}
-          </p>
-        </Card>
-      </div>
-
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-        <VndCurrencyInput
-          value={watch("amount")}
-          onChange={(val) => setValue("amount", val as number, { shouldValidate: true })}
-          max={fromAccount.availableBalance}
-          fieldError={errors.amount?.message}
-          disabled={transferMut.isPending}
-          label="Amount (VND)"
-        />
-
-        <div className="space-y-1 text-sm text-muted-foreground border-t border-border pt-4">
-          <div className="flex justify-between">
-            <span>Transfer fee</span>
-            <span className="text-green-600 font-medium">0 ₫ (Free)</span>
-          </div>
-          <div className="flex justify-between">
-            <span>Processing speed</span>
-            <span className="text-green-600 font-medium">Instant · 24/7</span>
-          </div>
-        </div>
-
-        <Button
-          type="submit"
-          isLoading={transferMut.isPending}
-          disabled={!isValid || transferMut.isPending}
-          className="w-full"
+      {step === 1 && (
+        <form
+          onSubmit={handleSubmit(() => {
+            setServerError(null);
+            setStep(2);
+          })}
+          className="space-y-6 animate-fade-slide-up"
         >
-          {transferMut.isPending ? "Processing…" : "Confirm transfer"}
-        </Button>
-      </form>
+          <div className="relative flex flex-col gap-3">
+            {/* From account */}
+            <Card className="p-4 relative">
+              <label htmlFor="between-from" className="block text-sm text-muted-foreground uppercase font-semibold tracking-wide mb-2">
+                From Account
+              </label>
+              <div className="relative flex items-center">
+                <select
+                  id="between-from"
+                  value={fromAccount.id}
+                  onChange={(e) => setFromId(e.target.value)}
+                  disabled={transferMut.isPending}
+                  className="w-full bg-muted/50 border border-border rounded-lg px-3 py-2.5 pr-8 text-sm font-semibold text-foreground cursor-pointer appearance-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:opacity-40"
+                  aria-label="Select source account"
+                >
+                  {activeAccounts.map((acc) => (
+                    <option key={acc.id} value={acc.id} className="bg-card text-foreground">
+                      {accountLabel(acc)}
+                    </option>
+                  ))}
+                </select>
+                <CaretDown size={16} className="absolute right-3 pointer-events-none text-muted-foreground" aria-hidden="true" />
+              </div>
+              <p className="text-sm text-muted-foreground mt-2 font-mono tabular-nums" translate="no">
+                Available: {formatCurrency(fromAccount.availableBalance, fromAccount.currency)}
+              </p>
+            </Card>
+
+            {/* Swap button */}
+            <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-10">
+              <button
+                type="button"
+                onClick={handleSwap}
+                disabled={transferMut.isPending || activeAccounts.length < 2}
+                className="w-9 h-9 rounded-full bg-background border border-border shadow-sm flex items-center justify-center hover:bg-muted transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                aria-label="Swap source and destination accounts"
+              >
+                <ArrowsLeftRight size={16} weight="bold" aria-hidden="true" />
+              </button>
+            </div>
+
+            {/* To account */}
+            <Card className="p-4 relative">
+              <label htmlFor="between-to" className="block text-sm text-muted-foreground uppercase font-semibold tracking-wide mb-2">
+                To Account
+              </label>
+              <div className="relative flex items-center">
+                <select
+                  id="between-to"
+                  value={toAccount.id}
+                  onChange={(e) => setToId(e.target.value)}
+                  disabled={transferMut.isPending}
+                  className="w-full bg-muted/50 border border-border rounded-lg px-3 py-2.5 pr-8 text-sm font-semibold text-foreground cursor-pointer appearance-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:opacity-40"
+                  aria-label="Select destination account"
+                >
+                  {activeAccounts
+                    .filter((acc) => acc.id !== fromAccount.id)
+                    .map((acc) => (
+                      <option key={acc.id} value={acc.id} className="bg-card text-foreground">
+                        {accountLabel(acc)}
+                      </option>
+                    ))}
+                </select>
+                <CaretDown size={16} className="absolute right-3 pointer-events-none text-muted-foreground" aria-hidden="true" />
+              </div>
+            </Card>
+          </div>
+
+          <VndCurrencyInput
+            value={watch("amount")}
+            onChange={(val) => setValue("amount", val as number, { shouldValidate: true })}
+            max={fromAccount.availableBalance}
+            fieldError={errors.amount?.message}
+            disabled={transferMut.isPending}
+            label="Amount (VND)"
+          />
+
+          <div className="space-y-1 text-sm text-muted-foreground border-t border-border pt-4">
+            <div className="flex justify-between">
+              <span>Transfer fee</span>
+              <span className="text-success font-medium">0 ₫ (Free)</span>
+            </div>
+            <div className="flex justify-between">
+              <span>Processing speed</span>
+              <span className="text-success font-medium">Instant · 24/7</span>
+            </div>
+          </div>
+
+          <Button
+            type="submit"
+            disabled={!isValid || transferMut.isPending}
+            className="w-full"
+          >
+            Review Transfer
+          </Button>
+        </form>
+      )}
+
+      {step === 2 && (
+        <div className="space-y-6 animate-fade-slide-up">
+          <h3 className="text-lg font-semibold text-foreground">
+            Review Transfer Details
+          </h3>
+
+          <Card className="p-5 space-y-4">
+            <div className="flex justify-between text-sm">
+              <span className="text-muted-foreground">From</span>
+              <span className="font-semibold text-foreground text-right">
+                {ACCOUNT_TYPE_LABEL[fromAccount.accountType]} <br />
+                <span className="font-mono text-muted-foreground" translate="no">({fromAccount.accountNumber})</span>
+              </span>
+            </div>
+
+            <div className="flex justify-between text-sm border-t border-border/60 pt-3">
+              <span className="text-muted-foreground">To</span>
+              <span className="font-semibold text-foreground text-right">
+                {ACCOUNT_TYPE_LABEL[toAccount.accountType]} <br />
+                <span className="font-mono text-muted-foreground" translate="no">({toAccount.accountNumber})</span>
+              </span>
+            </div>
+
+            <div className="flex justify-between text-sm border-t border-border pt-3">
+              <span className="text-muted-foreground">Amount</span>
+              <span className="font-mono font-bold text-lg text-primary tabular-nums" translate="no">
+                {formatCurrency(Number(getValues("amount")), "VND")}
+              </span>
+            </div>
+
+            <div className="flex justify-between text-sm border-t border-border/60 pt-3">
+              <span className="text-muted-foreground">Fee</span>
+              <span className="text-success font-semibold">0 ₫ (Free)</span>
+            </div>
+          </Card>
+
+          <div className="flex gap-3">
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => setStep(1)}
+              disabled={transferMut.isPending}
+              className="w-1/3"
+            >
+              Back
+            </Button>
+            <Button
+              type="button"
+              onClick={handleConfirm}
+              isLoading={transferMut.isPending}
+              disabled={transferMut.isPending}
+              className="w-2/3"
+            >
+              {transferMut.isPending ? "Transferring…" : "Confirm Transfer"}
+            </Button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

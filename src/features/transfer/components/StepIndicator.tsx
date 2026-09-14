@@ -44,7 +44,7 @@ export const StepIndicator: React.FC<StepIndicatorProps> = ({
       aria-label={`Step ${currentStep} of ${totalSteps}`}
     >
       {/* Text label — always visible for screen readers + small screens */}
-      <p className="text-xs font-medium text-muted-foreground mb-4 text-center">
+      <p className="text-sm font-medium text-muted-foreground mb-4 text-center">
         Step {currentStep} of {totalSteps}
       </p>
 
@@ -67,7 +67,7 @@ export const StepIndicator: React.FC<StepIndicatorProps> = ({
                       ? "bg-primary border-primary text-primary-fg"
                       : isActive
                         ? "bg-card border-primary text-primary shadow-[0_0_0_3px_color-mix(in_srgb,var(--color-primary)_20%,transparent)]"
-                        : "bg-card border-border text-subtle-foreground",
+                        : "bg-card border-border text-muted-foreground",
                   )}
                   aria-current={isActive ? "step" : undefined}
                 >
@@ -76,13 +76,13 @@ export const StepIndicator: React.FC<StepIndicatorProps> = ({
 
                 <span
                   className={cn(
-                    "text-xs font-medium hidden sm:inline whitespace-nowrap",
+                    "text-sm font-medium hidden sm:inline whitespace-nowrap",
                     "transition-colors duration-(--duration-normal)",
                     isActive
                       ? "text-primary"
                       : isCompleted
                         ? "text-foreground"
-                        : "text-subtle-foreground",
+                        : "text-muted-foreground",
                   )}
                 >
                   {labels[idx]}

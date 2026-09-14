@@ -65,7 +65,7 @@ export const AppLogo: React.FC<AppLogoProps> = ({
           </span>
           <span
             className={cn(
-              'text-[10px] tracking-widest uppercase font-mono mt-0.5',
+              'text-sm tracking-widest uppercase font-mono mt-0.5',
               'text-muted-foreground'
             )}
           >

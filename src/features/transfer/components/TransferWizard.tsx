@@ -195,7 +195,7 @@ export const TransferWizard: React.FC = () => {
         >
           <Card className="p-4 bg-muted/30 border-border/60 flex items-center justify-between">
             <div>
-              <span className="text-xs text-subtle-foreground uppercase font-semibold tracking-wide">
+              <span className="text-sm text-muted-foreground uppercase font-semibold tracking-wide">
                 Source Account
               </span>
               <div
@@ -208,7 +208,7 @@ export const TransferWizard: React.FC = () => {
             <button
               type="button"
               onClick={() => setStep(1)}
-              className="text-xs font-semibold text-primary hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded"
+              className="text-sm font-semibold text-primary hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded"
             >
               Change
             </button>
@@ -308,7 +308,7 @@ export const TransferWizard: React.FC = () => {
                   {getValues("destinationAccountNumber")}
                 </span>
                 {resolvedRecipient && (
-                  <p className="text-xs text-muted-foreground mt-0.5">
+                  <p className="text-sm text-muted-foreground mt-0.5">
                     {resolvedRecipient.accountHolderName} · KM Bank
                   </p>
                 )}

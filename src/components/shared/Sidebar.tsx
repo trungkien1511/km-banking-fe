@@ -18,7 +18,7 @@ interface NavItem {
 }
 
 const NAV_ITEMS: NavItem[] = [
-  { label: "Dashboard", to: "/dashboard", icon: SquaresFour },
+  { label: "Overview", to: "/dashboard", icon: SquaresFour },
   { label: "Accounts", to: "/accounts", icon: CreditCard },
   { label: "Transfer", to: "/transfer", icon: ArrowsLeftRight },
   { label: "History", to: "/transactions", icon: Clock },
@@ -85,29 +85,35 @@ export const Sidebar = React.memo(function Sidebar() {
       "
       aria-label="Main navigation"
     >
-      <div className="mb-6 flex h-9 w-9 items-center justify-center rounded-xl bg-primary/10">
-        <svg
-          className="h-5 w-5 text-primary"
-          viewBox="0 0 24 24"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-          aria-hidden="true"
-        >
-          <path
-            d="M12 2L3 7V17L12 22L21 17V7L12 2Z"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-          <path
-            d="M12 6L7.5 8.5V13.5L12 16L16.5 13.5V8.5L12 6Z"
-            fill="currentColor"
-            fillOpacity="0.35"
-            stroke="currentColor"
-            strokeWidth="1.5"
-          />
-        </svg>
+      {/* Brand logo + name */}
+      <div className="mb-4 flex items-center gap-2.5 px-1">
+        <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-primary/10">
+          <svg
+            className="h-4 w-4 text-primary"
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            aria-hidden="true"
+          >
+            <path
+              d="M12 2L3 7V17L12 22L21 17V7L12 2Z"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+            <path
+              d="M12 6L7.5 8.5V13.5L12 16L16.5 13.5V8.5L12 6Z"
+              fill="currentColor"
+              fillOpacity="0.35"
+              stroke="currentColor"
+              strokeWidth="1.5"
+            />
+          </svg>
+        </div>
+        <span className="text-sm font-bold text-foreground tracking-tight">
+          KM Banking
+        </span>
       </div>
 
       <nav
@@ -122,7 +128,7 @@ export const Sidebar = React.memo(function Sidebar() {
       <button
         type="button"
         onClick={handleLogout}
-        aria-label="Sign out"
+        aria-label="Log out"
         className="
           flex w-full items-center gap-3 rounded-xl px-3 py-2.5
           text-muted-foreground
@@ -133,7 +139,7 @@ export const Sidebar = React.memo(function Sidebar() {
         "
       >
         <SignOut size={20} aria-hidden="true" />
-        <span className="text-sm font-medium">Sign out</span>
+        <span className="text-sm font-medium">Log out</span>
       </button>
     </aside>
   );

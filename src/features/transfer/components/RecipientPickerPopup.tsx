@@ -64,7 +64,7 @@ export const RecipientPickerPopup: React.FC<RecipientPickerPopupProps> = ({
           aria-controls={`${popupId}-panel-saved`}
           onClick={() => setTab("saved")}
           className={cn(
-            "flex-1 flex items-center justify-center gap-1.5 py-2.5 text-xs font-semibold transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50 focus-visible:ring-inset",
+            "flex-1 flex items-center justify-center gap-1.5 py-2.5 text-sm font-semibold transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50 focus-visible:ring-inset",
             tab === "saved"
               ? "text-primary border-b-2 border-primary"
               : "text-muted-foreground hover:text-foreground",
@@ -81,7 +81,7 @@ export const RecipientPickerPopup: React.FC<RecipientPickerPopupProps> = ({
           aria-controls={`${popupId}-panel-recent`}
           onClick={() => setTab("recent")}
           className={cn(
-            "flex-1 flex items-center justify-center gap-1.5 py-2.5 text-xs font-semibold transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50 focus-visible:ring-inset",
+            "flex-1 flex items-center justify-center gap-1.5 py-2.5 text-sm font-semibold transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50 focus-visible:ring-inset",
             tab === "recent"
               ? "text-primary border-b-2 border-primary"
               : "text-muted-foreground hover:text-foreground",
@@ -121,7 +121,7 @@ export const RecipientPickerPopup: React.FC<RecipientPickerPopupProps> = ({
                     <span className="block text-sm font-medium text-foreground truncate">
                       {"displayName" in item ? item.displayName : item.accountHolderName}
                     </span>
-                    <span className="block text-xs text-muted-foreground font-mono truncate" translate="no">
+                    <span className="block text-sm text-muted-foreground font-mono truncate" translate="no">
                       {item.accountNumber}
                     </span>
                   </span>

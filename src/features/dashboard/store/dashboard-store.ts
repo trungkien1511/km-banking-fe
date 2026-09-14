@@ -10,6 +10,7 @@ interface DashboardState {
   dashboardData: DashboardData | null;
   isLoading: boolean;
   error: string | null;
+  lastUpdated: number | null;
 
   setDashboardData: (data: DashboardData) => void;
   setLoading: (isLoading: boolean) => void;
@@ -21,12 +22,14 @@ const initialState = {
   dashboardData: null,
   isLoading: false,
   error: null,
+  lastUpdated: null,
 };
 
 export const useDashboardStore = create<DashboardState>((set) => ({
   ...initialState,
 
-  setDashboardData: (data: DashboardData) => set({ dashboardData: data }),
+  setDashboardData: (data: DashboardData) =>
+    set({ dashboardData: data, lastUpdated: Date.now() }),
   setLoading: (isLoading: boolean) => set({ isLoading }),
   setError: (error: string | null) => set({ error }),
   reset: () => set(initialState),

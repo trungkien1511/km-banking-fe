@@ -23,7 +23,7 @@ export const PasswordInput = React.forwardRef<HTMLInputElement, InputProps>(
             "absolute right-3 top-1/2 -translate-y-1/2",
             "p-1 rounded-md",
             // Semantic tokens — correct on both white (light-context) and dark shell
-            "text-subtle-foreground",
+            "text-muted-foreground",
             "hover:text-foreground",
             "hover:bg-surface-elevated",
             "transition-colors duration-150",

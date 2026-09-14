@@ -2,6 +2,7 @@ import React from "react";
 import { cn } from "@/lib/utils";
 import { Card } from "@/components/ui/Card";
 import { Badge } from "@/components/ui/Badge";
+import { formatCurrency } from "@/lib/format";
 import type { Account } from "@/features/dashboard/types/dashboard.types";
 
 interface AccountSelectorProps {
@@ -65,9 +66,9 @@ export const AccountSelector: React.FC<AccountSelectorProps> = React.memo(
             </div>
             <div className="text-right">
               <div className="text-lg font-bold text-foreground" translate="no">
-                {acc.availableBalance.toLocaleString("vi-VN")} {acc.currency}
+                {formatCurrency(acc.availableBalance, acc.currency)}
               </div>
-              <span className="text-xs text-muted-foreground">Available Balance</span>
+              <span className="text-sm text-muted-foreground">Available Balance</span>
             </div>
           </Card>
         );

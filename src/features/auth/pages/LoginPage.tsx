@@ -47,21 +47,21 @@ export const LoginPage = () => {
           <AppLogo variant="light" />
 
           <div className="animate-fade-slide-up animation-delay-100">
-            <p className="text-xs font-mono tracking-[0.18em] uppercase text-primary mb-4 select-none">
+            <p className="text-sm font-mono tracking-[0.18em] uppercase text-primary mb-4 select-none">
               Secure Digital Banking
             </p>
             <p className="text-4xl xl:text-5xl font-bold tracking-tight leading-[1.1] text-foreground max-w-sm text-balance">
               Modern banking, built for{" "}
               <span className="text-primary">clarity.</span>
             </p>
-            <p className="mt-5 text-[15px] text-foreground/50 leading-relaxed max-w-xs">
+            <p className="mt-5 text-base text-foreground/70 leading-relaxed max-w-xs">
               Manage your accounts, track every transaction, and move money with
               confidence.
             </p>
           </div>
 
           <div className="animate-fade-slide-up animation-delay-300 space-y-3">
-            <p className="text-[11px] font-mono tracking-widest uppercase text-foreground/30 mb-4 select-none">
+            <p className="text-sm font-mono tracking-widest uppercase text-foreground/50 mb-4 select-none">
               Why customers trust us
             </p>
             {TRUST_BADGES.map(({ icon: Icon, label, sub }) => (
@@ -77,7 +77,7 @@ export const LoginPage = () => {
                   <p className="text-sm font-medium text-foreground/80 leading-none">
                     {label}
                   </p>
-                  <p className="text-xs text-foreground/35 mt-0.5">{sub}</p>
+                  <p className="text-sm text-foreground/60 mt-0.5">{sub}</p>
                 </div>
               </div>
             ))}
@@ -113,7 +113,7 @@ export const LoginPage = () => {
 
           <LoginForm />
 
-          <p className="mt-8 text-center text-[11px] text-subtle-foreground leading-relaxed">
+          <p className="mt-8 text-center text-sm text-muted-foreground leading-relaxed">
             Protected by 256-bit TLS encryption.
             <br />
             <span className="text-muted-foreground">

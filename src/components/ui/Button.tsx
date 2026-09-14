@@ -55,7 +55,7 @@ const variants: Record<NonNullable<ButtonProps['variant']>, string> = {
 };
 
 const sizes: Record<NonNullable<ButtonProps['size']>, string> = {
-  sm:   "h-8 px-3 text-xs gap-1.5",
+  sm:   "h-8 px-3 text-sm gap-1.5",
   md:   "h-11 px-4 py-2 text-sm gap-2",   // h-11 = 44px — min touch target
   lg:   "h-12 px-8 text-base gap-2",
   icon: "h-11 w-11",                         // 44px square — min touch target

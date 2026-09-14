@@ -44,14 +44,14 @@ export const DashboardHeader = React.memo(function DashboardHeader() {
       "
       aria-label="Dashboard header"
     >
-      {/* Greeting */}
+      {/* Greeting + user info */}
       <div className="flex items-center gap-3">
-        {/* User avatar initials - mobile only (desktop sidebar has logo) */}
+        {/* Avatar */}
         <div
           className="
-            flex h-8 w-8 items-center justify-center rounded-full
+            flex h-8 w-8 shrink-0 items-center justify-center rounded-full
             bg-primary/15 border border-primary/20
-            text-primary text-xs font-semibold
+            text-primary text-sm font-semibold
             select-none
           "
           aria-hidden="true"
@@ -59,7 +59,7 @@ export const DashboardHeader = React.memo(function DashboardHeader() {
           {initials}
         </div>
         <div>
-          <p className="text-[11px] text-muted-foreground leading-none">
+          <p className="text-sm text-muted-foreground leading-none">
             {getGreeting()}
           </p>
           <p className="text-sm font-semibold text-foreground leading-tight mt-0.5">
@@ -74,7 +74,7 @@ export const DashboardHeader = React.memo(function DashboardHeader() {
           type="button"
           aria-label="Notifications"
           className="
-            flex h-8 w-8 items-center justify-center rounded-lg
+            flex h-10 w-10 items-center justify-center rounded-lg
             text-muted-foreground
             hover:bg-muted/50 hover:text-foreground
             transition-colors duration-150
@@ -92,7 +92,7 @@ export const DashboardHeader = React.memo(function DashboardHeader() {
           aria-label="Sign out"
           className="
             lg:hidden
-            flex h-8 w-8 items-center justify-center rounded-lg
+            flex h-10 w-10 items-center justify-center rounded-lg
             text-muted-foreground
             hover:bg-destructive/10 hover:text-destructive
             transition-colors duration-150

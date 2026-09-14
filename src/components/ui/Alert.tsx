@@ -41,21 +41,23 @@ export const Alert = React.forwardRef<HTMLDivElement, AlertProps>(
         ref={ref}
         role="alert"
         className={cn(
-          "relative w-full rounded-xl border p-4",
-          "[&>svg]:absolute [&>svg]:text-inherit [&>svg]:left-4 [&>svg]:top-4",
-          "[&>svg+div]:-translate-y-0.75 [&>svg~*]:pl-7",
+          "flex gap-3 w-full rounded-xl border p-4",
           variants[variant],
           className,
         )}
         {...props}
       >
-        <Icon className="h-5 w-5" aria-hidden="true" />
-        {title && (
-          <h5 className="mb-1 font-semibold leading-none tracking-tight">
-            {title}
-          </h5>
-        )}
-        <div className="text-sm opacity-90">{children}</div>
+        {/* Icon — fixed size, stays top-aligned with the first line of text */}
+        <Icon className="h-5 w-5 shrink-0 mt-0.5" aria-hidden="true" />
+
+        <div className="flex-1 min-w-0">
+          {title && (
+            <h5 className="mb-1 font-semibold leading-none tracking-tight">
+              {title}
+            </h5>
+          )}
+          <div className="text-sm opacity-90">{children}</div>
+        </div>
       </div>
     );
   },

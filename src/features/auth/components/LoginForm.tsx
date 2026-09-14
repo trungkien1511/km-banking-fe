@@ -1,15 +1,15 @@
 import { useCallback } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { WarningCircle, ArrowRight, CircleNotch } from "@phosphor-icons/react";
+import { ArrowRight, WarningCircle } from "@phosphor-icons/react";
 import { loginSchema } from "@/features/auth/schemas/login-schema";
 import { useLogin } from "@/features/auth/hooks/use-login";
 import type { LoginFormData } from "@/features/auth/types/login.types";
+import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { PasswordInput } from "@/components/ui/PasswordInput";
 import { Checkbox } from "@/components/ui/Checkbox";
 import { FormErrorMessage } from "@/components/ui/FormErrorMessage";
-import { cn } from "@/lib/utils";
 import type { ApiError } from "@/services/api-client";
 
 export const LoginForm = () => {
@@ -95,7 +95,7 @@ export const LoginForm = () => {
           </label>
           <button
             type="button"
-            className="text-xs font-medium text-primary hover:text-primary-hover transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded"
+            className="text-sm font-medium text-primary hover:text-primary-hover transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded"
           >
             Forgot password?
           </button>
@@ -126,38 +126,22 @@ export const LoginForm = () => {
         {...register("rememberMe")}
       />
 
-      {/* --color-primary token adapts: navy in light-context, gold in dark shell */}
-      <button
+      {/* Uses the shared Button component — isLoading shows spinner + disables.
+          --color-primary adapts via .light-context: navy on login panel, gold in app shell. */}
+      <Button
         type="submit"
+        isLoading={isPending}
         disabled={isPending}
-        className={cn(
-          "relative w-full h-11 rounded-lg font-semibold text-sm",
-          "flex items-center justify-center gap-2",
-          "bg-primary text-primary-fg",
-          "hover:bg-primary-hover",
-          "transition-[transform,box-shadow,background-color,opacity] duration-150",
-          "active:scale-[0.98]",
-          "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
-          "disabled:pointer-events-none disabled:opacity-60",
-          "shadow-sm hover:shadow-md",
-        )}
+        className="w-full"
       >
-        {isPending ? (
-          <>
-            <CircleNotch
-              size={16}
-              className="animate-spin"
-              aria-hidden="true"
-            />
-            <span>Signing in…</span>
-          </>
-        ) : (
+        {!isPending && (
           <>
             <span>Sign in</span>
             <ArrowRight size={16} aria-hidden="true" />
           </>
         )}
-      </button>
+        {isPending && <span>Signing in…</span>}
+      </Button>
 
       {/* Screen reader announcement for loading state */}
       {isPending && (

@@ -71,35 +71,44 @@ export const VndCurrencyInput: React.FC<VndCurrencyInputProps> = ({
           {label}
         </label>
         {max !== undefined && (
-          <span className="text-xs text-subtle-foreground">
+          <span className="text-sm text-muted-foreground">
             Max: {max.toLocaleString("vi-VN")} ₫
           </span>
         )}
       </div>
 
-      {/* Numeric input */}
-      <Input
-        id={inputId}
-        type="text"
-        inputMode="numeric"
-        value={displayValue}
-        onChange={handleChange}
-        placeholder="0"
-        disabled={disabled}
-        error={!!fieldError}
-        aria-describedby={
-          [fieldError ? errId : null, words ? wordsId : null]
-            .filter(Boolean)
-            .join(" ") || undefined
-        }
-        autoComplete="off"
-      />
+      {/* Numeric input with currency badge */}
+      <div className="relative flex items-center">
+        <Input
+          id={inputId}
+          type="text"
+          inputMode="numeric"
+          value={displayValue}
+          onChange={handleChange}
+          placeholder="0"
+          disabled={disabled}
+          error={!!fieldError}
+          aria-describedby={
+            [fieldError ? errId : null, words ? wordsId : null]
+              .filter(Boolean)
+              .join(" ") || undefined
+          }
+          autoComplete="off"
+          className="pr-12 font-mono text-base font-bold tabular-nums tracking-wide"
+        />
+        <span
+          className="absolute right-3.5 pointer-events-none font-mono font-bold text-sm text-primary select-none"
+          aria-hidden="true"
+        >
+          ₫
+        </span>
+      </div>
 
-      {/* Amount words preview */}
+      {/* Amount words preview (English) */}
       {words && (
         <p
           id={wordsId}
-          className="text-xs text-muted-foreground italic"
+          className="text-sm text-primary/90 font-medium"
           aria-live="polite"
         >
           {words}
@@ -114,7 +123,7 @@ export const VndCurrencyInput: React.FC<VndCurrencyInputProps> = ({
             type="button"
             disabled={disabled}
             onClick={() => addAmount(chip.value)}
-            className="text-xs px-2.5 py-1 rounded-full border border-border bg-muted/60 text-muted-foreground hover:bg-muted hover:text-foreground transition-colors duration-150 disabled:opacity-40 disabled:pointer-events-none"
+            className="text-sm px-3 py-2 rounded-md border border-border bg-muted/60 text-muted-foreground hover:bg-muted hover:text-foreground transition-colors duration-150 disabled:opacity-40 disabled:pointer-events-none"
           >
             {chip.label}
           </button>
@@ -124,7 +133,7 @@ export const VndCurrencyInput: React.FC<VndCurrencyInputProps> = ({
             type="button"
             disabled={disabled}
             onClick={setMax}
-            className="text-xs px-2.5 py-1 rounded-full border border-primary/40 bg-primary/5 text-primary hover:bg-primary/10 transition-colors duration-150 disabled:opacity-40 disabled:pointer-events-none"
+            className="text-sm px-3 py-2 rounded-md border border-primary/40 bg-primary/5 text-primary hover:bg-primary/10 transition-colors duration-150 disabled:opacity-40 disabled:pointer-events-none"
           >
             Max
           </button>

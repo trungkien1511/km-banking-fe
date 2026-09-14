@@ -48,6 +48,15 @@ export const router = createBrowserRouter([
               return { Component: TransferPage };
             },
           },
+          {
+            path: "/deposit",
+            lazy: async () => {
+              const { DepositPage } = await import(
+                "@/features/transfer/pages/DepositPage"
+              );
+              return { Component: DepositPage };
+            },
+          },
           { path: "/accounts", element: <PlaceholderPage /> },
           { path: "/accounts/:accountId", element: <PlaceholderPage /> },
           { path: "/transactions", element: <PlaceholderPage /> },

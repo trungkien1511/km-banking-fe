@@ -2,6 +2,7 @@ import React from "react";
 import { Outlet } from "react-router-dom";
 import { Sidebar } from "@/components/shared/Sidebar";
 import { DashboardHeader } from "@/components/shared/DashboardHeader";
+import { MobileBottomNav } from "@/components/shared/MobileBottomNav";
 
 export const AppLayout: React.FC = () => {
   return (
@@ -23,7 +24,7 @@ export const AppLayout: React.FC = () => {
 
       <Sidebar />
 
-      <div className="flex flex-1 flex-col min-w-0">
+      <div className="flex flex-1 flex-col min-w-0 pb-16 lg:pb-0">
         <DashboardHeader />
 
         <main
@@ -31,11 +32,14 @@ export const AppLayout: React.FC = () => {
           id="main-content"
           tabIndex={-1}
         >
-          <div className="mx-auto max-w-7xl">
+          {/* max-w-2xl — banking content is narrow by design: cards, lists, forms */}
+          <div className="mx-auto max-w-2xl">
             <Outlet />
           </div>
         </main>
       </div>
+
+      <MobileBottomNav />
     </div>
   );
 };

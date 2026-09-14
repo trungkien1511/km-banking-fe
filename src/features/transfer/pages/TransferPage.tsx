@@ -1,10 +1,15 @@
-import React, { Activity, useState } from "react";
+import React, { useState } from "react";
 import { TransferWizard } from "../components/TransferWizard";
 import { BetweenAccountsWizard } from "../components/BetweenAccountsWizard";
 import { cn } from "@/lib/utils";
 import { useDashboard } from "@/features/dashboard/hooks/useDashboard";
 
 type TabType = "transfer" | "between";
+
+const TABS: { id: TabType; label: string }[] = [
+  { id: "transfer", label: "Transfer" },
+  { id: "between", label: "My Accounts" },
+];
 
 export const TransferPage: React.FC = () => {
   const [activeTab, setActiveTab] = useState<TabType>("transfer");
@@ -25,23 +30,19 @@ export const TransferPage: React.FC = () => {
         role="tablist"
         aria-label="Transaction Operations"
       >
-        {(["transfer", "between"] as TabType[]).map((tab) => {
-          const isActive = activeTab === tab;
-          const label =
-            tab === "transfer"
-              ? "Transfer"
-              : "My Accounts";
-
+        {TABS.map(({ id, label }) => {
+          const isActive = activeTab === id;
           return (
             <button
-              key={tab}
+              key={id}
               role="tab"
-              id={`tab-${tab}`}
+              id={`tab-${id}`}
               aria-selected={isActive}
-              aria-controls={`panel-${tab}`}
-              onClick={() => setActiveTab(tab)}
+              aria-controls={`panel-${id}`}
+              onClick={() => setActiveTab(id)}
               className={cn(
-                "py-3 text-sm font-semibold border-b-2 transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50",
+                "py-3 text-sm font-semibold border-b-2 transition-all duration-200",
+                "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50",
                 isActive
                   ? "border-primary text-primary"
                   : "border-transparent text-muted-foreground hover:text-foreground",
@@ -53,22 +54,20 @@ export const TransferPage: React.FC = () => {
         })}
       </div>
 
+      {/* Panels — both mounted, inactive panel is visually hidden via `hidden`.
+          Mounting both avoids remounting the wizard on tab switch (preserves form state). */}
       <div className="mt-4">
-        {(["transfer", "between"] as TabType[]).map((tab) => (
-          <Activity
-            key={tab}
-            mode={activeTab === tab ? "visible" : "hidden"}
-            name={`wizard-panel-${tab}`}
+        {TABS.map(({ id }) => (
+          <div
+            key={id}
+            id={`panel-${id}`}
+            role="tabpanel"
+            aria-labelledby={`tab-${id}`}
+            hidden={activeTab !== id}
           >
-            <div
-              id={`panel-${tab}`}
-              role="tabpanel"
-              aria-labelledby={`tab-${tab}`}
-            >
-              {tab === "transfer" && <TransferWizard />}
-              {tab === "between" && <BetweenAccountsWizard />}
-            </div>
-          </Activity>
+            {id === "transfer" && <TransferWizard />}
+            {id === "between" && <BetweenAccountsWizard />}
+          </div>
         ))}
       </div>
     </div>
