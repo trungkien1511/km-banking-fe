@@ -12,17 +12,12 @@ import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
 import { Alert } from "@/components/ui/Alert";
 import { formatCurrency } from "@/lib/format";
+import { formatAccountType } from "@/lib/labels";
 import type { Account, Transaction } from "@/features/dashboard/types/dashboard.types";
 import type { ApiError } from "@/services/api-client";
 
-const ACCOUNT_TYPE_LABEL: Record<Account["accountType"], string> = {
-  PRIMARY: "Primary Account",
-  SAVINGS: "Savings Account",
-  CHECKING: "Checking Account",
-};
-
 const accountLabel = (account: Account) =>
-  `${ACCOUNT_TYPE_LABEL[account.accountType]} (${account.accountNumber})`;
+  `${formatAccountType(account.accountType)} (${account.accountNumber})`;
 
 type BetweenForm = { amount: number };
 
@@ -251,7 +246,7 @@ export const BetweenAccountsWizard: React.FC = () => {
             <div className="flex justify-between text-sm">
               <span className="text-muted-foreground">From</span>
               <span className="font-semibold text-foreground text-right">
-                {ACCOUNT_TYPE_LABEL[fromAccount.accountType]} <br />
+                {formatAccountType(fromAccount.accountType)} <br />
                 <span className="font-mono text-muted-foreground" translate="no">({fromAccount.accountNumber})</span>
               </span>
             </div>
@@ -259,7 +254,7 @@ export const BetweenAccountsWizard: React.FC = () => {
             <div className="flex justify-between text-sm border-t border-border/60 pt-3">
               <span className="text-muted-foreground">To</span>
               <span className="font-semibold text-foreground text-right">
-                {ACCOUNT_TYPE_LABEL[toAccount.accountType]} <br />
+                {formatAccountType(toAccount.accountType)} <br />
                 <span className="font-mono text-muted-foreground" translate="no">({toAccount.accountNumber})</span>
               </span>
             </div>

@@ -1,39 +1,13 @@
 import { apiClient } from "@/services/api-client";
+import type { Account, Transaction, DashboardData } from "@/features/dashboard/types/dashboard.types";
 
-export interface DashboardResponse {
-  totalBalance: number;
-  currency: string;
-  accounts: Account[];
-  recentTransactions: Transaction[];
-}
+export type { Account, Transaction };
 
-export interface Account {
-  id: string;
-  accountNumber: string;
-  accountType: "PRIMARY" | "SAVINGS" | "CHECKING";
-  balance: number;
-  availableBalance: number;
-  currency: string;
-  status: "ACTIVE" | "INACTIVE" | "FROZEN" | "CLOSED";
-  createdAt: string;
-}
-
-export interface Transaction {
-  id: string;
-  referenceNumber: string;
-  amount: number;
-  fee: number;
-  currency: string;
-  transactionType: "DEPOSIT" | "WITHDRAWAL" | "TRANSFER" | "FEE";
-  direction: "IN" | "OUT" | null;
-  status: "PENDING" | "COMPLETED" | "FAILED" | "CANCELLED";
-  description: string | null;
-  createdAt: string;
-  valueDate: string;
-}
+// DashboardResponse is kept as an alias for backward compatibility.
+export interface DashboardResponse extends DashboardData {}
 
 export const dashboardApi = {
-  getDashboard: async (): Promise<DashboardResponse> => {
+  getDashboard: async (): Promise<DashboardData> => {
     const response = await apiClient.get("/api/v1/dashboard");
     return response.data.data;
   },

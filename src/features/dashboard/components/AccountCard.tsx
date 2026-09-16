@@ -3,17 +3,12 @@ import { Link } from "react-router-dom";
 import { Wallet, TrendUp, CreditCard, CaretRight, Copy, Check } from "@phosphor-icons/react";
 import { cn } from "@/lib/utils";
 import { formatCurrency, maskAccountNumber } from "@/lib/format";
+import { formatAccountType } from "@/lib/labels";
 import type { Account } from "@/features/dashboard/types/dashboard.types";
 
 interface AccountCardProps {
   account: Account;
 }
-
-const ACCOUNT_TYPE_LABEL: Record<Account["accountType"], string> = {
-  PRIMARY: "Primary",
-  SAVINGS: "Savings",
-  CHECKING: "Checking",
-};
 
 const STATUS_BADGE: Record<
   Account["status"],
@@ -34,7 +29,7 @@ const ICON_BG: Record<Account["accountType"], string> = {
 export const AccountCard = React.memo(function AccountCard({
   account,
 }: AccountCardProps) {
-  const typeLabel = ACCOUNT_TYPE_LABEL[account.accountType];
+  const typeLabel = formatAccountType(account.accountType);
   const badge = STATUS_BADGE[account.status];
   const [copied, setCopied] = React.useState(false);
 

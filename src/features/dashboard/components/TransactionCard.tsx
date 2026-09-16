@@ -6,6 +6,7 @@ import {
 } from "@phosphor-icons/react";
 import { cn } from "@/lib/utils";
 import { formatCurrency, formatDate } from "@/lib/format";
+import { formatTransactionType } from "@/lib/labels";
 import type { Transaction } from "@/features/dashboard/types/dashboard.types";
 
 interface TransactionCardProps {
@@ -27,19 +28,12 @@ const STATUS_CLASS: Record<Transaction["status"], string> = {
   CANCELLED: "text-muted-foreground",
 };
 
-const TYPE_LABEL: Record<Transaction["transactionType"], string> = {
-  DEPOSIT: "Deposit",
-  WITHDRAWAL: "Withdrawal",
-  TRANSFER: "Transfer",
-  FEE: "Service fee",
-};
-
 export const TransactionCard = React.memo(function TransactionCard({
   transaction,
 }: TransactionCardProps) {
   const isIncoming = transaction.direction === "IN";
   const isNeutral = transaction.direction === null;
-  const typeLabel = TYPE_LABEL[transaction.transactionType];
+  const typeLabel = formatTransactionType(transaction.transactionType);
 
   return (
     <div

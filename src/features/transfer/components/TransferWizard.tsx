@@ -16,6 +16,7 @@ import { Card } from "@/components/ui/Card";
 import { Alert } from "@/components/ui/Alert";
 import { FormErrorMessage } from "@/components/ui/FormErrorMessage";
 import { Input } from "@/components/ui/Input";
+import { formatAccountType } from "@/lib/labels";
 import type {
   Account,
   Transaction,
@@ -294,9 +295,7 @@ export const TransferWizard: React.FC = () => {
             <div className="flex justify-between text-sm">
               <span className="text-muted-foreground">From</span>
               <span className="font-semibold text-foreground">
-                {selectedAccount.accountType === "PRIMARY"
-                  ? "Primary Account"
-                  : "Savings"}{" "}
+                {formatAccountType(selectedAccount.accountType)}{" "}
                 ({selectedAccount.accountNumber})
               </span>
             </div>

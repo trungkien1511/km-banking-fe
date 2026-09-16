@@ -3,6 +3,7 @@ import { cn } from "@/lib/utils";
 import { Card } from "@/components/ui/Card";
 import { Badge } from "@/components/ui/Badge";
 import { formatCurrency } from "@/lib/format";
+import { formatAccountType } from "@/lib/labels";
 import type { Account } from "@/features/dashboard/types/dashboard.types";
 
 interface AccountSelectorProps {
@@ -50,11 +51,7 @@ export const AccountSelector: React.FC<AccountSelectorProps> = React.memo(
             <div className="flex flex-col gap-1">
               <div className="flex items-center gap-2">
                 <span className="font-semibold text-foreground">
-                  {acc.accountType === "PRIMARY"
-                    ? "Primary Account"
-                    : acc.accountType === "SAVINGS"
-                      ? "Savings Account"
-                      : "Checking Account"}
+                  {formatAccountType(acc.accountType)}
                 </span>
                 <Badge variant={isActive ? "success" : "danger"}>
                   {acc.status}
