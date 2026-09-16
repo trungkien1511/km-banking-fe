@@ -6,20 +6,12 @@ import {
 } from "@phosphor-icons/react";
 import { cn } from "@/lib/utils";
 import { formatCurrency, formatDate } from "@/lib/format";
-import { formatTransactionType } from "@/lib/labels";
+import { formatTransactionStatus, formatTransactionType } from "@/lib/labels";
 import type { Transaction } from "@/features/dashboard/types/dashboard.types";
 
 interface TransactionCardProps {
   transaction: Transaction;
 }
-
-// English status labels — visible text, not color-only (WCAG 1.4.1)
-const STATUS_LABEL: Record<Transaction["status"], string> = {
-  PENDING: "Pending",
-  COMPLETED: "Completed",
-  FAILED: "Failed",
-  CANCELLED: "Cancelled",
-};
 
 const STATUS_CLASS: Record<Transaction["status"], string> = {
   PENDING: "text-warning",
@@ -79,7 +71,7 @@ export const TransactionCard = React.memo(function TransactionCard({
               STATUS_CLASS[transaction.status],
             )}
           >
-            {STATUS_LABEL[transaction.status]}
+            {formatTransactionStatus(transaction.status)}
           </span>
           <p className="text-sm text-muted-foreground">
             {formatDate(transaction.createdAt)}

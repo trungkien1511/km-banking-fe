@@ -1,18 +1,13 @@
 import React from "react";
 import { Eye, EyeSlash } from "@phosphor-icons/react";
 import { useTotalBalance } from "@/features/dashboard/store/dashboard-store";
-
-const balanceFormatter = new Intl.NumberFormat("vi-VN", {
-  style: "currency",
-  currency: "VND",
-  maximumFractionDigits: 0,
-});
+import { formatCurrency } from "@/lib/format";
 
 export const TotalBalanceCard = React.memo(() => {
   const totalBalance = useTotalBalance();
   const [hidden, setHidden] = React.useState(false);
 
-  const formatted = balanceFormatter.format(totalBalance);
+  const formatted = formatCurrency(totalBalance, "VND");
 
   return (
     <div

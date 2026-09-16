@@ -29,3 +29,19 @@ export function formatAccountType(type: Account["accountType"]): string {
 export function formatTransactionType(type: Transaction["transactionType"]): string {
   return TRANSACTION_TYPE_LABEL[type];
 }
+
+const TRANSACTION_STATUS_LABEL: Record<Transaction["status"], string> = {
+  PENDING: "Pending",
+  COMPLETED: "Completed",
+  FAILED: "Failed",
+  CANCELLED: "Cancelled",
+};
+
+/**
+ * Returns the English label for a transaction status.
+ * "PENDING" → "Pending", "COMPLETED" → "Completed",
+ * "FAILED" → "Failed", "CANCELLED" → "Cancelled"
+ */
+export function formatTransactionStatus(status: Transaction["status"]): string {
+  return TRANSACTION_STATUS_LABEL[status];
+}

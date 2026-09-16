@@ -1,5 +1,6 @@
 import { LoginForm } from "../components/LoginForm";
 import { AppLogo } from "@/components/shared/AppLogo";
+import { APP_NAME } from "@/constants/brand";
 import { ShieldCheck, Lightning, Globe } from "@phosphor-icons/react";
 
 // rendering-hoist-jsx: module-level — never re-created on re-renders
@@ -38,7 +39,7 @@ export const LoginPage = () => {
           className="absolute inset-0 opacity-[0.03]"
           style={{
             backgroundImage:
-              "linear-gradient(rgba(255,255,255,0.6) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.6) 1px, transparent 1px)",
+              "linear-gradient(color-mix(in srgb, var(--color-foreground) 60%, transparent) 1px, transparent 1px), linear-gradient(90deg, color-mix(in srgb, var(--color-foreground) 60%, transparent) 1px, transparent 1px)",
             backgroundSize: "40px 40px",
           }}
         />
@@ -91,7 +92,7 @@ export const LoginPage = () => {
           light-context
           flex flex-col justify-center items-center
           min-h-dvh lg:min-h-0
-          bg-white
+          bg-background
           px-6 py-12 sm:px-10
         "
       >
@@ -117,7 +118,7 @@ export const LoginPage = () => {
             Protected by 256-bit TLS encryption.
             <br />
             <span className="text-muted-foreground">
-              &copy; {CURRENT_YEAR} KM BANK. All rights reserved.
+              &copy; {CURRENT_YEAR} {APP_NAME}. All rights reserved.
             </span>
           </p>
         </div>

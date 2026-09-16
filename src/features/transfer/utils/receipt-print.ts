@@ -1,3 +1,4 @@
+import { APP_NAME } from "@/constants/brand";
 import type { Transaction } from "@/features/dashboard/types/dashboard.types";
 
 /**
@@ -24,23 +25,23 @@ export function printReceipt(transaction: Transaction, operationType: string): v
   <title>Transaction Receipt - ${transaction.referenceNumber}</title>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: 'Segoe UI', Arial, sans-serif; padding: 32px; color: #111; font-size: 14px; }
+    body { font-family: 'IBM Plex Sans', 'Segoe UI', Arial, sans-serif; padding: 32px; color: #020617; font-size: 14px; }
     .header { text-align: center; margin-bottom: 24px; }
     .header h1 { font-size: 20px; font-weight: 700; }
-    .header p { color: #666; font-size: 12px; margin-top: 4px; }
-    .divider { border: none; border-top: 1px dashed #ccc; margin: 16px 0; }
+    .header p { color: #475569; font-size: 12px; margin-top: 4px; }
+    .divider { border: none; border-top: 1px dashed #e2e8f0; margin: 16px 0; }
     .row { display: flex; justify-content: space-between; margin-bottom: 10px; }
-    .label { color: #666; }
+    .label { color: #475569; }
     .value { font-weight: 600; text-align: right; }
-    .amount { font-size: 22px; font-weight: 800; color: #111; }
-    .status { color: #16a34a; font-weight: 700; }
-    .footer { text-align: center; margin-top: 24px; color: #999; font-size: 11px; }
+    .amount { font-size: 22px; font-weight: 800; color: #020617; }
+    .status { color: #22c55e; font-weight: 700; }
+    .footer { text-align: center; margin-top: 24px; color: #64748b; font-size: 11px; }
     @media print { body { padding: 16px; } }
   </style>
 </head>
 <body>
   <div class="header">
-    <h1>KM Banking</h1>
+    <h1>${APP_NAME}</h1>
     <p>${operationLabel} Receipt</p>
   </div>
   <hr class="divider" />
@@ -53,7 +54,7 @@ export function printReceipt(transaction: Transaction, operationType: string): v
   <div class="row"><span class="label">Fee</span><span class="value">0 ₫</span></div>
   ${transaction.description ? `<div class="row"><span class="label">Note</span><span class="value">${transaction.description}</span></div>` : ""}
   <hr class="divider" />
-  <p class="footer">Thank you for using KM Banking</p>
+  <p class="footer">Thank you for using ${APP_NAME}</p>
 </body>
 </html>`;
 

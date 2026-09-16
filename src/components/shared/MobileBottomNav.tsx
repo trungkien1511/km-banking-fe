@@ -1,27 +1,7 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
-import {
-  SquaresFour,
-  CreditCard,
-  ArrowsLeftRight,
-  Clock,
-  Gear,
-} from "@phosphor-icons/react";
 import { cn } from "@/lib/utils";
-
-interface NavItem {
-  label: string;
-  to: string;
-  icon: React.ElementType;
-}
-
-const NAV_ITEMS: NavItem[] = [
-  { label: "Overview", to: "/dashboard", icon: SquaresFour },
-  { label: "Accounts", to: "/accounts", icon: CreditCard },
-  { label: "Transfer", to: "/transfer", icon: ArrowsLeftRight },
-  { label: "History", to: "/transactions", icon: Clock },
-  { label: "Settings", to: "/settings", icon: Gear },
-];
+import { NAV_ITEMS } from "./nav-items";
 
 export const MobileBottomNav: React.FC = () => {
   return (
@@ -33,7 +13,7 @@ export const MobileBottomNav: React.FC = () => {
         bg-card/95 backdrop-blur-md
         border-t border-border
         px-2 py-1.5
-        shadow-[0_-4px_12px_rgba(0,0,0,0.15)]
+        shadow-elevated
       "
     >
       <div className="flex items-center justify-around max-w-md mx-auto">

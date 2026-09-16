@@ -1,29 +1,10 @@
 import React from "react";
 import { NavLink, useNavigate } from "react-router-dom";
-import {
-  SquaresFour,
-  CreditCard,
-  ArrowsLeftRight,
-  Clock,
-  Gear,
-  SignOut,
-} from "@phosphor-icons/react";
+import { SignOut } from "@phosphor-icons/react";
 import { cn } from "@/lib/utils";
+import { APP_NAME } from "@/constants/brand";
 import { useAuthStore } from "@/features/auth/store/auth-store";
-
-interface NavItem {
-  label: string;
-  to: string;
-  icon: React.ElementType;
-}
-
-const NAV_ITEMS: NavItem[] = [
-  { label: "Overview", to: "/dashboard", icon: SquaresFour },
-  { label: "Accounts", to: "/accounts", icon: CreditCard },
-  { label: "Transfer", to: "/transfer", icon: ArrowsLeftRight },
-  { label: "History", to: "/transactions", icon: Clock },
-  { label: "Settings", to: "/settings", icon: Gear },
-];
+import { NAV_ITEMS, type NavItem } from "./nav-items";
 
 interface RailItemProps {
   item: NavItem;
@@ -112,7 +93,7 @@ export const Sidebar = React.memo(function Sidebar() {
           </svg>
         </div>
         <span className="text-sm font-bold text-foreground tracking-tight">
-          KM Banking
+          {APP_NAME}
         </span>
       </div>
 
