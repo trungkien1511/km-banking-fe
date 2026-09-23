@@ -1,9 +1,9 @@
 import type { Account, Transaction } from "@/features/dashboard/types/dashboard.types";
 
 const ACCOUNT_TYPE_LABEL: Record<Account["accountType"], string> = {
-  PRIMARY: "Primary",
-  SAVINGS: "Savings",
-  CHECKING: "Checking",
+  PRIMARY: "Primary Account",
+  SAVINGS: "Savings Account",
+  CHECKING: "Checking Account",
 };
 
 const TRANSACTION_TYPE_LABEL: Record<Transaction["transactionType"], string> = {

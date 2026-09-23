@@ -59,7 +59,24 @@ export const router = createBrowserRouter([
           },
           { path: "/accounts", element: <PlaceholderPage /> },
           { path: "/accounts/:accountId", element: <PlaceholderPage /> },
-          { path: "/transactions", element: <PlaceholderPage /> },
+          {
+            path: "/transactions",
+            lazy: async () => {
+              const { TransactionHistoryPage } = await import(
+                "@/features/transactions/pages/TransactionHistoryPage"
+              );
+              return { Component: TransactionHistoryPage };
+            },
+          },
+          {
+            path: "/accounts/:accountId/transactions",
+            lazy: async () => {
+              const { TransactionHistoryPage } = await import(
+                "@/features/transactions/pages/TransactionHistoryPage"
+              );
+              return { Component: TransactionHistoryPage };
+            },
+          },
           { path: "/settings", element: <PlaceholderPage /> },
           { path: "/dashboard/history", element: <PlaceholderPage /> },
           { path: "/dashboard/pending", element: <PlaceholderPage /> },
