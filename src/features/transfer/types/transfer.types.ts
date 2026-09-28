@@ -22,7 +22,7 @@ export interface WithdrawalPayload {
 
 export interface RecipientLookup {
   accountNumber: string;
-  /** Partially masked name, e.g. "NGUYEN ** ANH" */
+  /** Account holder's full name as returned by the API (not masked). */
   accountHolderName: string;
   /** ACTIVE | FROZEN | INACTIVE */
   status: string;

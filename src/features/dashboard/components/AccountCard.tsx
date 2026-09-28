@@ -1,6 +1,13 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { Wallet, TrendUp, CreditCard, CaretRight, Copy, Check } from "@phosphor-icons/react";
+import {
+  Wallet,
+  TrendUp,
+  CreditCard,
+  CaretRight,
+  Copy,
+  Check,
+} from "@phosphor-icons/react";
 import { cn } from "@/lib/utils";
 import { formatCurrency, maskAccountNumber } from "@/lib/format";
 import { formatAccountType } from "@/lib/labels";
@@ -81,20 +88,12 @@ export const AccountCard = React.memo(function AccountCard({
         <div className="min-w-0 flex-1">
           <div className="flex items-center gap-2">
             <p className="text-sm font-semibold text-foreground">{typeLabel}</p>
-            <span
-              className={cn(
-                "inline-flex rounded-full px-2 py-0.5 text-sm font-medium",
-                badge.className,
-              )}
-            >
-              {badge.text}
-            </span>
           </div>
           <p
             className="mt-0.5 font-mono text-sm tracking-wider text-muted-foreground"
             translate="no"
           >
-            {maskAccountNumber(account.accountNumber)}
+            {account.accountNumber}
           </p>
         </div>
 
@@ -110,7 +109,8 @@ export const AccountCard = React.memo(function AccountCard({
               className="mt-0.5 font-mono text-sm text-muted-foreground tabular-nums"
               translate="no"
             >
-              {formatCurrency(account.availableBalance, account.currency)} avail.
+              {formatCurrency(account.availableBalance, account.currency)}{" "}
+              avail.
             </p>
           ) : null}
         </div>
