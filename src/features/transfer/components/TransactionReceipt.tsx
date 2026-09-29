@@ -25,14 +25,12 @@ const STATUS_BADGE_VARIANT: Record<
 
 interface TransactionReceiptProps {
   transaction: Transaction;
-  operationType: "transfer" | "deposit" | "withdrawal";
   onNewTransaction: () => void;
   destinationAccountNumber?: string;
 }
 
 export const TransactionReceipt: React.FC<TransactionReceiptProps> = ({
   transaction,
-  operationType,
   onNewTransaction,
   destinationAccountNumber,
 }) => {
@@ -68,7 +66,7 @@ export const TransactionReceipt: React.FC<TransactionReceiptProps> = ({
       </div>
 
       <h2 className="text-2xl font-bold mb-1 text-foreground">
-        {operationType === "transfer" ? "Transfer Successful" : operationType === "deposit" ? "Deposit Successful" : "Withdrawal Successful"}
+        Transfer Successful
       </h2>
       <p className="text-sm text-muted-foreground mb-6">
         Your transaction has been processed and logged in the system.
@@ -134,13 +132,12 @@ export const TransactionReceipt: React.FC<TransactionReceiptProps> = ({
         <Button
           variant="outline"
           className="w-full justify-center"
-          onClick={() => printReceipt(transaction, operationType)}
+          onClick={() => printReceipt(transaction)}
         >
           <Printer size={16} weight="bold" aria-hidden="true" />
           Print / Download receipt
         </Button>
-        {operationType === "transfer" &&
-          destinationAccountNumber &&
+        {destinationAccountNumber &&
           !beneficiarySaved &&
           !namingBeneficiary && (
             <Button
@@ -152,8 +149,7 @@ export const TransactionReceipt: React.FC<TransactionReceiptProps> = ({
               Save beneficiary
             </Button>
           )}
-        {operationType === "transfer" &&
-          destinationAccountNumber &&
+        {destinationAccountNumber &&
           !beneficiarySaved &&
           namingBeneficiary && (
             <Card className="p-4 space-y-3 text-left">

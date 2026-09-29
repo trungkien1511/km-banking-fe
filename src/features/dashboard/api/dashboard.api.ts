@@ -4,7 +4,7 @@ import type { Account, Transaction, DashboardData } from "@/features/dashboard/t
 export type { Account, Transaction };
 
 // DashboardResponse is kept as an alias for backward compatibility.
-export interface DashboardResponse extends DashboardData {}
+export type DashboardResponse = DashboardData;
 
 export const dashboardApi = {
   getDashboard: async (): Promise<DashboardData> => {

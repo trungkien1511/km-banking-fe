@@ -49,7 +49,7 @@ export const TransactionDetailDrawer: React.FC<TransactionDetailDrawerProps> = (
   };
 
   const handlePrint = () => {
-    printReceipt(transaction, "transfer");
+    printReceipt(transaction);
   };
 
   return (

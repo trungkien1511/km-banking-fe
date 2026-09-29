@@ -5,11 +5,8 @@ import type { Transaction } from "@/features/dashboard/types/dashboard.types";
  * Opens a dedicated print window with a clean receipt layout.
  * Falls back gracefully if the popup is blocked.
  */
-export function printReceipt(transaction: Transaction, operationType: string): void {
-  const operationLabel =
-    operationType === "transfer" ? "Transfer"
-    : operationType === "deposit" ? "Deposit"
-    : "Withdrawal";
+export function printReceipt(transaction: Transaction): void {
+  const operationLabel = "Transfer";
 
   const date = new Intl.DateTimeFormat("en-GB", {
     day: "2-digit", month: "2-digit", year: "numeric",

@@ -112,7 +112,6 @@ export const BetweenAccountsWizard: React.FC = () => {
     return (
       <TransactionReceipt
         transaction={completedTxn}
-        operationType="transfer"
         onNewTransaction={handleReset}
       />
     );

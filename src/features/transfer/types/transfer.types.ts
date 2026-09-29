@@ -6,20 +6,6 @@ export interface TransferPayload {
   idempotencyKey: string;
 }
 
-export interface DepositPayload {
-  accountId: string;
-  amount: number;
-  description?: string;
-  idempotencyKey: string;
-}
-
-export interface WithdrawalPayload {
-  accountId: string;
-  amount: number;
-  description?: string;
-  idempotencyKey: string;
-}
-
 export interface RecipientLookup {
   accountNumber: string;
   /** Account holder's full name as returned by the API (not masked). */

@@ -17,15 +17,6 @@ interface AccountCardProps {
   account: Account;
 }
 
-const STATUS_BADGE: Record<
-  Account["status"],
-  { text: string; className: string }
-> = {
-  ACTIVE: { text: "Active", className: "text-success bg-success/20" },
-  INACTIVE: { text: "Inactive", className: "text-muted-foreground bg-muted" },
-  FROZEN: { text: "Frozen", className: "text-warning bg-warning/20" },
-  CLOSED: { text: "Closed", className: "text-destructive bg-destructive/20" },
-};
 
 const ICON_BG: Record<Account["accountType"], string> = {
   PRIMARY: "bg-accent/10 text-accent",
@@ -37,7 +28,6 @@ export const AccountCard = React.memo(function AccountCard({
   account,
 }: AccountCardProps) {
   const typeLabel = formatAccountType(account.accountType);
-  const badge = STATUS_BADGE[account.status];
   const [copied, setCopied] = React.useState(false);
 
   const handleCopy = (e: React.MouseEvent) => {

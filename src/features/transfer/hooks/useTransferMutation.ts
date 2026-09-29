@@ -1,10 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { transferApi } from "../api/transfer.api";
-import type {
-  TransferPayload,
-  DepositPayload,
-  WithdrawalPayload,
-} from "../types/transfer.types";
+import type { TransferPayload } from "../types/transfer.types";
 import type { Transaction } from "@/features/dashboard/types/dashboard.types";
 
 const createTransactionMutation =
@@ -22,10 +18,3 @@ const createTransactionMutation =
 export const useTransferMutation = createTransactionMutation<TransferPayload>(
   transferApi.transfer,
 );
-
-export const useDepositMutation = createTransactionMutation<DepositPayload>(
-  transferApi.deposit,
-);
-
-export const useWithdrawalMutation =
-  createTransactionMutation<WithdrawalPayload>(transferApi.withdraw);

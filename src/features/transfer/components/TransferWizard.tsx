@@ -152,7 +152,6 @@ export const TransferWizard: React.FC = () => {
     return (
       <TransactionReceipt
         transaction={completedTxn}
-        operationType="transfer"
         onNewTransaction={handleReset}
         destinationAccountNumber={getValues("destinationAccountNumber")}
       />
